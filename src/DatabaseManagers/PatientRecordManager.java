@@ -5,7 +5,10 @@ import Records.BloodType;
 import Records.ContactInfo;
 import Records.Gender;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -34,5 +37,83 @@ public class PatientRecordManager {
         }
         reader.close(); // Close the BufferedReader if no record is found
         return null; // Return null if no matching patientID is found
+    }
+
+    public static boolean updatePatientPhone(String patientID, int newPhone) throws Exception {
+        PatientRecord patientRecord = loadPatientRecord(patientID);
+        if (patientRecord == null) {
+            return false;
+        }
+        patientRecord.setPhone(newPhone);
+        return storeRecord(patientRecord);
+    }
+
+    public static boolean updatePatientEmail(String patientID, String newEmail) throws Exception {
+        PatientRecord patientRecord = loadPatientRecord(patientID);
+        if (patientRecord == null) {
+            return false;
+        }
+        patientRecord.setEmail(newEmail);
+        return storeRecord(patientRecord);
+    }
+
+    public static boolean storeRecord(PatientRecord patientRecord) throws Exception {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String patientID = patientRecord.getPatientID();
+        List<String> fileContent = new ArrayList<>();
+
+        BufferedReader reader = new BufferedReader(new FileReader("Database/Medical_Records.csv"));
+        String line;
+        boolean recordFound = false;
+
+        // Read the file line by line and either update or preserve the existing lines
+        while ((line = reader.readLine()) != null) {
+            String[] nextLine = line.split(","); // Split by comma
+            if (nextLine[0].equals(patientID)) {
+                // This is the record to update, replace it with the new patientRecord details
+                String updatedRecord = String.join(",", new String[]{
+                        patientRecord.getPatientID(),
+                        patientRecord.getName(),
+                        formatter.format(patientRecord.getDob()),
+                        patientRecord.getGender().toString(),
+                        String.valueOf(patientRecord.getContactInfo().getPhoneNumber()),
+                        patientRecord.getContactInfo().getEmail(),
+                        patientRecord.getBloodType().toString(),
+                        String.join(";", patientRecord.getDiagnoses()),
+                        String.join(";", patientRecord.getTreatments())
+                });
+                fileContent.add(updatedRecord);
+                recordFound = true;
+            } else {
+                // If the line doesn't match the patientID, keep it as is
+                fileContent.add(line);
+            }
+        }
+        reader.close();
+
+        // If the patient ID was not found, append the new record
+        if (!recordFound) {
+            String newRecord = String.join(",", new String[]{
+                    patientRecord.getPatientID(),
+                    patientRecord.getName(),
+                    formatter.format(patientRecord.getDob()),
+                    patientRecord.getGender().toString(),
+                    String.valueOf(patientRecord.getContactInfo().getPhoneNumber()),
+                    patientRecord.getContactInfo().getEmail(),
+                    patientRecord.getBloodType().toString(),
+                    String.join(";", patientRecord.getDiagnoses()),
+                    String.join(";", patientRecord.getTreatments())
+            });
+            fileContent.add(newRecord);
+        }
+
+        // Write the updated content back to the CSV file
+        BufferedWriter writer = new BufferedWriter(new FileWriter("Database/Medical_Records.csv"));
+        for (String record : fileContent) {
+            writer.write(record);
+            writer.newLine(); // Write each record on a new line
+        }
+        writer.close();
+        return true;
     }
 }
