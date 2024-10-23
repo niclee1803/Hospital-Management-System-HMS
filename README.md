@@ -13,7 +13,7 @@
 * Appointments
 * Medications
 * Password Hashing
-*
+* Make password invisible when entering
 
 ## Packages Used
 1. DatabaseManagers
