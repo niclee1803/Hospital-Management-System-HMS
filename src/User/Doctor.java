@@ -26,7 +26,12 @@ public class Doctor implements IHasMenu {
             System.out.println("Welcome Doctor " + doctorRecord.getName() + ",\n");
             System.out.println("(1) View Patient Medical Records\n" + "(2) Update Patient Medical Records (Coming Soon)\n" + "(3) Appointments (Coming Soon)\n" + "(4) Log Out\n");
             Scanner sc = new Scanner(System.in);
-            int choice = Integer.parseInt(sc.nextLine());
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                choice = 0;
+            }
             System.out.println();
             switch (choice) {
                 case 1:

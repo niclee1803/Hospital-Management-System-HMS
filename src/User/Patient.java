@@ -30,7 +30,12 @@ public class Patient implements IHasMenu {
             System.out.println("Welcome " + patientRecord.getName() + ",\n");
             System.out.println("(1) View Medical Record\n" + "(2) Update Contact Details\n" + "(3) Appointments (Coming Soon)\n" + "(4) Log Out\n");
             Scanner sc = new Scanner(System.in);
-            int choice = Integer.parseInt(sc.nextLine());
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                choice = 0;
+            }
             System.out.println();
             switch (choice) {
                 case 1:
