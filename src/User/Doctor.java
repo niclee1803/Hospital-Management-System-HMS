@@ -59,7 +59,7 @@ public class Doctor implements IHasMenu {
         System.out.print("Enter Patient ID to view record: ");
         String patientID = sc.nextLine().toUpperCase();
         if (patientID.equals("X")) {
-            displayMenu();
+            return;
         }
         System.out.println();
         Patient patient = new Patient(patientID);

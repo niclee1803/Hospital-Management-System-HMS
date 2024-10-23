@@ -34,6 +34,38 @@ public class PatientRecord {
         return patientID;
     }
 
+    public Date getDob() {
+        return dob;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public BloodType getBloodType() {
+        return bloodType;
+    }
+
+    public List<String> getDiagnoses() {
+        return diagnoses;
+    }
+
+    public List<String> getTreatments() {
+        return treatments;
+    }
+
+    public ContactInfo getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setPhone(int phoneNumber) {
+        contactInfo.setPhoneNumber(phoneNumber);
+    }
+
+    public void setEmail(String email) {
+        contactInfo.setEmail(email);
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
