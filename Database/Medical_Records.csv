@@ -1,0 +1,5 @@
+﻿PatientID,Name,DOB,Gender,Phone,Email,BloodType,Diagnoses,Treatments
+P1001,Alice Brown,14/05/1990,FEMALE,91234567,alice.brown@example.com,A_POSITIVE,nil,nil
+P1002,Bob Stone,22/11/1975,MALE,98765432,bob.stone@example.com,B_POSITIVE,nil,nil
+P1003,Charlie White,08/07/1990,MALE,94444444,charlie.white@example.com,O_NEGATIVE,nil,nil
+P1004,Nic,18/03/2002,MALE,92333171,nic@gmail.com,O_POSITIVE,Stupid,Pills
