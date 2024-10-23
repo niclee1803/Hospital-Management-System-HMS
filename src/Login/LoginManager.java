@@ -45,7 +45,7 @@ public class LoginManager {
         String patientID = sc.nextLine().toUpperCase();
         if (patientID.equals("X")) {
             System.out.println();
-            login();
+            return;
         }
         BufferedReader reader = new BufferedReader(new FileReader("Database/Patient_List.csv"));
         String line;
@@ -78,7 +78,7 @@ public class LoginManager {
         String staffID = sc.nextLine().toUpperCase();
         if (staffID.equals("X")) {
             System.out.println();
-            login();
+            return;
         }
         BufferedReader reader = new BufferedReader(new FileReader("Database/Staff_List.csv"));
         String line;
