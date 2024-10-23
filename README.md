@@ -5,6 +5,7 @@
 * View Patient Medical Records for Patients and Doctors:
   * Patient can view their own medical record
   * Doctor can ONLY view medical records of patients under their care
+  * 
 
 ## To be implemented
 * Pharmacist and Administrator Roles
@@ -14,6 +15,7 @@
 * Medications
 * Password Hashing
 * Make password invisible when entering
+* 
 
 ## Packages Used
 1. DatabaseManagers
