@@ -29,3 +29,4 @@
    * Contains the respective user classes that has user records as the attributes, and methods relating to the functionalities of the user. They belong to an interface IHasMenu, as they all have different implementations of the displayMenu() function.
 
 ## Database (to be updated)
+*
