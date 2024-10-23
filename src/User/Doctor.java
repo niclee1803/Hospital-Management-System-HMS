@@ -3,26 +3,28 @@ package User;
 import DatabaseManagers.DoctorRecordManager;
 import Records.DoctorRecord;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Doctor implements IHasMenu {
-    private String doctorID;
     private DoctorRecord doctorRecord;
 
     public Doctor(String doctorID) throws Exception {
-        this.doctorID = doctorID;
         doctorRecord = DoctorRecordManager.loadDoctorRecord(doctorID);
+    }
+
+    String getDoctorID() {
+        return doctorRecord.getDoctorID();
+    }
+
+    String getDoctorName() {
+        return doctorRecord.getName();
     }
 
     @Override
     public void displayMenu() throws Exception {
         while (true) {
             System.out.println("Welcome Doctor " + doctorRecord.getName() + ",\n");
-            System.out.println("(1) View Patient Medical Records\n" +
-                    "(2) Update Patient Medical Records (Coming Soon)\n" +
-                    "(3) Appointments (Coming Soon)\n" +
-                    "(4) Log Out\n");
+            System.out.println("(1) View Patient Medical Records\n" + "(2) Update Patient Medical Records (Coming Soon)\n" + "(3) Appointments (Coming Soon)\n" + "(4) Log Out\n");
             Scanner sc = new Scanner(System.in);
             int choice = Integer.parseInt(sc.nextLine());
             System.out.println();
@@ -61,6 +63,11 @@ public class Doctor implements IHasMenu {
         }
         System.out.println();
         Patient patient = new Patient(patientID);
+        if (patient.getPatientRecord() == null) {
+            System.out.println("Invalid Patient ID. Please try again.\n");
+            viewPatientRecords();
+            return;
+        }
         boolean authorized = false;
         for (Patient p : doctorRecord.getPatients()) {
             if (p.getPatientID().equals(patient.getPatientID())) {
@@ -74,7 +81,8 @@ public class Doctor implements IHasMenu {
             viewPatientRecords();
             return;
         }
-
         System.out.println(patient.getPatientRecord() + "\n");
+        System.out.println("Press enter to continue...\n");
+        sc.nextLine();
     }
 }

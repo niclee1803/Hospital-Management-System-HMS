@@ -5,29 +5,28 @@ import Records.PatientRecord;
 import java.util.Scanner;
 
 public class Patient implements IHasMenu {
-    private String patientID;
     private PatientRecord patientRecord;
 
     public Patient(String patientID) throws Exception {
-        this.patientID = patientID;
         this.patientRecord = PatientRecordManager.loadPatientRecord(patientID);
-    }
-
-    public String getPatientID() {
-        return patientID;
     }
 
     PatientRecord getPatientRecord() {
         return patientRecord;
     }
 
+    String getPatientID() {
+        return patientRecord.getPatientID();
+    }
+
+    String getPatientName() {
+        return patientRecord.getName();
+    }
+
     public void displayMenu() {
         while (true) {
             System.out.println("Welcome " + patientRecord.getName() + ",\n");
-            System.out.println("(1) View Medical Record\n" +
-                    "(2) Update Contact Details (Coming Soon)\n" +
-                    "(3) Appointments (Coming Soon)\n" +
-                    "(4) Log Out\n");
+            System.out.println("(1) View Medical Record\n" + "(2) Update Contact Details (Coming Soon)\n" + "(3) Appointments (Coming Soon)\n" + "(4) Log Out\n");
             Scanner sc = new Scanner(System.in);
             int choice = Integer.parseInt(sc.nextLine());
             System.out.println();
@@ -35,6 +34,8 @@ public class Patient implements IHasMenu {
                 case 1:
                     System.out.println("<<Patient Record View>>");
                     System.out.println(patientRecord + "\n");
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 2:
                     break;
@@ -53,6 +54,6 @@ public class Patient implements IHasMenu {
 
     @Override
     public String toString() {
-        return patientID;
+        return getPatientID() + " - " + getPatientName();
     }
 }

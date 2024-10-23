@@ -30,6 +30,10 @@ public class PatientRecord {
         return name;
     }
 
+    public String getPatientID() {
+        return patientID;
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
