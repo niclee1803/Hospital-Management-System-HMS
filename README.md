@@ -41,3 +41,6 @@
 * Medical_Records.csv - list of patient medical record information
 * Doctor_Records.csv - list of doctorIDs, their names, and their patients
 * 
+
+## Bugs to fix
+* Entering empty input leads to crashing
