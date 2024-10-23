@@ -46,13 +46,13 @@ public class LoginManager {
         if (patientID.equals("X")) {
             login();
         }
-        System.out.print("Enter Password: ");
-        String password = sc.nextLine();
         BufferedReader reader = new BufferedReader(new FileReader("Database/Patient_List.csv"));
         String line;
         while ((line = reader.readLine()) != null) {
             String[] nextLine = line.split(","); // Split by comma
             if (nextLine[0].equals(patientID)) {
+                System.out.print("Enter Password: ");
+                String password = sc.nextLine();
                 if (nextLine[1].equals(password)) {
                     id = patientID;
                     authenticated = true;
@@ -61,6 +61,7 @@ public class LoginManager {
                 } else {
                     System.out.println("Incorrect password");
                     patientLogin();
+                    return;
                 }
             }
         }
@@ -77,13 +78,13 @@ public class LoginManager {
         if (staffID.equals("X")) {
             login();
         }
-        System.out.print("Enter Password: ");
-        String password = sc.nextLine();
         BufferedReader reader = new BufferedReader(new FileReader("Database/Staff_List.csv"));
         String line;
         while ((line = reader.readLine()) != null) {
             String[] nextLine = line.split(","); // Split by comma
             if (nextLine[0].equals(staffID)) {
+                System.out.print("Enter Password: ");
+                String password = sc.nextLine();
                 if (nextLine[1].equals(password)) {
                     id = staffID;
                     authenticated = true;
@@ -92,6 +93,7 @@ public class LoginManager {
                 } else {
                     System.out.println("Incorrect password");
                     staffLogin();
+                    return;
                 }
             }
         }
