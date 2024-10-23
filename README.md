@@ -4,12 +4,12 @@
 * Login System for Doctors and Patients
 * View Patient Medical Records for Patients and Doctors:
   * Patient can view their own medical record
+  * Patient can update their contact info (Phone number and email)
   * Doctor can ONLY view medical records of patients under their care
   * 
 
 ## To be implemented
 * Pharmacist and Administrator Roles
-* Patient can update contact info
 * Doctor can update patient diagnoses and treatments
 * Appointments
 * Medications
