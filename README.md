@@ -19,7 +19,7 @@
 * Make password invisible when entering
 * 
 
-## Packages Used
+## Packages
 1. DatabaseManagers
    * Contains utility classes to load user records to instantiate user objects and to store user records to the database.
 
