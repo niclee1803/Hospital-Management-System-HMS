@@ -13,6 +13,7 @@
 * Doctor can update patient diagnoses and treatments
 * Appointments
 * Medications
+* Error Handling for inputs
 * Password Hashing
 * Make password invisible when entering
 * 
