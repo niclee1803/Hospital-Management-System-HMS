@@ -1,4 +1,4 @@
-package Utility;
+package utility;
 
 public class CheckValidity {
     public static boolean isValidEmail(String email) {

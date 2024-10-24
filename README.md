@@ -1,8 +1,8 @@
 # Hospital Management System (HMS)
 
 ## What has been implemented
-* Login System for Doctors and Patients
-* View Patient Medical User for Patients and Doctors:
+* login System for Doctors and Patients
+* View Patient Medical users for Patients and Doctors:
   * Patient can view their own medical record
   * Doctor can ONLY view medical records of patientMenus under their care
   * 
@@ -20,19 +20,19 @@
 * 
 
 ## Packages
-1. Managers
+1. managers
    * Load and store user records to the database. Create instances of user objects and update their attributes.
 
-2. Login
+2. login
    * Contains LoginManager class for login interface, and PatientRepository and StaffRepository class to handle authentication.
 
-3. User
+3. users
    * Contains user record classes that stores attributes of each user class.
 
-4. UserMenus
+4. usermenus
    * Contains the respective user classes that has user records as the attributes, and methods relating to the functionalities of the user. They belong to an interface IHasMenu, as they all have different implementations of the displayMenu() function.
 
-5. Utility
+5. utility
    * Helper methods such as those to check validity of phone numbers and email addresses.
 
 ## Database (to be updated)

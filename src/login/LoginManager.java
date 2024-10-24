@@ -1,6 +1,4 @@
-package Login;
-
-import Managers.PatientRecordManager;
+package login;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package UserMenus;
+package usermenus;
 
 public class PharmacistMenu {
     

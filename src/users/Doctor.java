@@ -1,4 +1,4 @@
-package User;
+package users;
 
 
 import java.util.List;
