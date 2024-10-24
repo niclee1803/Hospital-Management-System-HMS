@@ -1,6 +1,6 @@
 package UserMenus;
 
-import DatabaseManagers.PatientRecordManager;
+import Managers.PatientRecordManager;
 import User.Patient;
 import java.util.Scanner;
 import Utility.CheckValidity;
@@ -69,10 +69,10 @@ public class PatientMenu implements IHasMenu {
         String choice = sc.nextLine();
         switch(choice) {
             case "1":
-                updatePhoneNumber();
+                updatePhoneNumberMenu();
                 break;
             case "2":
-                updateEmail();
+                updateEmailMenu();
                 break;
             case "x":
             case "X":
@@ -84,7 +84,7 @@ public class PatientMenu implements IHasMenu {
         }
     }
 
-    private void updatePhoneNumber() throws Exception {
+    private void updatePhoneNumberMenu() throws Exception {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter new phone number (x to go back): ");
         String input = sc.nextLine();
@@ -95,26 +95,20 @@ public class PatientMenu implements IHasMenu {
         try {
             int newPhone = Integer.parseInt(input); // Try parsing the input
             if (CheckValidity.isValidPhoneNumber(newPhone)) {
-                if (PatientRecordManager.updatePatientPhone(getPatientID(), newPhone)) {
-                    patient.setPhone(newPhone);
-                    System.out.println("Successfully updated phone number\n");
-                    return;
-                }
+                patient = PatientRecordManager.updatePatientPhone(getPatientID(), newPhone);
+                System.out.println("Successfully updated phone number\n");
             } else {
                 System.out.println("Please enter a valid phone number (6/8/9xxxxxxx)\n");
-                updatePhoneNumber();
-                return;
+                updatePhoneNumberMenu();
             }
         } catch (NumberFormatException e) {
             // Catch the case where input is not a valid integer
             System.out.println("Please enter a valid phone number (6/8/9xxxxxxx)\n");
-            updatePhoneNumber();
-            return;
+            updatePhoneNumberMenu();
         }
-        System.out.println("Unknown error! Phone number not updated");
     }
 
-    private void updateEmail() throws Exception {
+    private void updateEmailMenu() throws Exception {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter new email (x to go back): ");
         String newEmail = sc.nextLine();
@@ -124,16 +118,11 @@ public class PatientMenu implements IHasMenu {
         }
         //valid email
         if (CheckValidity.isValidEmail(newEmail)) {
-            if (PatientRecordManager.updatePatientEmail(getPatientID(), newEmail)) {
-                patient.setEmail(newEmail);
-                System.out.println("Successfully updated email address\n");
-                return;
-            }
+            patient = PatientRecordManager.updatePatientEmail(getPatientID(), newEmail);
+            System.out.println("Successfully updated email address\n");
         } else {
             System.out.println("Please enter a valid email\n");
-            updateEmail();
-            return;
+            updateEmailMenu();
         }
-        System.out.println("Unknown error! Email not updated");
     }
 }

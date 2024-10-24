@@ -1,4 +1,4 @@
-package DatabaseManagers;
+package Managers;
 
 import User.Doctor;
 import User.Patient;

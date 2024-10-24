@@ -18,7 +18,7 @@
 * 
 
 ## Packages Used
-1. DatabaseManagers
+1. Managers
    * Contains utility classes to load user records to instantiate user objects
 
 2. Login

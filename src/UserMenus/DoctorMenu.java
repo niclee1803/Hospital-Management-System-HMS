@@ -1,7 +1,7 @@
 package UserMenus;
 
-import DatabaseManagers.DoctorRecordManager;
-import DatabaseManagers.PatientRecordManager;
+import Managers.DoctorRecordManager;
+import Managers.PatientRecordManager;
 import User.Doctor;
 import User.Patient;
 
@@ -63,7 +63,7 @@ public class DoctorMenu implements IHasMenu {
         for (Patient p : doctor.getPatients()) {
             System.out.println(p.getPatientID() + " - " + p.getName());
         }
-        System.out.print("Enter Patient ID to view record: ");
+        System.out.print("\nEnter Patient ID to view record: ");
         String patientID = sc.nextLine().toUpperCase();
         if (patientID.equals("X")) {
             return;
