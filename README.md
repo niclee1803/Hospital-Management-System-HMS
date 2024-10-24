@@ -2,9 +2,9 @@
 
 ## What has been implemented
 * Login System for Doctors and Patients
-* View Patient Medical Records for Patients and Doctors:
+* View Patient Medical User for Patients and Doctors:
   * Patient can view their own medical record
-  * Doctor can ONLY view medical records of patients under their care
+  * Doctor can ONLY view medical records of patientMenus under their care
   * 
 * Patient can update their contact info (Phone number and email)
 * 
@@ -26,10 +26,10 @@
 2. Login
    * Contains a utility login class to handle login functionality.
 
-3. Records
+3. User
    * Contains user record classes that stores attributes of each user class.
 
-4. User
+4. UserMenus
    * Contains the respective user classes that has user records as the attributes, and methods relating to the functionalities of the user. They belong to an interface IHasMenu, as they all have different implementations of the displayMenu() function.
 
 5. Utility

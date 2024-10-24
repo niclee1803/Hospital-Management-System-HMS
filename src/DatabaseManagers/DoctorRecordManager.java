@@ -1,7 +1,8 @@
 package DatabaseManagers;
 
-import Records.DoctorRecord;
+import User.Doctor;
 import User.Patient;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class DoctorRecordManager {
 
-    public static DoctorRecord loadDoctorRecord(String doctorID) throws Exception {
+    public static Doctor loadDoctorRecord(String doctorID) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader("Database/Doctor_Records.csv"));
         String line;
         while ((line = reader.readLine()) != null) {
@@ -19,10 +20,10 @@ public class DoctorRecordManager {
                 List<Patient> patients = new ArrayList<>();
                 String[] patientIDs = nextLine[2].split(";");
                 for (String patientID : patientIDs) {
-                    patients.add(new Patient(patientID));
+                    patients.add(PatientRecordManager.loadRecord(patientID));
                 }
                 reader.close();
-                return new DoctorRecord(doctorID, name, patients);
+                return new Doctor(doctorID, name, patients);
             }
         }
         reader.close();

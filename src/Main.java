@@ -1,11 +1,11 @@
 import Login.LoginManager;
 import Login.UserType;
-import User.Doctor;
-import User.Patient;
+import UserMenus.DoctorMenu;
+import UserMenus.PatientMenu;
+
 import java.util.Scanner;
 
 public class Main {
-    private static final Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
         while (true) {
             System.out.println("\n" +
@@ -19,13 +19,13 @@ public class Main {
             LoginManager loginManager = new LoginManager();
             loginManager.login();
             if (loginManager.getUserType() == UserType.PATIENT && loginManager.isAuthenticated()) {
-                Patient patient = new Patient(loginManager.getId());
-                patient.displayMenu();
+                PatientMenu patientMenu = new PatientMenu(loginManager.getId());
+                patientMenu.displayMenu();
             } else if (loginManager.getUserType() == UserType.STAFF && loginManager.isAuthenticated()) {
                 switch (loginManager.getId().charAt(0)) {
                     case 'D':
-                        Doctor doctor = new Doctor(loginManager.getId());
-                        doctor.displayMenu();
+                        DoctorMenu doctorMenu = new DoctorMenu(loginManager.getId());
+                        doctorMenu.displayMenu();
                         break;
                     default:
                         break;
