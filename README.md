@@ -20,11 +20,11 @@
 * 
 
 ## Packages
-1. DatabaseManagers
-   * Contains utility classes to load user records to instantiate user objects and to store user records to the database.
+1. Managers
+   * Load and store user records to the database. Create instances of user objects and update their attributes.
 
 2. Login
-   * Contains a utility login class to handle login functionality.
+   * Contains LoginManager class for login interface, and PatientRepository and StaffRepository class to handle authentication.
 
 3. User
    * Contains user record classes that stores attributes of each user class.
