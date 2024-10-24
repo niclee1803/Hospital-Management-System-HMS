@@ -1,10 +1,10 @@
-package Login;
+package login;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-public class StaffRepository {
-    private final String filePath = "Database/Staff_List.csv"; // Path to your CSV file
+public class PatientRepository {
+    private final String filePath = "Database/Patient_List.csv"; // Path to your CSV file
 
     // Find user by ID, returns user data as a String[] or null if not found
     public String[] findUserById(String userId) throws Exception {
@@ -30,3 +30,4 @@ public class StaffRepository {
         return false; // Return false if user not found or password doesn't match
     }
 }
+

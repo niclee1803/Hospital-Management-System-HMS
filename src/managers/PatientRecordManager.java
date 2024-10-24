@@ -1,9 +1,9 @@
-package Managers;
+package managers;
 
-import User.Patient;
-import User.BloodType;
-import User.ContactInfo;
-import User.Gender;
+import users.Patient;
+import users.BloodType;
+import users.ContactInfo;
+import users.Gender;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;

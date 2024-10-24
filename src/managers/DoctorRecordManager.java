@@ -1,7 +1,7 @@
-package Managers;
+package managers;
 
-import User.Doctor;
-import User.Patient;
+import users.Doctor;
+import users.Patient;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

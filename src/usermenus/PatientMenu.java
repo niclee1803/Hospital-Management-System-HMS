@@ -1,9 +1,9 @@
-package UserMenus;
+package usermenus;
 
-import Managers.PatientRecordManager;
-import User.Patient;
+import managers.PatientRecordManager;
+import users.Patient;
 import java.util.Scanner;
-import Utility.CheckValidity;
+import utility.CheckValidity;
 
 public class PatientMenu implements IHasMenu {
     private Patient patient;

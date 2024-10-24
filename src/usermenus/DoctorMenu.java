@@ -1,9 +1,9 @@
-package UserMenus;
+package usermenus;
 
-import Managers.DoctorRecordManager;
-import Managers.PatientRecordManager;
-import User.Doctor;
-import User.Patient;
+import managers.DoctorRecordManager;
+import managers.PatientRecordManager;
+import users.Doctor;
+import users.Patient;
 
 import java.util.Scanner;
 

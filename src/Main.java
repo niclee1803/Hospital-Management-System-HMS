@@ -1,10 +1,8 @@
-import Login.LoginManager;
-import Login.UserType;
-import UserMenus.DoctorMenu;
-import UserMenus.IHasMenu;
-import UserMenus.PatientMenu;
-
-import java.util.Scanner;
+import login.LoginManager;
+import login.UserType;
+import usermenus.DoctorMenu;
+import usermenus.IHasMenu;
+import usermenus.PatientMenu;
 
 public class Main {
     public static void main(String[] args) throws Exception {

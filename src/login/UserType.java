@@ -1,4 +1,4 @@
-package Login;
+package login;
 
 public enum UserType {
     PATIENT,
