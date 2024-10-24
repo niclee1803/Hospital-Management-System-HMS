@@ -1,4 +1,4 @@
-package DatabaseManagers;
+package Managers;
 
 import User.Patient;
 import User.BloodType;
@@ -100,21 +100,21 @@ public class PatientRecordManager {
         return true;
     }
 
-    public static boolean updatePatientPhone(String patientID, int newPhone) throws Exception {
+    public static Patient updatePatientPhone(String patientID, int newPhone) throws Exception {
         Patient patient = loadRecord(patientID);
-        if (patient == null) {
-            return false;
+        if (patient != null) {
+            patient.setPhone(newPhone);
+            storeRecord(patient);
         }
-        patient.setPhone(newPhone);
-        return storeRecord(patient);
+        return patient;
     }
 
-    public static boolean updatePatientEmail(String patientID, String newEmail) throws Exception {
+    public static Patient updatePatientEmail(String patientID, String newEmail) throws Exception {
         Patient patient = loadRecord(patientID);
-        if (patient == null) {
-            return false;
+        if (patient != null) {
+            patient.setEmail(newEmail);
+            storeRecord(patient);
         }
-        patient.setEmail(newEmail);
-        return storeRecord(patient);
+        return patient;
     }
 }

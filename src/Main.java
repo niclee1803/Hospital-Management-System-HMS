@@ -1,6 +1,7 @@
 import Login.LoginManager;
 import Login.UserType;
 import UserMenus.DoctorMenu;
+import UserMenus.IHasMenu;
 import UserMenus.PatientMenu;
 
 import java.util.Scanner;
@@ -18,14 +19,15 @@ public class Main {
                     "                                                                                                                         \n");
             LoginManager loginManager = new LoginManager();
             loginManager.login();
+            IHasMenu menu;
             if (loginManager.getUserType() == UserType.PATIENT && loginManager.isAuthenticated()) {
-                PatientMenu patientMenu = new PatientMenu(loginManager.getId());
-                patientMenu.displayMenu();
+                menu = new PatientMenu(loginManager.getId());
+                menu.displayMenu();
             } else if (loginManager.getUserType() == UserType.STAFF && loginManager.isAuthenticated()) {
                 switch (loginManager.getId().charAt(0)) {
                     case 'D':
-                        DoctorMenu doctorMenu = new DoctorMenu(loginManager.getId());
-                        doctorMenu.displayMenu();
+                        menu = new DoctorMenu(loginManager.getId());
+                        menu.displayMenu();
                         break;
                     default:
                         break;

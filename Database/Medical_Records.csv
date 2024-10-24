@@ -1,5 +1,5 @@
 ﻿PatientID,Name,DOB,Gender,Phone,Email,BloodType,Diagnoses,Treatments
-P1001,Alice Brown,14/05/1990,FEMALE,99999998,alice@ntu.edu.sg,A_POSITIVE,nil,nil
+P1001,Alice Brown,14/05/1990,FEMALE,99999997,alice@ntu.edu.sg,A_POSITIVE,nil,nil
 P1002,Bob Stone,22/11/1975,MALE,91234567,bob.stone@example.com,B_POSITIVE,nil,nil
-P1003,Charlie White,08/07/1990,MALE,93333333,charlie.white@example.com,O_NEGATIVE,nil,nil
-P1004,Nic,18/03/2002,MALE,92333171,leenichlos@icloud.com,O_POSITIVE,Stupid,Pills
+P1003,Charlie White,08/07/1990,MALE,92222222,charlie.white@example.com,O_NEGATIVE,nil,nil
+P1004,Nic,18/03/2002,MALE,92333171,niclee1803@outlook.com,O_POSITIVE,Stupid,Pills
