@@ -1,145 +1,83 @@
 package User;
 
-import DatabaseManagers.PatientRecordManager;
-import Records.ContactInfo;
-import Records.PatientRecord;
-import java.util.Scanner;
-import Utility.CheckValidity;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
-public class Patient implements IHasMenu {
-    private PatientRecord patientRecord;
+public class Patient {
+    private String patientID;
+    private String name;
+    private Date dob;
+    private Gender gender;
+    private ContactInfo contactInfo;
+    private BloodType bloodType;
+    private List<String> diagnoses;
+    private List<String> treatments;
 
-    public Patient(String patientID) throws Exception {
-        this.patientRecord = PatientRecordManager.loadPatientRecord(patientID);
+    public Patient(String patientID, String name, Date dob, Gender gender, ContactInfo contactInfo,
+                   BloodType bloodType, List<String> diagnoses, List<String> treatments) {
+        this.patientID = patientID;
+        this.name = name;
+        this.dob = dob;
+        this.gender = gender;
+        this.contactInfo = contactInfo;
+        this.bloodType = bloodType;
+        this.diagnoses = diagnoses;
+        this.treatments = treatments;
     }
 
-    PatientRecord getPatientRecord() {
-        return patientRecord;
+    public String getName() {
+        return name;
     }
 
-    String getPatientID() {
-        return patientRecord.getPatientID();
+    public String getPatientID() {
+        return patientID;
     }
 
-    String getPatientName() {
-        return patientRecord.getName();
+    public Date getDob() {
+        return dob;
     }
 
-    public void displayMenu() throws Exception {
-        while (true) {
-            System.out.println("Welcome " + patientRecord.getName() + ",\n");
-            System.out.println("(1) View Medical Record\n" + "(2) Update Contact Details\n" + "(3) Appointments (Coming Soon)\n" + "(4) Log Out\n");
-            Scanner sc = new Scanner(System.in);
-            int choice;
-            try {
-                choice = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                choice = 0;
-            }
-            System.out.println();
-            switch (choice) {
-                case 1:
-                    System.out.println("<<Patient Record View>>");
-                    System.out.println(patientRecord + "\n");
-                    System.out.println("Press enter to continue...\n");
-                    sc.nextLine();
-                    break;
-                case 2:
-                    updateContact();
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    System.out.println("Logging out...");
-                    System.out.println("Successfully logged out!\n\n");
-                    return;
-                default:
-                    System.out.println("Invalid choice\n");
-                    break;
-            }
-        }
+    public Gender getGender() {
+        return gender;
     }
 
-    private void updateContact() throws Exception {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("<<Update Contact Details>>\n");
-        System.out.println("Your current contact details: ");
-        System.out.println(patientRecord.getContactInfo());
-
-        System.out.println("\n(1) Update Phone Number\n(2) Update Email\n(X) Exit\n");
-        String choice = sc.nextLine();
-        switch(choice) {
-            case "1":
-                updatePhoneNumber();
-                break;
-            case "2":
-                updateEmail();
-                break;
-            case "x":
-            case "X":
-                return;
-            default:
-                System.out.println("Invalid choice");
-                updateContact();
-                break;
-        }
+    public BloodType getBloodType() {
+        return bloodType;
     }
 
-    private void updatePhoneNumber() throws Exception {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter new phone number (x to go back): ");
-        String input = sc.nextLine();
-        if (input.equalsIgnoreCase("x")) {
-            updateContact();
-            return;
-        }
-        try {
-            int newPhone = Integer.parseInt(input); // Try parsing the input
-            if (CheckValidity.isValidPhoneNumber(newPhone)) {
-                if (PatientRecordManager.updatePatientPhone(getPatientID(), newPhone)) {
-                    patientRecord.setPhone(newPhone);
-                    System.out.println("Successfully updated phone number\n");
-                    return;
-                }
-            } else {
-                System.out.println("Please enter a valid phone number (6/8/9xxxxxxx)\n");
-                updatePhoneNumber();
-                return;
-            }
-        } catch (NumberFormatException e) {
-            // Catch the case where input is not a valid integer
-            System.out.println("Please enter a valid phone number (6/8/9xxxxxxx)\n");
-            updatePhoneNumber();
-            return;
-        }
-        System.out.println("Unknown error! Phone number not updated");
+    public List<String> getDiagnoses() {
+        return diagnoses;
     }
 
-    private void updateEmail() throws Exception {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter new email (x to go back): ");
-        String newEmail = sc.nextLine();
-        if (newEmail.equalsIgnoreCase("x")) {
-            updateContact();
-            return;
-        }
-        //valid email
-        if (CheckValidity.isValidEmail(newEmail)) {
-            if (PatientRecordManager.updatePatientEmail(getPatientID(), newEmail)) {
-                patientRecord.setEmail(newEmail);
-                System.out.println("Successfully updated email address\n");
-                return;
-            }
-        } else {
-            System.out.println("Please enter a valid email\n");
-            updateEmail();
-            return;
-        }
-        System.out.println("Unknown error! Email not updated");
+    public List<String> getTreatments() {
+        return treatments;
+    }
+
+    public ContactInfo getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setPhone(int phoneNumber) {
+        contactInfo.setPhoneNumber(phoneNumber);
+    }
+
+    public void setEmail(String email) {
+        contactInfo.setEmail(email);
     }
 
     @Override
     public String toString() {
-        return getPatientID() + " - " + getPatientName();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dobFormatted = formatter.format(dob);
+
+        return "Patient Record: " + patientID + 
+        "\nName: " + name + 
+        "\nDate Of Birth: " + dobFormatted +
+        "\nGender: " + gender + 
+        "\n" + contactInfo + 
+        "\nBlood Type: " + bloodType + 
+        "\nDiagnoses: " + diagnoses + 
+        "\nTreatments: " + treatments;
     }
 }

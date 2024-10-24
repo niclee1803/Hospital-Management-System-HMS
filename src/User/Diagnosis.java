@@ -1,4 +1,4 @@
-package Records;
+package User;
 public class Diagnosis {
     private String diagnosis;
     private String treatment;

@@ -1,9 +1,9 @@
 package DatabaseManagers;
 
-import Records.PatientRecord;
-import Records.BloodType;
-import Records.ContactInfo;
-import Records.Gender;
+import User.Patient;
+import User.BloodType;
+import User.ContactInfo;
+import User.Gender;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class PatientRecordManager {
 
-    public static PatientRecord loadPatientRecord(String patientID) throws Exception {
+    public static Patient loadRecord(String patientID) throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         BufferedReader reader = new BufferedReader(new FileReader("Database/Medical_Records.csv"));
         String line;
@@ -32,34 +32,17 @@ public class PatientRecordManager {
                 List<String> diagnoses = Arrays.asList(nextLine[7].split(";"));
                 List<String> treatments = Arrays.asList(nextLine[8].split(";"));
                 reader.close(); // Close the BufferedReader before returning
-                return new PatientRecord(id, name, dob, gender, contact, bloodType, diagnoses, treatments);
+                return new Patient(id, name, dob, gender, contact, bloodType, diagnoses, treatments);
             }
         }
         reader.close(); // Close the BufferedReader if no record is found
         return null; // Return null if no matching patientID is found
     }
 
-    public static boolean updatePatientPhone(String patientID, int newPhone) throws Exception {
-        PatientRecord patientRecord = loadPatientRecord(patientID);
-        if (patientRecord == null) {
-            return false;
-        }
-        patientRecord.setPhone(newPhone);
-        return storeRecord(patientRecord);
-    }
 
-    public static boolean updatePatientEmail(String patientID, String newEmail) throws Exception {
-        PatientRecord patientRecord = loadPatientRecord(patientID);
-        if (patientRecord == null) {
-            return false;
-        }
-        patientRecord.setEmail(newEmail);
-        return storeRecord(patientRecord);
-    }
-
-    public static boolean storeRecord(PatientRecord patientRecord) throws Exception {
+    public static boolean storeRecord(Patient patient) throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String patientID = patientRecord.getPatientID();
+        String patientID = patient.getPatientID();
         List<String> fileContent = new ArrayList<>();
 
         BufferedReader reader = new BufferedReader(new FileReader("Database/Medical_Records.csv"));
@@ -72,15 +55,15 @@ public class PatientRecordManager {
             if (nextLine[0].equals(patientID)) {
                 // This is the record to update, replace it with the new patientRecord details
                 String updatedRecord = String.join(",", new String[]{
-                        patientRecord.getPatientID(),
-                        patientRecord.getName(),
-                        formatter.format(patientRecord.getDob()),
-                        patientRecord.getGender().toString(),
-                        String.valueOf(patientRecord.getContactInfo().getPhoneNumber()),
-                        patientRecord.getContactInfo().getEmail(),
-                        patientRecord.getBloodType().toString(),
-                        String.join(";", patientRecord.getDiagnoses()),
-                        String.join(";", patientRecord.getTreatments())
+                        patient.getPatientID(),
+                        patient.getName(),
+                        formatter.format(patient.getDob()),
+                        patient.getGender().toString(),
+                        String.valueOf(patient.getContactInfo().getPhoneNumber()),
+                        patient.getContactInfo().getEmail(),
+                        patient.getBloodType().toString(),
+                        String.join(";", patient.getDiagnoses()),
+                        String.join(";", patient.getTreatments())
                 });
                 fileContent.add(updatedRecord);
                 recordFound = true;
@@ -94,15 +77,15 @@ public class PatientRecordManager {
         // If the patient ID was not found, append the new record
         if (!recordFound) {
             String newRecord = String.join(",", new String[]{
-                    patientRecord.getPatientID(),
-                    patientRecord.getName(),
-                    formatter.format(patientRecord.getDob()),
-                    patientRecord.getGender().toString(),
-                    String.valueOf(patientRecord.getContactInfo().getPhoneNumber()),
-                    patientRecord.getContactInfo().getEmail(),
-                    patientRecord.getBloodType().toString(),
-                    String.join(";", patientRecord.getDiagnoses()),
-                    String.join(";", patientRecord.getTreatments())
+                    patient.getPatientID(),
+                    patient.getName(),
+                    formatter.format(patient.getDob()),
+                    patient.getGender().toString(),
+                    String.valueOf(patient.getContactInfo().getPhoneNumber()),
+                    patient.getContactInfo().getEmail(),
+                    patient.getBloodType().toString(),
+                    String.join(";", patient.getDiagnoses()),
+                    String.join(";", patient.getTreatments())
             });
             fileContent.add(newRecord);
         }
@@ -115,5 +98,23 @@ public class PatientRecordManager {
         }
         writer.close();
         return true;
+    }
+
+    public static boolean updatePatientPhone(String patientID, int newPhone) throws Exception {
+        Patient patient = loadRecord(patientID);
+        if (patient == null) {
+            return false;
+        }
+        patient.setPhone(newPhone);
+        return storeRecord(patient);
+    }
+
+    public static boolean updatePatientEmail(String patientID, String newEmail) throws Exception {
+        Patient patient = loadRecord(patientID);
+        if (patient == null) {
+            return false;
+        }
+        patient.setEmail(newEmail);
+        return storeRecord(patient);
     }
 }

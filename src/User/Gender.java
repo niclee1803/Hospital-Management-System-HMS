@@ -1,5 +1,5 @@
-package Records;
+package User;
 public enum Gender {
     MALE,
-    FEMALE;
+    FEMALE
 }
