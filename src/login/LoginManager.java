@@ -50,6 +50,10 @@ public class LoginManager {
         if (patientID.equals("X")) {
             System.out.println();
             return; // Return to the previous menu
+        } else if (patientRepository.findUserById(patientID) == null) {
+            System.out.println("Invalid Patient ID. PLease try again.");
+            patientLogin();
+            return;
         }
 
         String password = promptForPassword(); // Get password input
@@ -60,7 +64,7 @@ public class LoginManager {
             userType = UserType.PATIENT;
             System.out.println("Successfully logged in\n");
         } else {
-            System.out.println("Incorrect credentials. Please try again.");
+            System.out.println("Incorrect password. Please try again.");
             patientLogin(); // Retry login if credentials are incorrect
         }
     }
@@ -76,6 +80,10 @@ public class LoginManager {
         if (staffID.equals("X")) {
             System.out.println();
             return; // Return to the previous menu
+        } else if (staffRepository.findUserById(staffID) == null) {
+            System.out.println("Invalid Staff ID. Please try again.");
+            staffLogin();
+            return;
         }
 
         String password = promptForPassword(); // Get password input
@@ -86,7 +94,7 @@ public class LoginManager {
             userType = UserType.STAFF;
             System.out.println("Successfully logged in\n");
         } else {
-            System.out.println("Incorrect credentials. Please try again.");
+            System.out.println("Incorrect password. Please try again.");
             staffLogin(); // Retry login if credentials are incorrect
         }
     }
