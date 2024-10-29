@@ -4,6 +4,7 @@ import managers.PatientRecordManager;
 import users.Patient;
 import java.util.Scanner;
 import utility.CheckValidity;
+import appts.apptMain;
 
 public class PatientMenu implements IHasMenu {
     private Patient patient;
@@ -27,7 +28,7 @@ public class PatientMenu implements IHasMenu {
     public void displayMenu() throws Exception {
         while (true) {
             System.out.println("Welcome " + patient.getName() + ",\n");
-            System.out.println("(1) View Medical Record\n" + "(2) Update Contact Details\n" + "(3) Appointments (Coming Soon)\n" + "(4) Log Out\n");
+            System.out.println("(1) View Medical Record\n" + "(2) Update Contact Details\n" + "(3) View Available Appointment Slots)\n" + "(4) Schedule an Appointment\n" + "(5) Reschedule an Appointment\n" + "(6) Cancel an Appointment\n" + "(7) View Scheduled Appointments\n" + "(8) View Past Appointment Outcome Records\n" + "(9) Logout\n");
             Scanner sc = new Scanner(System.in);
             int choice;
             try {
@@ -46,9 +47,20 @@ public class PatientMenu implements IHasMenu {
                 case 2:
                     updateContactMenu();
                     break;
-                case 3:
+                case 3: //View appointment slots
+                    apptMain.viewAppointments();
                     break;
-                case 4:
+                case 4: //Schedule appointment
+                    break;
+                case 5: //Reschedule appointment
+                    break;
+                case 6: //Cancel appointment
+                    break;
+                case 7: //View scheduled appointment
+                    break;
+                case 8: //View past appointment records
+                    break;
+                case 9: //Logout
                     System.out.println("Logging out...");
                     System.out.println("Successfully logged out!\n\n");
                     return;

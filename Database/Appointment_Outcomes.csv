@@ -1,1 +1,1 @@
-﻿AppointmentID,Date,Service,MedicationName,Status,Notes
+﻿AppointmentID,PatientID,DoctorID,DateTime,Service,MedicationName,MedStatus,Notes

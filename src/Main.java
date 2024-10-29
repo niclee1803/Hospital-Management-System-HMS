@@ -3,6 +3,7 @@ import login.UserType;
 import usermenus.DoctorMenu;
 import usermenus.IHasMenu;
 import usermenus.PatientMenu;
+import appts.apptMain;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -31,6 +32,8 @@ public class Main {
                         break;
                 }
             }
-        }
+        } 
+
+
     }
 }
