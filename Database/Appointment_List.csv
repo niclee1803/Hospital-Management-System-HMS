@@ -1,1 +1,3 @@
 ﻿AppointmentID,PatientID,DoctorID,Status,DateTime
+Z001,P1001,D001,Scheduled,10/10/2024
+Z002,P1002,D002,SCheduled,11/10/2024

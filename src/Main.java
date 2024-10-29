@@ -27,9 +27,9 @@ public class Main {
                 menu.displayMenu();
             } else if (loginManager.getUserType() == UserType.STAFF && loginManager.isAuthenticated()) {
                 switch (loginManager.getId().charAt(0)) {
-                    // case 'A':
-                    //     menu = new AdministratorMenu(loginManager.getId());
-                    //     menu.displayMenu(); 
+                    case 'A':
+                        menu = new AdministratorMenu(loginManager.getId());
+                        menu.displayMenu(); 
                     case 'D':
                         menu = new DoctorMenu(loginManager.getId());
                         menu.displayMenu();
