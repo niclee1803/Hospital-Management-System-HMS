@@ -1,5 +1,6 @@
 import login.LoginManager;
 import login.UserType;
+import usermenus.AdministratorMenu;
 import usermenus.DoctorMenu;
 import usermenus.IHasMenu;
 import usermenus.PatientMenu;
@@ -8,6 +9,9 @@ import appts.apptMain;
 public class Main {
     public static void main(String[] args) throws Exception {
         while (true) {
+
+            System.out.println("Current working directory: " + System.getProperty("user.dir"));
+
             System.out.println("\n" +
                     "██     ██ ███████ ██       ██████  ██████  ███    ███ ███████        ████████  ██████         ██   ██ ███    ███ ███████ \n" +
                     "██     ██ ██      ██      ██      ██    ██ ████  ████ ██                ██    ██    ██        ██   ██ ████  ████ ██      \n" +
@@ -24,9 +28,15 @@ public class Main {
                 menu.displayMenu();
             } else if (loginManager.getUserType() == UserType.STAFF && loginManager.isAuthenticated()) {
                 switch (loginManager.getId().charAt(0)) {
+                    case 'A':
+                        menu = new AdministratorMenu(loginManager.getId());
+                        menu.displayMenu(); 
                     case 'D':
                         menu = new DoctorMenu(loginManager.getId());
                         menu.displayMenu();
+                    // case 'P':
+                    //     menu = new PharmacistMenu(loginManager.getId());
+                    //     menu.displayMenu(); 
                         break;
                     default:
                         break;

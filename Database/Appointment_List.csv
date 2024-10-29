@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿AppointmentID,PatientID,DoctorID,Status,Date,Time
 A001,P001,D001,Confirmed,2024-11-01,09:00
 A002,P002,D002,pending confirmation,2024-11-01,10:00
@@ -9,3 +10,8 @@ A007,P007,D002,pending confirmation,2024-11-04,15:00
 A008,P008,D003,Completed,2024-11-05,10:45
 A009,P009,D001,Pending,2024-11-05,13:30
 A010,P010,D004,Confirmed,2024-11-06,16:00
+=======
+﻿AppointmentID,PatientID,DoctorID,Status,DateTime
+Z001,P1001,D001,Scheduled,10/10/2024
+Z002,P1002,D002,SCheduled,11/10/2024
+>>>>>>> 5754e6027fe718f833c3e3bd8115c5ef40e004e5

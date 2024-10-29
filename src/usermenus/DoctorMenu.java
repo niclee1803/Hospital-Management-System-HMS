@@ -26,7 +26,12 @@ public class DoctorMenu implements IHasMenu {
     public void displayMenu() throws Exception {
         while (true) {
             System.out.println("Welcome Doctor " + doctor.getName() + ",\n");
-            System.out.println("(1) View Patient Medical Records\n" + "(2) Update Patient Medical Records (Coming Soon)\n" + "(3) Appointments (Coming Soon)\n" + "(4) Log Out\n");
+            
+            System.out.println("(1) View Patient Medical Records\n" + 
+                               "(2) Update Patient Medical Records (Coming Soon)\n" + 
+                               "(3) Appointments (Coming Soon)\n" + 
+                               "(4) Log Out\n");
+
             Scanner sc = new Scanner(System.in);
             int choice;
             try {
