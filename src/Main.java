@@ -11,8 +11,7 @@ public class Main {
         while (true) {
 
             System.out.println("Current working directory: " + System.getProperty("user.dir"));
-            System.out.println("KARINA");
-            
+         
 
             System.out.println("\n" +
                     "██     ██ ███████ ██       ██████  ██████  ███    ███ ███████        ████████  ██████         ██   ██ ███    ███ ███████ \n" +
