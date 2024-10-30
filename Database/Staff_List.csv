@@ -1,0 +1,5 @@
+﻿Staff ID,Password,Role
+D001,alpha1234,Doctor
+D002,beta1234,Doctor
+P001,alpha1234,Pharmacist
+A001,beta1234,Administrator
