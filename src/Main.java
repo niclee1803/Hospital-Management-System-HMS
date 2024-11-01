@@ -1,8 +1,8 @@
-import login.LoginManager;
+import login.LoginMenu;
 import login.UserType;
 import usermenus.AdministratorMenu;
 import usermenus.DoctorMenu;
-import usermenus.IHasMenu;
+import usermenus.IMenu;
 import usermenus.PatientMenu;
 import appts.apptMain;
 
@@ -21,20 +21,22 @@ public class Main {
                     " ███ ███  ███████ ███████  ██████  ██████  ██      ██ ███████           ██     ██████         ██   ██ ██      ██ ███████ \n" +
                     "                                                                                                                         \n" +
                     "                                                                                                                         \n");
-            LoginManager loginManager = new LoginManager();
-            loginManager.login();
-            IHasMenu menu;
-            if (loginManager.getUserType() == UserType.PATIENT && loginManager.isAuthenticated()) {
-                menu = new PatientMenu(loginManager.getId());
+            LoginMenu loginMenu = new LoginMenu();
+            loginMenu.displayMenu();
+            IMenu menu;
+            if (loginMenu.getUserType() == UserType.PATIENT && loginMenu.isAuthenticated()) {
+                menu = new PatientMenu(loginMenu.getId());
                 menu.displayMenu();
-            } else if (loginManager.getUserType() == UserType.STAFF && loginManager.isAuthenticated()) {
-                switch (loginManager.getId().charAt(0)) {
+            } else if (loginMenu.getUserType() == UserType.STAFF && loginMenu.isAuthenticated()) {
+                switch (loginMenu.getId().charAt(0)) {
                     case 'A':
                         menu = new AdministratorMenu(loginManager.getId());
-                        menu.displayMenu(); 
-                    case 'D':
-                        menu = new DoctorMenu(loginManager.getId());
                         menu.displayMenu();
+                        break;
+                    case 'D':
+                        menu = new DoctorMenu(loginMenu.getId());
+                        menu.displayMenu();
+                        break;
                     // case 'P':
                     //     menu = new PharmacistMenu(loginManager.getId());
                     //     menu.displayMenu(); 

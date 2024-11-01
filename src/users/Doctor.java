@@ -3,24 +3,21 @@ package users;
 
 import java.util.List;
 
-public class Doctor {
-    private String doctorID;
-    private String name;
+public class Doctor extends User {
     private List<Patient> patients;
     //private List<Appointment> appointments;
 
     public Doctor(String doctorID, String name, List<Patient> patients) {
-        this.doctorID = doctorID;
-        this.name = name;
+        super(doctorID, name);
         this.patients = patients;
     }
 
-    public String getDoctorID() {
-        return doctorID;
+    public String getID() {
+        return super.getId();
     }
 
     public String getName() {
-        return name;
+        return super.getName();
     }
 
     public List<Patient> getPatients() {

@@ -42,7 +42,7 @@ public class PatientRecordManager {
 
     public static boolean storeRecord(Patient patient) throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String patientID = patient.getPatientID();
+        String patientID = patient.getId();
         List<String> fileContent = new ArrayList<>();
 
         BufferedReader reader = new BufferedReader(new FileReader("Database/Medical_Records.csv"));
@@ -55,7 +55,7 @@ public class PatientRecordManager {
             if (nextLine[0].equals(patientID)) {
                 // This is the record to update, replace it with the new patientRecord details
                 String updatedRecord = String.join(",", new String[]{
-                        patient.getPatientID(),
+                        patient.getId(),
                         patient.getName(),
                         formatter.format(patient.getDob()),
                         patient.getGender().toString(),
@@ -77,7 +77,7 @@ public class PatientRecordManager {
         // If the patient ID was not found, append the new record
         if (!recordFound) {
             String newRecord = String.join(",", new String[]{
-                    patient.getPatientID(),
+                    patient.getId(),
                     patient.getName(),
                     formatter.format(patient.getDob()),
                     patient.getGender().toString(),

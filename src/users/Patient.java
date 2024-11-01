@@ -4,9 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Patient {
-    private String patientID;
-    private String name;
+public class Patient extends User {
     private Date dob;
     private Gender gender;
     private ContactInfo contactInfo;
@@ -16,8 +14,7 @@ public class Patient {
 
     public Patient(String patientID, String name, Date dob, Gender gender, ContactInfo contactInfo,
                    BloodType bloodType, List<String> diagnoses, List<String> treatments) {
-        this.patientID = patientID;
-        this.name = name;
+        super(patientID, name);
         this.dob = dob;
         this.gender = gender;
         this.contactInfo = contactInfo;
@@ -27,11 +24,11 @@ public class Patient {
     }
 
     public String getName() {
-        return name;
+        return super.getName();
     }
 
-    public String getPatientID() {
-        return patientID;
+    public String getId() {
+        return super.getId();
     }
 
     public Date getDob() {
@@ -71,8 +68,8 @@ public class Patient {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String dobFormatted = formatter.format(dob);
 
-        return "Patient Record: " + patientID + 
-        "\nName: " + name + 
+        return "Patient Record: " + super.getId() +
+        "\nName: " + super.getName() +
         "\nDate Of Birth: " + dobFormatted +
         "\nGender: " + gender + 
         "\n" + contactInfo + 
