@@ -5,19 +5,15 @@ import users.Patient;
 import java.util.Scanner;
 import utility.CheckValidity;
 
-public class PatientMenu implements IHasMenu {
+public class PatientMenu implements IMenu {
     private Patient patient;
 
     public PatientMenu(String patientID) throws Exception {
         this.patient = PatientRecordManager.loadRecord(patientID);
     }
 
-    Patient getPatient() {
-        return patient;
-    }
-
     String getPatientID() {
-        return patient.getPatientID();
+        return patient.getId();
     }
 
     String getPatientName() {

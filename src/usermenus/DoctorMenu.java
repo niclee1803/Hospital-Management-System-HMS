@@ -7,7 +7,7 @@ import users.Patient;
 
 import java.util.Scanner;
 
-public class DoctorMenu implements IHasMenu {
+public class DoctorMenu implements IMenu {
     private Doctor doctor;
 
     public DoctorMenu(String doctorID) throws Exception {
@@ -15,7 +15,7 @@ public class DoctorMenu implements IHasMenu {
     }
 
     String getDoctorID() {
-        return doctor.getDoctorID();
+        return doctor.getID();
     }
 
     String getDoctorName() {
@@ -61,7 +61,7 @@ public class DoctorMenu implements IHasMenu {
         System.out.println("Enter (X) to return\n");
         System.out.println("Patient List:");
         for (Patient p : doctor.getPatients()) {
-            System.out.println(p.getPatientID() + " - " + p.getName());
+            System.out.println(p.getId() + " - " + p.getName());
         }
         System.out.print("\nEnter Patient ID to view record: ");
         String patientID = sc.nextLine().toUpperCase();
@@ -77,7 +77,7 @@ public class DoctorMenu implements IHasMenu {
         }
         boolean authorized = false;
         for (Patient p : doctor.getPatients()) {
-            if (p.getPatientID().equals(patient.getPatientID())) {
+            if (p.getId().equals(patient.getId())) {
                 authorized = true;
                 break;
             }
