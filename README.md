@@ -21,18 +21,21 @@
 
 ## Packages
 1. managers
-   * Load and store user records to the database. Create instances of user objects and update their attributes.
+   * manager/controller classes
 
 2. login
-   * Contains LoginManager class for login interface, and PatientRepository and StaffRepository class to handle authentication.
+   * Contains LoginManager, LoginFileHandler, and LoginMenu classes that handle login
 
-3. users
-   * Contains user record classes that stores attributes of each user class.
+3. entities
+   * Contains entity classes such as users.
 
 4. usermenus
-   * Contains the respective user classes that has user records as the attributes, and methods relating to the functionalities of the user. They belong to an interface IHasMenu, as they all have different implementations of the displayMenu() function.
+   * boundary classes for menus
+     
+5. filehandlers
+   * filehandler classes that handle writing/reading to/from respective database csv files
 
-5. utility
+7. utility
    * Helper methods such as those to check validity of phone numbers and email addresses, and if password is long enough.
 
 ## Database (to be updated)
