@@ -1,4 +1,4 @@
-package users;
+package entities;
 public class ContactInfo {
     private int phoneNumber;
     private String email;

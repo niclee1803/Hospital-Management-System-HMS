@@ -1,30 +1,33 @@
 package usermenus;
 
-import managers.PatientRecordManager;
-import users.Patient;
-import java.util.Scanner;
+import entities.Patient;
+import managers.PatientManager;
 import utility.CheckValidity;
-import appts.apptMain;
 
-public class PatientMenu implements IMenu {
+import java.util.Scanner;
+
+public class PatientMenu implements IUserMenu {
     private Patient patient;
+    private final PatientManager patientManager;
 
     public PatientMenu(String patientID) throws Exception {
-        this.patient = PatientRecordManager.loadRecord(patientID);
+        patientManager = new PatientManager();
+        this.patient = (Patient) patientManager.createUser(patientID);
     }
 
-    String getPatientID() {
-        return patient.getId();
-    }
-
-    String getPatientName() {
-        return patient.getName();
-    }
-
-    public void displayMenu() throws Exception {
+    @Override
+    public void displayMenu() {
         while (true) {
             System.out.println("Welcome " + patient.getName() + ",\n");
-            System.out.println("(1) View Medical Record\n" + "(2) Update Contact Details\n" + "(3) View Available Appointment Slots)\n" + "(4) Schedule an Appointment\n" + "(5) Reschedule an Appointment\n" + "(6) Cancel an Appointment\n" + "(7) View Scheduled Appointments\n" + "(8) View Past Appointment Outcome Records\n" + "(9) Logout\n");
+            System.out.println("(1) View Medical Record\n"
+                    + "(2) Update Contact Details\n"
+                    + "(3) View Available Appointment Slots)\n"
+                    + "(4) Schedule an Appointment\n"
+                    + "(5) Reschedule an Appointment\n"
+                    + "(6) Cancel an Appointment\n"
+                    + "(7) View Scheduled Appointments\n"
+                    + "(8) View Past Appointment Outcome Records\n"
+                    + "(9) Logout\n");
             Scanner sc = new Scanner(System.in);
             int choice;
             try {
@@ -44,6 +47,7 @@ public class PatientMenu implements IMenu {
                     updateContactMenu();
                     break;
                 case 3: //View appointment slots
+                    //apptMain.viewAppointments();
                     break;
                 case 4: //Schedule appointment
                     break;
@@ -66,7 +70,7 @@ public class PatientMenu implements IMenu {
         }
     }
 
-    private void updateContactMenu() throws Exception {
+    private void updateContactMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("<<Update Contact Details>>\n");
         System.out.println("Your current contact details: ");
@@ -91,7 +95,7 @@ public class PatientMenu implements IMenu {
         }
     }
 
-    private void updatePhoneNumberMenu() throws Exception {
+    private void updatePhoneNumberMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter new phone number (x to go back): ");
         String input = sc.nextLine();
@@ -102,7 +106,7 @@ public class PatientMenu implements IMenu {
         try {
             int newPhone = Integer.parseInt(input); // Try parsing the input
             if (CheckValidity.isValidPhoneNumber(newPhone)) {
-                patient = PatientRecordManager.updatePatientPhone(getPatientID(), newPhone);
+                patient = patientManager.updatePatientPhone(patient.getId(), newPhone);
                 System.out.println("Successfully updated phone number\n");
             } else {
                 System.out.println("Please enter a valid phone number (6/8/9xxxxxxx)\n");
@@ -115,7 +119,7 @@ public class PatientMenu implements IMenu {
         }
     }
 
-    private void updateEmailMenu() throws Exception {
+    private void updateEmailMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter new email (x to go back): ");
         String newEmail = sc.nextLine();
@@ -125,7 +129,7 @@ public class PatientMenu implements IMenu {
         }
         //valid email
         if (CheckValidity.isValidEmail(newEmail)) {
-            patient = PatientRecordManager.updatePatientEmail(getPatientID(), newEmail);
+            patient = patientManager.updatePatientEmail(patient.getId(), newEmail);
             System.out.println("Successfully updated email address\n");
         } else {
             System.out.println("Please enter a valid email\n");

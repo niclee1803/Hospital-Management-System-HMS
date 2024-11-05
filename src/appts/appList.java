@@ -6,10 +6,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import managers.DoctorRecordManager;
-import managers.PatientRecordManager;
-import users.Doctor;
-import users.Patient;
+import entities.Doctor;
+import entities.Patient;
+import managers.DoctorManager;
+import managers.PatientManager;
 
 public class appList extends appSlots {
 
@@ -56,9 +56,10 @@ public class appList extends appSlots {
     }
 
     public void viewApptList() throws Exception {
-
-        Doctor doctor = DoctorRecordManager.loadDoctorRecord(doctorId); 
-        Patient patient = PatientRecordManager.loadRecord(patientId);     
+        DoctorManager doctorManager = new DoctorManager();
+        PatientManager patientManager = new PatientManager();
+        Doctor doctor = (Doctor) doctorManager.createUser(doctorId);
+        Patient patient = (Patient) patientManager.createUser(patientId);
 
         System.out.println("AppointmentID: " + appointmentId+" Doctor: "+doctor.getName()+" Patient: "+ patientId+" Status: "+ status +" Date: "+date+" Time: "+time);
 

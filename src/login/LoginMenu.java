@@ -1,14 +1,18 @@
 package login;
 
+import utility.CheckValidity;
+
 import java.util.Scanner;
 
 public class LoginMenu {
     private UserType userType;
     private String id;
     private boolean authenticated;
+    private final LoginManager loginManager;
 
     public LoginMenu() {
         authenticated = false;
+        loginManager = new LoginManager();
     }
 
     public UserType getUserType() {
@@ -50,17 +54,20 @@ public class LoginMenu {
         if (patientID.equals("X")) {
             System.out.println();
             return; // Return to the previous menu
-        } else if (!LoginManager.checkPatientExists(patientID)) {
+        } else if (!loginManager.checkPatientExists(patientID)) {
             System.out.println("Invalid Patient ID. PLease try again.");
             patientLoginMenu();
             return;
         }
         System.out.print("Enter password: ");
         String password = sc.nextLine();
-        if (LoginManager.authenticatePatient(patientID, password)) {
+        if (loginManager.authenticatePatient(patientID, password)) {
             id = patientID;
             authenticated = true;
-            System.out.println("Successfully logged in!\n\n");
+            System.out.println("Successfully logged in!\n");
+            if (password.equals("default1234")) {
+                changePasswordMenu();
+            }
         } else {
             System.out.println("Incorrect password. Please try again.");
             patientLoginMenu();
@@ -77,20 +84,44 @@ public class LoginMenu {
         if (staffID.equals("X")) {
             System.out.println();
             return; // Return to the previous menu
-        } else if (!LoginManager.checkStaffExists(staffID)) {
+        } else if (!loginManager.checkStaffExists(staffID)) {
             System.out.println("Invalid Staff ID. PLease try again.");
             staffLoginMenu();
             return;
         }
         System.out.print("Enter password: ");
         String password = sc.nextLine();
-        if (LoginManager.authenticateStaff(staffID, password)) {
+        if (loginManager.authenticateStaff(staffID, password)) {
             id = staffID;
             authenticated = true;
-            System.out.println("Successfully logged in!\n\n");
+            System.out.println("Successfully logged in!\n");
+            if (password.equals("default1234")) {
+                changePasswordMenu();
+            }
         } else {
             System.out.println("Incorrect password. Please try again.");
             staffLoginMenu();
         }
+    }
+
+    private void changePasswordMenu() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Initial Login - Please change password\n");
+        System.out.print("Enter new password: ");
+        String newPassword = sc.nextLine();
+        if (!CheckValidity.isValidPassword(newPassword)) {
+            System.out.println("Password too weak! (At least 8 characters, 1 letter, 1 number) Please try again.");
+            changePasswordMenu();
+            return;
+        }
+        System.out.print("Confirm new password: ");
+        String confirmPassword = sc.nextLine();
+        if (!newPassword.equals(confirmPassword)) {
+            System.out.println("The 2 passwords you entered do not match. Please try again.");
+            changePasswordMenu();
+            return;
+        }
+        loginManager.changePassword(id, newPassword);
+        System.out.println("Password successfully changed!\n");
     }
 }

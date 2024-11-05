@@ -1,27 +1,37 @@
 package login;
 
 public class LoginManager {
-    public static boolean checkPatientExists(String patientID) throws Exception {
-        return (LoginFileHandler.findPatientById(patientID) != null);
+    private final LoginFileHandler loginFileHandler;
+
+    LoginManager() {
+        loginFileHandler = new LoginFileHandler();
     }
 
-    public static boolean checkStaffExists(String staffID) throws Exception {
-        return (LoginFileHandler.findStaffById(staffID) != null);
+    boolean checkPatientExists(String patientID) throws Exception {
+        return (loginFileHandler.findPatientById(patientID) != null);
     }
 
-    public static boolean authenticatePatient(String patientID, String password) throws Exception {
-        String[] patient = LoginFileHandler.findPatientById(patientID);
+    boolean checkStaffExists(String staffID) throws Exception {
+        return (loginFileHandler.findStaffById(staffID) != null);
+    }
+
+    boolean authenticatePatient(String patientID, String password) throws Exception {
+        String[] patient = loginFileHandler.findPatientById(patientID);
         if (patient != null) {
             return patient[2].equals(password);
         }
         return false;
     }
 
-    public static boolean authenticateStaff(String staffID, String password) throws Exception {
-        String[] staff = LoginFileHandler.findStaffById(staffID);
+    boolean authenticateStaff(String staffID, String password) throws Exception {
+        String[] staff = loginFileHandler.findStaffById(staffID);
         if (staff != null) {
             return staff[2].equals(password);
         }
         return false;
+    }
+
+    void changePassword(String id, String password) {
+        loginFileHandler.updatePassword(id, password);
     }
 }

@@ -1,4 +1,4 @@
-package users;
+package entities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,9 +11,10 @@ public class Patient extends User {
     private BloodType bloodType;
     private List<String> diagnoses;
     private List<String> treatments;
+    private List<String> prescriptions;
 
     public Patient(String patientID, String name, Date dob, Gender gender, ContactInfo contactInfo,
-                   BloodType bloodType, List<String> diagnoses, List<String> treatments) {
+                   BloodType bloodType, List<String> diagnoses, List<String> treatments, List<String> prescriptions) {
         super(patientID, name);
         this.dob = dob;
         this.gender = gender;
@@ -21,14 +22,7 @@ public class Patient extends User {
         this.bloodType = bloodType;
         this.diagnoses = diagnoses;
         this.treatments = treatments;
-    }
-
-    public String getName() {
-        return super.getName();
-    }
-
-    public String getId() {
-        return super.getId();
+        this.prescriptions = prescriptions;
     }
 
     public Date getDob() {
@@ -51,6 +45,8 @@ public class Patient extends User {
         return treatments;
     }
 
+    public List<String> getPrescriptions() { return prescriptions; }
+
     public ContactInfo getContactInfo() {
         return contactInfo;
     }
@@ -61,6 +57,18 @@ public class Patient extends User {
 
     public void setEmail(String email) {
         contactInfo.setEmail(email);
+    }
+
+    public void setDiagnoses(List<String> diagnoses) {
+        this.diagnoses = diagnoses;
+    }
+
+    public void setTreatments(List<String> treatments) {
+        this.treatments = treatments;
+    }
+
+    public void setPrescriptions(List<String> prescriptions) {
+        this.prescriptions = prescriptions;
     }
 
     @Override
@@ -75,6 +83,7 @@ public class Patient extends User {
         "\n" + contactInfo + 
         "\nBlood Type: " + bloodType + 
         "\nDiagnoses: " + diagnoses + 
-        "\nTreatments: " + treatments;
+        "\nTreatments: " + treatments +
+        "\nPrescriptions: " + prescriptions;
     }
 }

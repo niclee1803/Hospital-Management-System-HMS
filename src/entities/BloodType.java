@@ -1,4 +1,4 @@
-package users;
+package entities;
 public enum BloodType {
     A_NEGATIVE,
     A_POSITIVE,

@@ -1,15 +1,13 @@
 package appts;
 
 import java.io.*;
-import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import users.Doctor;
-import managers.DoctorRecordManager;
+import entities.Doctor;
+import managers.DoctorManager;
 
 public class appSlots {
 
@@ -51,8 +49,8 @@ public class appSlots {
     }
 
     public void viewSlot() throws Exception {
-
-        Doctor doctor = DoctorRecordManager.loadDoctorRecord(doctorId);     
+        DoctorManager doctorManager = new DoctorManager();
+        Doctor doctor = (Doctor) doctorManager.createUser(doctorId);
 
         System.out.println("Doctor: "+doctor.getName()+" Date: "+date+" Time: "+time);
     }
