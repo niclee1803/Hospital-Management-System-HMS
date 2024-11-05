@@ -1,22 +1,22 @@
 # Hospital Management System (HMS)
 
 ## What has been implemented
-* login System for Doctors and Patients
+* login System for Doctors and Patients, plus change their password on their first login
 * View Patient Medical users for Patients and Doctors:
   * Patient can view their own medical record
-  * Doctor can ONLY view medical records of patientMenus under their care
+  * Doctor can view medical records of patients under their care
+  * Doctor can update medical records (diagnoses, treatments, and prescriptions) of patients under their care
   * 
+* Patient can view their medical record
 * Patient can update their contact info (Phone number and email)
 * 
 
 ## To be implemented
 * Pharmacist and Administrator Roles
-* Doctor can update patient diagnoses and treatments
 * Appointments
-* Medications
+* Medications and Inventory
 * Error Handling for inputs
 * Password Hashing
-* Make password invisible when entering
 * 
 
 ## Packages
@@ -33,14 +33,13 @@
    * Contains the respective user classes that has user records as the attributes, and methods relating to the functionalities of the user. They belong to an interface IHasMenu, as they all have different implementations of the displayMenu() function.
 
 5. utility
-   * Helper methods such as those to check validity of phone numbers and email addresses.
+   * Helper methods such as those to check validity of phone numbers and email addresses, and if password is long enough.
 
 ## Database (to be updated)
-* Patient_List.csv - list of patientIDs and their corresponding passwords
-* Staff_List.csv - list of staffIDs and their corresponding passwords
-* Medical_Records.csv - list of patient medical record information
+* Patient_Records.csv - list of patient medical record information
 * Doctor_Records.csv - list of doctorIDs, their names, and their patients
+* User_List.csv - list of userIDs and their corresponding passwords
 * 
 
 ## Bugs to fix
-* Entering empty input leads to crashing
+* 
