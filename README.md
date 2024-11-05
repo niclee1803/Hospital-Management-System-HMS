@@ -5,9 +5,8 @@
 * View Patient Medical users for Patients and Doctors:
   * Patient can view their own medical record
   * Doctor can view medical records of patients under their care
-  * Doctor can update medical records (diagnoses, treatments, and prescriptions) of patients under their care
   * 
-* Patient can view their medical record
+* Doctor can update medical records (diagnoses, treatments, and prescriptions) of patients under their care
 * Patient can update their contact info (Phone number and email)
 * 
 
