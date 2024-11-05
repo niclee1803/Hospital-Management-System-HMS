@@ -1,9 +1,5 @@
 package appts;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDate;
@@ -21,6 +17,7 @@ public class appSlots {
     protected LocalDate date;
     protected LocalTime time;
     private Boolean isAvailable;
+    private static String fileName = "Database/Appointment_Slots.csv";
 
     public appSlots(String dId, LocalDate date, LocalTime time, Boolean isAval) {
         doctorId = dId;
@@ -34,6 +31,8 @@ public class appSlots {
         this.date = date;
         this.time = time;
     }
+
+    //Getters
 
     public String getDoctorId() {
         return doctorId;
@@ -60,8 +59,6 @@ public class appSlots {
 
     public static void printAppSlots() throws Exception {
         List<appSlots> slots = new ArrayList<>();    
-        
-        String fileName = "Database/Appointment_Slots.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -100,8 +97,6 @@ public class appSlots {
     }
 
     public static int findSlot(appSlots a) {
-
-        String fileName = "Database/Appointment_Slots.csv";
         
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -130,6 +125,45 @@ public class appSlots {
         }
         
         return -1;
+    }
+
+    public static void changeAval(appSlots a, Boolean aval) {
+        List<String> lines = new ArrayList<>();
+
+        String dId = a.getDoctorId();
+        LocalDate tempDate = a.getDate();
+        LocalTime tempTime = a.getTime();
+
+        // Read the file and update the relevant line
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                
+                if (values[0].equals(dId) && 
+                    LocalDate.parse(values[1]).equals(tempDate) &&
+                    LocalTime.parse(values[2]).equals(tempTime)) {
+                    
+                    // Replace 'True' with 'False' in Availability
+                    values[3] = String.valueOf(aval);
+                    line = String.join(",", values);
+                }
+                
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        // Write the updated lines back to the file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
     }
 
     // public static void deleteSlot(appSlots s) {

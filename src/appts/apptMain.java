@@ -38,18 +38,19 @@ public class apptMain {
 
     }
 
-    public static void scheduleAppointment() throws Exception{
+    public static void scheduleAppointment(String patientId) throws Exception{
 
         Scanner sc = new Scanner(System.in);
+        appSlots slot;
         while(true) {
             System.out.println("Enter the Doctor ID: ");
             String doctorId = sc.nextLine();
-            System.out.println("Enter the date: ");
+            System.out.println("Enter the date (yyyy-MM-dd): ");
             String date = sc.nextLine();
-            System.out.println("Enter the time: ");
+            System.out.println("Enter the time (hh:mm): ");
             String time = sc.nextLine();
 
-            appSlots slot = new appSlots(doctorId, LocalDate.parse(date), LocalTime.parse(time));
+            slot = new appSlots(doctorId, LocalDate.parse(date), LocalTime.parse(time));
 
             if (appSlots.findSlot(slot) == 1) {
                 break;
@@ -58,13 +59,45 @@ public class apptMain {
             } else {
                 System.out.println("No such slot exists! Please choose a valid slot");
             }
+
         }
 
-        
+        appSlots.changeAval(slot, false);
+        appList newAppt = new appList(appList.generateAppointmentId(), slot.getDoctorId(), patientId, "Pending Confirmation", slot.getDate(), slot.getTime());
+        appList.writeApptList(newAppt);
+        System.out.println("Successfully created appointment request!");
 
     }
 
-    public static void rescheduleAppointment() throws Exception{
+    public static void rescheduleAppointment(String patientId) throws Exception{
+
+        Scanner sc = new Scanner(System.in);
+        appSlots slot;
+        while(true) {
+            System.out.println("Enter the Doctor ID: ");
+            String doctorId = sc.nextLine();
+            System.out.println("Enter the date (yyyy-MM-dd): ");
+            String date = sc.nextLine();
+            System.out.println("Enter the time (hh:mm): ");
+            String time = sc.nextLine();
+
+            slot = new appSlots(doctorId, LocalDate.parse(date), LocalTime.parse(time));
+            int val = appList.findAppointment(slot, patientId);
+
+            if (val == 1) {
+                break;
+            } else if(val == 0) {
+                System.out.println("Appointment has already been cancelled or completed! Please choose a valid appointment");
+            } else {
+                System.out.println("No such appointment exists under your name! Please choose a valid appointment");
+            }
+
+        }
+
+        appList.changeStatus(slot, patientId, "Cancelled");
+        appSlots.changeAval(slot, true);
+        System.out.println("Previous appointment cancelled!\nSchedule new appointment:");
+        scheduleAppointment(patientId);
 
     }
 

@@ -1,0 +1,21 @@
+appointmentID,doctorID,patientID,date,time,status,service,medName,medStatus,notes
+A001,D001,P001,2024-11-10,09:00,Cancelled,,,,
+A002,D001,,2024-11-11,10:30,Unbooked,,,,
+A003,D002,P002,2024-11-12,11:15,Pending Confirmation,,,,
+A004,D002,P001,2024-11-13,12:00,Confirmed,,,,
+A005,D003,,2024-11-14,08:45,Unbooked,,,,
+A006,D003,P003,2024-11-15,09:30,Confirmed,,,,
+A007,D001,P001,2024-11-16,13:00,Pending Confirmation,,,,
+A008,D001,P003,2024-11-17,14:30,Cancelled,,,,
+A009,D002,P002,2024-11-18,10:00,Confirmed,,,,
+A010,D002,,2024-11-19,09:00,Unbooked,,,,
+A011,D003,P003,2024-11-20,15:45,Pending Confirmation,,,,
+A012,D003,P001,2024-11-21,11:30,Cancelled,,,,
+A013,D001,P003,2024-11-22,12:15,Completed,Consultation,Amoxicillin,Prescribed,Follow-up in one week
+A014,D002,P002,2024-11-23,13:00,Completed,Checkup,Ibuprofen,Not Needed,No side effects noted
+A015,D003,P001,2024-11-24,14:15,Completed,Consultation,Paracetamol,Prescribed,Patient feeling better
+A016,D001,P003,2024-11-25,09:45,Confirmed,,,,
+A017,D002,P002,2024-11-26,10:30,Pending Confirmation,,,,
+A018,D003,P001,2024-11-27,08:00,Completed,Checkup,Aspirin,Not Needed,None
+A019,D001,,2024-11-28,13:45,Unbooked,,,,
+A020,D002,P003,2024-11-29,14:00,Completed,Consultation,Metformin,Completed,Patient stable

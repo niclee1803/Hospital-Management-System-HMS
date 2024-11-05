@@ -1,13 +1,6 @@
 package appts;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,6 +16,7 @@ public class appList extends appSlots {
     protected String appointmentId;
     protected String patientId;
     protected String status;
+    private static String fileName = "Database/Appointment_List.csv";
 
     public appList(String aptId, String dId, String pId, String status, LocalDate date, LocalTime time) {
         
@@ -173,8 +167,6 @@ public class appList extends appSlots {
 
     public static void printApptList(String pId) throws Exception {
         List<appList> lists = new ArrayList<>();    
-        
-        String fileName = "Database/Appointment_List.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -210,6 +202,78 @@ public class appList extends appSlots {
                 list.viewApptList();
             }
         }
+    }
+
+    public static void changeStatus(appSlots a, String patientId, String status){ 
+        List<String> lines = new ArrayList<>();
+
+        String dId = a.getDoctorId();
+        LocalDate tempDate = a.getDate();
+        LocalTime tempTime = a.getTime();
+
+        // Read the file and update the relevant line
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                
+                if (values[1].equals(patientId) &&
+                    values[2].equals(dId) &&
+                    LocalDate.parse(values[4]).equals(tempDate) &&
+                    LocalTime.parse(values[5]).equals(tempTime)) {
+                    
+                    // Replace 'True' with 'False' in Availability
+                    values[3] = status;
+                    line = String.join(",", values);
+                }
+                
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        // Write the updated lines back to the file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    public static int findAppointment(appSlots a, String patientId) {
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            br.readLine();  // Skip header row if present
+            
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String pId = values[1];
+                String doctorId = values[2];
+                String status = values[3];
+                LocalDate date = LocalDate.parse(values[4]);
+                LocalTime time = LocalTime.parse(values[5]);
+
+                if (patientId.equals(pId) && a.getDoctorId().equals(doctorId) && date.equals(a.getDate()) && time.equals(a.getTime())) {
+                    if (!status.equals("Cancelled") || !status.equals("Completed")) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }            
+
+                
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+        
+        return -1;
     }
 
 }

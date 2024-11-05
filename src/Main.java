@@ -4,6 +4,8 @@ import usermenus.AdministratorMenu;
 import usermenus.DoctorMenu;
 import usermenus.IHasMenu;
 import usermenus.PatientMenu;
+import appointments.appointment;
+import appointments.appointmentController;
 import appts.apptMain;
 
 public class Main {
@@ -42,8 +44,8 @@ public class Main {
                         break;
                 }
             }
-        } 
-
+        }
+        
 
     }
 }

@@ -48,7 +48,6 @@ public class PatientMenu implements IHasMenu {
                     updateContactMenu();
                     break;
                 case 3: //View appointment slots
-                    apptMain.viewAppointments();
                     break;
                 case 4: //Schedule appointment
                     break;
