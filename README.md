@@ -8,14 +8,15 @@
   * 
 * Doctor can update medical records (diagnoses, treatments, and prescriptions) of patients under their care
 * Patient can update their contact info (Phone number and email)
-* 
+
+## Extra features
+* Password hashing (SHA256) - default pw is password
 
 ## To be implemented
 * Pharmacist and Administrator Roles
 * Appointments
 * Medications and Inventory
 * Error Handling for inputs
-* Password Hashing
 * 
 
 ## Packages
