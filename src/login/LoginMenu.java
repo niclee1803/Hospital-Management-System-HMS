@@ -95,7 +95,7 @@ public class LoginMenu {
             id = staffID;
             authenticated = true;
             System.out.println("Successfully logged in!\n");
-            if (password.equals("default1234")) {
+            if (password.equals("password")) {
                 changePasswordMenu();
             }
         } else {

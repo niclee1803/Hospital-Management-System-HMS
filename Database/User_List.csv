@@ -1,9 +1,9 @@
 ﻿User ID,Role,Password
-D001,Doctor,alpha1234
+D001,Doctor,password
 D002,Doctor,beta1234
-P001,Pharmacist,alpha1234
-A001,Administrator,beta1234
-P1001,Patient,alpha1234
-P1002,Patient,beta1234
-P1003,Patient,charlie1234
-P1004,Patient,delta1234
+P001,Pharmacist,password
+A001,Administrator,password
+P1001,Patient,password
+P1002,Patient,password
+P1003,Patient,password
+P1004,Patient,password

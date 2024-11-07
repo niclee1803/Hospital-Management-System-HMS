@@ -1,5 +1,7 @@
 package login;
 
+import java.security.MessageDigest;
+
 public class LoginManager {
     private final LoginFileHandler loginFileHandler;
 
@@ -35,3 +37,4 @@ public class LoginManager {
         loginFileHandler.updatePassword(id, password);
     }
 }
+
