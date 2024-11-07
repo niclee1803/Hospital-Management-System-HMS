@@ -20,7 +20,7 @@ public class Main {
             IUserMenu menu;
             if (loginMenu.getUserType() == UserType.PATIENT && loginMenu.isAuthenticated()) {
                 menu = new PatientMenu(loginMenu.getId());
-                menu.displayMenu();
+                menu.mainMenu();
             } else if (loginMenu.getUserType() == UserType.STAFF && loginMenu.isAuthenticated()) {
                 switch (loginMenu.getId().charAt(0)) {
                     case 'A':
@@ -29,7 +29,7 @@ public class Main {
                         break;
                     case 'D':
                         menu = new DoctorMenu(loginMenu.getId());
-                        menu.displayMenu();
+                        menu.mainMenu();
                         break;
                         //case 'P':
                     //     menu = new PharmacistMenu(loginManager.getId());
