@@ -16,18 +16,10 @@ public class PatientMenu implements IUserMenu {
     }
 
     @Override
-    public void displayMenu() {
+    public void mainMenu() {
         while (true) {
-            System.out.println("Welcome " + patient.getName() + ",\n");
-            System.out.println("(1) View Medical Record\n"
-                    + "(2) Update Contact Details\n"
-                    + "(3) View Available Appointment Slots)\n"
-                    + "(4) Schedule an Appointment\n"
-                    + "(5) Reschedule an Appointment\n"
-                    + "(6) Cancel an Appointment\n"
-                    + "(7) View Scheduled Appointments\n"
-                    + "(8) View Past Appointment Outcome Records\n"
-                    + "(9) Logout\n");
+            printChoices();
+            System.out.print("Enter your selection: ");
             Scanner sc = new Scanner(System.in);
             int choice;
             try {
@@ -68,6 +60,23 @@ public class PatientMenu implements IUserMenu {
                     break;
             }
         }
+    }
+
+    private void printChoices() {
+        System.out.println("╔═══════════════════════════════════════════════════════════╗");
+        System.out.printf("║ %28s %-28s ║%n", "Welcome,", patient.getName() + "!");
+        System.out.println("╠═══════════════════════════════════════════════════════════╣");
+        System.out.println("║ (1) View Medical Record                                   ║");
+        System.out.println("║ (2) Update Contact Details                                ║");
+        System.out.println("║ (3) View Available Appointment Slots                      ║");
+        System.out.println("║ (4) Schedule an Appointment                               ║");
+        System.out.println("║ (5) Reschedule an Appointment                             ║");
+        System.out.println("║ (6) Cancel an Appointment                                 ║");
+        System.out.println("║ (7) View Scheduled Appointments                           ║");
+        System.out.println("║ (8) View Past Appointment Outcome Records                 ║");
+        System.out.println("║ (9) Logout                                                ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        System.out.println();
     }
 
     private void updateContactMenu() {

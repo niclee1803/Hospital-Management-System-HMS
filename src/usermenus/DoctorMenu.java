@@ -18,19 +18,10 @@ public class DoctorMenu implements IUserMenu {
     }
 
     @Override
-    public void displayMenu() {
+    public void mainMenu() {
         while (true) {
-            System.out.println("Welcome Doctor " + doctor.getName() + ",\n");
-            
-            System.out.println("(1) View Patient Medical Records\n" + 
-                               "(2) Update Patient Medical Records\n" +
-                               "(3) View Personal Schedule\n" +
-                               "(4) Set Availability for Appointments\n" +
-                               "(5) Accept or Decline Appointment Requests\n" +
-                               "(6) View Upcoming Appointments\n" +
-                               "(7) Record Appointment Outcome\n" +
-                               "(8) Log Out\n");
-
+            printChoices();
+            System.out.print("Enter your selection: ");
             Scanner sc = new Scanner(System.in);
             int choice;
             try {
@@ -65,6 +56,22 @@ public class DoctorMenu implements IUserMenu {
                     break;
             }
         }
+    }
+
+    private void printChoices() {
+        System.out.println("╔═══════════════════════════════════════════════════════════╗");
+        System.out.printf("║ %28s %-28s ║%n", "Welcome, Doctor", doctor.getName() + "!");
+        System.out.println("╠═══════════════════════════════════════════════════════════╣");
+        System.out.println("║ (1) View Patient Medical Records                          ║");
+        System.out.println("║ (2) Update Patient Medical Records                        ║");
+        System.out.println("║ (3) View Personal Schedule                                ║");
+        System.out.println("║ (4) Set Availability for Appointments                     ║");
+        System.out.println("║ (5) Accept or Decline Appointment Requests                ║");
+        System.out.println("║ (6) View Upcoming Appointments                            ║");
+        System.out.println("║ (7) Record Appointment Outcome                            ║");
+        System.out.println("║ (8) Log Out                                               ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        System.out.println();
     }
 
     private void viewPatientRecordsMenu() {

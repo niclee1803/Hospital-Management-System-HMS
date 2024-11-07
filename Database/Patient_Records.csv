@@ -1,5 +1,5 @@
 ﻿PatientID,Name,DOB,Gender,Phone,Email,BloodType,Diagnoses,Treatments,Prescriptions
-P1001,Alice Brown,14/05/1990,FEMALE,88888888,alice@yahoo.com,A_POSITIVE,stupid;lololol,brainrotjuice;chemo,cancermeds
+P1001,Alice Brown,14/05/1990,FEMALE,91111111,alice@gmail.com,A_POSITIVE,foobar;hello,brainrotjuice;chemo,cancermeds
 P1002,Bob Stone,22/11/1975,MALE,91234567,bob.stone@example.com,B_POSITIVE,dumbass,,
 P1003,Charlie White,08/07/1990,MALE,92222222,charlie.white@example.com,O_NEGATIVE,,,
 P1004,Nic,18/03/2002,MALE,92333171,nic@gmail.com,O_POSITIVE,Stupid,Pills,Antibiotics;pills
