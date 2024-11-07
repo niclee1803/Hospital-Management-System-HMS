@@ -11,6 +11,11 @@
 
 ## Extra features
 * Password hashing (SHA256) - default pw is password
+* Validity checks (using regex)
+  * password strength check when resetting password
+  * valid SG phone number check
+  * valid email check
+  * 
 
 ## To be implemented
 * Pharmacist and Administrator Roles
