@@ -65,14 +65,14 @@
    cd Hospital-Management-System-HMS
    ```
    
-4. Compile the project. If using the command line, navigate to the src/ directory and compile the Java files
+4. Compile the project: If using the command line, navigate to the src/ directory and compile the Java files
    
    ```
    javac -d ../out/production/HMS *.java
    ```
    
-5. Run the project Make sure you’re in the project root directory, then execute the main class:
+5. Run the project: Make sure you’re in the project root directory, then execute the main class:
    
    ```
-   java -cp out/production/HMS main
+   java -cp out/production/HMS Main
    ```
