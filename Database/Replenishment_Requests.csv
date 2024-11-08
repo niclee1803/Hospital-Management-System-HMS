@@ -1,1 +1,4 @@
-﻿Medicine,Amount
+﻿Medicine,Amount, Unit , Status
+Panadol, 100, packs, Accepted
+Asprin, 3000, packs, Delivered
+Loratadine, 3000, packs, Requesting

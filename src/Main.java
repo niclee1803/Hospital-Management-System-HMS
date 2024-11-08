@@ -31,10 +31,10 @@ public class Main {
                         menu = new DoctorMenu(loginMenu.getId());
                         menu.mainMenu();
                         break;
-                        //case 'P':
-                    //     menu = new PharmacistMenu(loginManager.getId());
-                    //     menu.displayMenu(); 
-                        //break;
+                        case 'P':
+                        menu = new PharmacistMenu(loginManager.getId());
+                        menu.mainMenu(); 
+                        break;
                     default:
                         break;
                 }
