@@ -5,6 +5,7 @@ import managers.MedInventoryManager;
 import managers.MedRequestManager;
 import managers.PatientManager;
 import entities.*;
+import appointments.appointmentController;
 
 import java.io.IOException;
 import managers.PharmacistManager;
@@ -29,27 +30,37 @@ public class PharmacistMenu implements IUserMenu {
     @Override
     public void mainMenu() {
         while (true) {
-            // Displaying the pharmacist menu
+            // Displaying the pharmacist menu in the specified format
             System.out.println("Pharmacist Menu:");
-            System.out.println("1. View Medication Inventory");
-            System.out.println("2. Submit Replenishment Request");
-            System.out.println("3. Logout");
-            System.out.print("Choose an option (1-3): ");
+            System.out.println("● View Appointment Outcome Record");
+            System.out.println("● Update Prescription Status");
+            System.out.println("● View Medication Inventory");
+            System.out.println("● Submit Replenishment Request");
+            System.out.println("● Logout");
+            System.out.print("Choose an option (1-5): ");
             
             // Read user choice
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character
-
+    
             switch (choice) {
                 case 1:
+                    // Placeholder for View Appointment Outcome Record
+                    viewAppointmentOutcomeRecord();
+                    break;
+                case 2:
+                    // Placeholder for Update Prescription Status
+                    // updatePrescriptionStatus();
+                    break;
+                case 3:
                     // View medication inventory
                     viewMedicationInventory();
                     break;
-                case 2:
+                case 4:
                     // Submit a replenishment request
                     submitReplenishmentRequest();
                     break;
-                case 3:
+                case 5:
                     // Logout (exit the loop)
                     System.out.println("Logging out...");
                     return;
@@ -86,4 +97,17 @@ public class PharmacistMenu implements IUserMenu {
             System.err.println("Error submitting replenishment request: " + e.getMessage());
         }
     }
+
+    private void viewAppointmentOutcomeRecord() {
+        try {
+            System.out.print("Enter Patient ID to view completed appointments: ");
+            String patientID = scanner.nextLine();
+            
+            // Calling the static method from appointmentController
+            appointmentController.patientPrintAppointmentRecords(patientID);
+        } catch (Exception e) {
+            System.err.println("An error occurred while retrieving appointment records: " + e.getMessage());
+        }
+    }
+    
 }

@@ -3,6 +3,7 @@ import login.UserType;
 import usermenus.DoctorMenu;
 import usermenus.IUserMenu;
 import usermenus.PatientMenu;
+import usermenus.PharmacistMenu;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -32,7 +33,7 @@ public class Main {
                         menu.mainMenu();
                         break;
                         case 'P':
-                        menu = new PharmacistMenu(loginManager.getId());
+                        menu = new PharmacistMenu(loginMenu.getId());
                         menu.mainMenu(); 
                         break;
                     default:
