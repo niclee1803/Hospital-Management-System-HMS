@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.List;
 import filehandlers.MedicationFileHandler;
 
+/**
+ * The {@code MedInventoryManager} class is responsible for managing the medical inventory, specifically the medications
+ * in stock. It handles loading and displaying rhe current inventory of medications and can be extended to include functionality
+ * for updatingthe medication stock.
+ */
 public class MedInventoryManager {
 
     private MedicationFileHandler fileHandler;

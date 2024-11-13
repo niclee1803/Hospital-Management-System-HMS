@@ -9,11 +9,28 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The {@code PatientManager} class manages the creation, updating and handling of patient records. It uses the
+ * {@code PatientFileHandler} to read, update and store patient data in a CSV file. The class handles the conversion
+ * between raw data (from CSV) and {@code Patient} objects as well as updating various patient details such as contact
+ * information, diagnoses, treatments and prescriptions.
+ */
 public class PatientManager extends UserManager {
+    /**
+     * Constructs a new {@code PatientManager} and initializes thw {@code PatientFileHandler} to handle storing patient
+     * records in a CSV file.
+     */
     public PatientManager() {
         super(new PatientFileHandler());
     }
 
+    /**
+     * Creates a {code Patient} object from the provided pateint ID by reading the associated record from the CSV file.
+     * The method parses the relevant details such as name, date of birth, gender, contact information, blood type,
+     * diagnoses, treatments and prescriptions
+     * @param id The ID of the patient
+     * @return A {@code Patient} object with the corresponding data, or {@code null} if any error occurs
+     */
     public User createUser(String id) {
         String[] record = fileHandler.readLine(id);
         try {
@@ -38,6 +55,14 @@ public class PatientManager extends UserManager {
         return null;
     }
 
+    /**
+     * Converts a {@code Patient} object into a record array format suitable for storage in the CSV file.
+     * The method converts all attributes to their corresponding string formats, inclduing formatting the date of birth
+     * and converting enum values into strings
+     * @param user the {@code User} object (must be an instance of {@code Patient}).
+     * @return An array of strings representing the patient's record.
+     * @throws IllegalArgumentException If the provided user is npt a {@code Patient}.
+     */
     public String[] createRecordFromUser(User user) {
         if (!(user instanceof Patient patient)) {
             throw new IllegalArgumentException("Provided user is not a Patient.");
@@ -60,6 +85,13 @@ public class PatientManager extends UserManager {
         return record;
     }
 
+    /**
+     * Updates the phone number for a petient with the specified ID. The patient's record is updated with the new phone
+     * number in the CSV file.
+     * @param patientID The ID of the patient
+     * @param newPhone The new phone number to update
+     * @return The updated {@code Patient} object, or {@code null} if the patient cannot be found.
+     */
     public Patient updatePatientPhone(String patientID, int newPhone) {
         Patient patient = (Patient) createUser(patientID);
         if (patient != null) {
@@ -70,6 +102,13 @@ public class PatientManager extends UserManager {
         return patient;
     }
 
+    /**
+     * Updates the email address for a patient with the specified ID. The patient's record is updated with the new email
+     * in the CSV file.
+     * @param patientID The ID of the patient.
+     * @param newEmail The new email address to update.
+     * @return The updaated {@code Patient} object, or {@code null} if the patient is not found.
+     */
     public Patient updatePatientEmail(String patientID, String newEmail) {
         Patient patient = (Patient) createUser(patientID);
         if (patient != null) {
@@ -80,6 +119,13 @@ public class PatientManager extends UserManager {
         return patient;
     }
 
+    /**
+     * Updates the diagnoses for a patient with the specified ID. The patient's record is updated with the new diagnoses
+     * list in the CSV file
+     * @param patientID The ID of the patient
+     * @param newDiagnoses The list of new diagnoses to update
+     * @return The updated {@code Patient} object, or {@code null} if the patient cannot be found
+     */
     public Patient updateDiagnoses(String patientID, List<String> newDiagnoses) {
         Patient patient = (Patient) createUser(patientID);
         if (patient != null) {
@@ -90,6 +136,13 @@ public class PatientManager extends UserManager {
         return patient;
     }
 
+    /**
+     * Updates the treatments for a patient with the specified ID. The patient's record is updated with the new treatments list
+     * in the CSV file.
+     * @param patientID The ID of the patient.
+     * @param newTreatments The list of new treatments to update.
+     * @return The updated {@code Patient} object, or {@code null} if the patient cannot be found.
+     */
     public Patient updateTreatments(String patientID, List<String> newTreatments) {
         Patient patient = (Patient) createUser(patientID);
         if (patient != null) {
@@ -100,6 +153,13 @@ public class PatientManager extends UserManager {
         return patient;
     }
 
+    /**
+     * Updates the prescriptions for a patient with the specified ID.
+     * The patient's record is updated with the new prescriptions list in the CSV file.
+     * @param patientID The ID of the patient.
+     * @param newPrescriptions The list of new prescriptions to update.
+     * @return The updated {@code Patient} object, or {@code null} if the patient cannot be found.
+     */
     public Patient updatePrescriptions(String patientID, List<String> newPrescriptions) {
         Patient patient = (Patient) createUser(patientID);
         if (patient != null) {

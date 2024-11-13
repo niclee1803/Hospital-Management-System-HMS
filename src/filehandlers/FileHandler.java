@@ -2,14 +2,26 @@ package filehandlers;
 
 import java.io.*;
 
+/**
+ * Handles basic file operations (reading, writing, updating and deleting) for a CSV file.
+ * This class provides general methods that can be extended for more specific use cases.
+ */
 public class FileHandler {
     private String filePath;
 
+    /**
+     * Constructs a FileHandler object with the specified file path
+     * @param filePath The path to the CSV file to be managed by this handler
+     */
     public FileHandler(String filePath) {
         this.filePath = filePath;
     }
 
-    // Read a specific user line from the CSV by ID
+    /**
+     * Reads a specific line from the CSV file by matching the given ID
+     * @param id The ID to search for in the first column of the CSV file.
+     * @return The matching record as an array of Strings, or null if no matching record is found.
+     */
     public String[] readLine(String id) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -25,7 +37,10 @@ public class FileHandler {
         return null;  // Return null if no matching record is found
     }
 
-    // Write a new record to the CSV file
+    /**
+     * Writes a new record to the CSV file
+     * @param record The record to be added, represented as an array of Strings.
+     */
     public void writeLine(String[] record) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
             bw.write(String.join(",", record));  // Join array elements with commas
@@ -35,7 +50,10 @@ public class FileHandler {
         }
     }
 
-    // Delete a line in csv by id
+    /**
+     * Delets a line in the CSV file by the given ID.
+     * @param id The ID of the record to delete
+     */
     public void deleteLine(String id) {
         File inputFile = new File(filePath);
         File tempFile = new File("temp.csv");
@@ -75,7 +93,11 @@ public class FileHandler {
         }
     }
 
-    // update a line in csv by id
+    /**
+     * Updates an existing record in the CSV file by matching the ID in the first column of the CSV fie.
+     * If no matching ID is found, the record will be appended to the file.
+     * @param record The updated record as an array of Strings. The first element is the ID.
+     */
     public void updateLine(String[] record) {
         File inputFile = new File(filePath);
         File tempFile = new File("temp.csv");

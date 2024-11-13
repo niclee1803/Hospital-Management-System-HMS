@@ -5,11 +5,18 @@ import java.io.IOException;
 import entities.MedRequests;
 import filehandlers.MedRequestFileHandler;
 
+/**
+ * The {@code MedRequestManager} class is responsible for managing medication requests. It handles the creation and storage
+ * of new medication requests into a CSV file using the {@code MedRequestFileHandler}.
+ */
 public class MedRequestManager {
 
     private MedRequestFileHandler fileHandler;
 
-    // Constructor to initialize MedRequestFileHandler
+    /**
+     * Constructs a new {@code MedRequestManager} and initializes the {@code MedReuqestFileHandler} to handle storing
+     * medication requests in a CSV file.
+     */
     public MedRequestManager() {
         this.fileHandler = new MedRequestFileHandler();
     }

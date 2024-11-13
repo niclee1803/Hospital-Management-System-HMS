@@ -8,15 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The {@code DoctorMenu} class represents the menu interface for a doctor user.
+ * It allow doctors to interact with the system and manage patient records, appointments and personal schedules.
+ * <p>This class provides various options for doctors, including viewing and updating patient records, managing appointments,
+ * and looging out of the system. It implements the {@code IUserMenu} interface and provides the actual menu logic for doctors
+ * to interact with their data and the system.</p>
+ */
 public class DoctorMenu implements IUserMenu {
     private Doctor doctor;
     private final DoctorManager doctorManager;
 
+    /**
+     * Constructs a new {@code DoctorMenu} for a specific doctor by their ID.
+     * This constructor initializes the {@code DoctorMenu} and loads the doctor data from the system
+     * @param doctorID The ID of the doctor for whom the menu is created.
+     * @throws Exception If the doctor cannot be found of there is an error loading the doctor data.
+     */
     public DoctorMenu(String doctorID) throws Exception {
         doctorManager = new DoctorManager();
         doctor = (Doctor) doctorManager.createUser(doctorID);
     }
 
+    /**
+     * Displays the main menu for the doctor, allowing them to select various actions.
+     * The menu includes options like viewing and updating patient records, managing appointments and logging out.
+     */
     @Override
     public void mainMenu() {
         while (true) {
@@ -58,6 +75,9 @@ public class DoctorMenu implements IUserMenu {
         }
     }
 
+    /**
+     * Prints the available choices in the main menu.
+     */
     private void printChoices() {
         System.out.println("╔═══════════════════════════════════════════════════════════╗");
         System.out.printf("║ %28s %-28s ║%n", "Welcome, Doctor", doctor.getName() + "!");
@@ -74,6 +94,10 @@ public class DoctorMenu implements IUserMenu {
         System.out.println();
     }
 
+    /**
+     * Displays the menu for viewing patient medical records.
+     * The doctor can select a patient to view their record.
+     */
     private void viewPatientRecordsMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("<<Patient Records View>>");
@@ -106,6 +130,10 @@ public class DoctorMenu implements IUserMenu {
     }
 
 
+    /**
+     * Displays the menu for updating patient medical records.
+     * The doctor can update various aspects of a patient's records, such as diagnoses, treatments or prescriptions
+     */
     private void updatePatientRecordsMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("<<Update Patient Records>>");
@@ -164,6 +192,14 @@ public class DoctorMenu implements IUserMenu {
         }
     }
 
+    /**
+     * Manages the list of attributes such as diagnoses, treatments or prescrptions.
+     * Allows the doctor to add, edit, or remove items from the list.
+     * @param sc the {@code Scanner} object used for input
+     * @param list The list to be modified (eg diagnoses, treatments or prescriptions)
+     * @param listName The name of the list (eg "Diagnoses")
+     * @return The updated list
+     */
     private List<String> manageList(Scanner sc, List<String> list, String listName) {
         List<String> modifiedList = new ArrayList<>(list);
         while (true) {

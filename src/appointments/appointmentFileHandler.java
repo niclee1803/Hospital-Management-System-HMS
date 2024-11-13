@@ -6,11 +6,22 @@ import java.util.*;
 import java.io.*;
 import java.nio.file.*;
 
-
+/**
+ * The {@code appointmentFileHandler} class handles the reading and writing of appointment data to and from
+ * a CSV file. It provides utility methods to read from the file and return a list of appointments, and to
+ * write a list of appointments back to the file
+ */
 public class appointmentFileHandler {
 
     private static String fileName = "src/appointments/Appointments.csv";
 
+    /**
+     * Reads the appointment data from the CSV file and returns a list of {@code appointment} objects.
+     * This method parses the CSV file line by line, converting each record into an {@code appointment} object.
+     *
+     * @return Returns a list of {@code appointment} objects read from the CSV file
+     * @throws Exception if an error occurs while reading the file
+     */
     public static List<appointment> readFile() throws Exception {
 
         List<appointment> appointments = new ArrayList<>();
@@ -40,10 +51,21 @@ public class appointmentFileHandler {
         return appointments;
     }
 
+    /**
+     * Writes the list of {@code appointment} objects to the CSV file
+     * The existing file content will be overwritten and the method writes a header followed by each appointment
+     * as a new line in the CSV format
+     *
+     * @param appointments The list of {@code appointment} objects to be written to the file
+     */
     public static void writeFile(List<appointment> appointments) {
 
         try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileName))) {
+            //Write the header
+
             bw.write("appointmentID,doctorID,patientID,date,time,status,service,medName,medStatus,notes\n");
+
+            //Write each appointment in CSV format
             for (appointment appointment : appointments) {
                     bw.write(String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
                     appointment.getAppointmentID(),

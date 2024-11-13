@@ -6,15 +6,31 @@ import utility.CheckValidity;
 
 import java.util.Scanner;
 
+/**
+ * {@code PatientMenu} class handles the user interface for a patient.
+ * It allows the patient to view their medical records, update contact details, and manage appointments.
+ * This class implements the {@link IUserMenu} interface, providing the main menu and various functionalities
+ * specific to a patient.
+ */
 public class PatientMenu implements IUserMenu {
     private Patient patient;
     private final PatientManager patientManager;
 
+    /**
+     * Constructs a {@code PatientMenu} object for the specified patient.
+     * @param patientID The ID of the patient to load and manage.
+     * @throws Exception If the patient cannot be found or loaded
+     */
     public PatientMenu(String patientID) throws Exception {
         patientManager = new PatientManager();
         this.patient = (Patient) patientManager.createUser(patientID);
     }
 
+    /**
+     * Displays the main menu for the patient and handles user input for navigating through the options.
+     * Depending on the user's selection, it invokes methods for viewing records, updating contact details, or managing
+     * appointments.
+     */
     @Override
     public void mainMenu() {
         while (true) {
@@ -62,6 +78,9 @@ public class PatientMenu implements IUserMenu {
         }
     }
 
+    /**
+     * Prints the choices for the main menu, showing options available to the patient.
+     */
     private void printChoices() {
         System.out.println("╔═══════════════════════════════════════════════════════════╗");
         System.out.printf("║ %28s %-28s ║%n", "Welcome,", patient.getName() + "!");
@@ -79,6 +98,9 @@ public class PatientMenu implements IUserMenu {
         System.out.println();
     }
 
+    /**
+     * Provides the menu for updating contact details and prompts the patient to choose between updating their phone number or email.
+     */
     private void updateContactMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("<<Update Contact Details>>\n");
@@ -104,6 +126,10 @@ public class PatientMenu implements IUserMenu {
         }
     }
 
+    /**
+     * Handles the process of updating the patient's phone number.
+     * Validates the new phone number and updates it in the system.
+     */
     private void updatePhoneNumberMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter new phone number (x to go back): ");
@@ -128,6 +154,10 @@ public class PatientMenu implements IUserMenu {
         }
     }
 
+    /**
+     * Handles the process of updating the patient's email address.
+     * Validates the new email and updates it in the system.
+     */
     private void updateEmailMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter new email (x to go back): ");

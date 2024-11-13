@@ -4,6 +4,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * The {@code MedRequestFileHandler} class is responsible for handling the writing of replenishment requests to CSV file.
+ * The CSV file contains the following columns: Medicine, Amount, Unit, and Status. Each request is appended as a new row
+ * in the file.
+ */
 public class MedRequestFileHandler {
 
       private static final String FILE_PATH = "Replenishment_Requests.csv";
