@@ -1,6 +1,7 @@
 package usermenus;
 import java.util.Scanner;
 
+import managers.AppointmentManager;
 import managers.MedInventoryManager;
 import managers.MedRequestManager;
 import entities.*;
@@ -42,7 +43,7 @@ public class PharmacistMenu implements IUserMenu {
      * status, managing the inventory, and submitting replenishment requests.
      */
     @Override
-    public void mainMenu() {
+    public void mainMenu() throws Exception{
         while (true) {
             // Displaying the pharmacist menu in the specified format
             printChoices();
@@ -62,7 +63,7 @@ public class PharmacistMenu implements IUserMenu {
                     break;
                 case 2:
                     // Placeholder for Update Prescription Status
-                    // updatePrescriptionStatus();
+                    AppointmentManager.pharmacistUpdatePrescriptionStatus();
                     break;
                 case 3:
                     // View medication inventory

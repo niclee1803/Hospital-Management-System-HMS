@@ -6,5 +6,5 @@ package usermenus;
  * and handle user interactions for that menu.
  */
 public interface IUserMenu {
-    void mainMenu();
+    void mainMenu() throws Exception;
 }

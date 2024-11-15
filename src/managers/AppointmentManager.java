@@ -5,17 +5,17 @@ import java.time.LocalTime;
 import java.util.*;
 import java.io.IOException;
 
-import entities.appointment;
+import entities.Appointment;
 import filehandlers.AppointmentFileHandler;
 
 public class AppointmentManager {
 
-    //Helper methods
+    //File methods
     
-    public static List<appointment> readAppointments() throws IOException {
+    public static List<Appointment> readAppointments() throws IOException {
 
         AppointmentFileHandler file = new AppointmentFileHandler();
-        List<appointment> appointments = new ArrayList<>();
+        List<Appointment> appointments = new ArrayList<>();
 
         try {
             List<String[]> rows = file.readFile();
@@ -36,7 +36,7 @@ public class AppointmentManager {
                     String notes = row[9].isEmpty() ? null : row[9];
                     
                     // Create an Appointment object and add it to the list
-                    appointments.add(new appointment(appointmentID, doctorID, patientID, date, time, status, service, medName, medStatus, notes));
+                    appointments.add(new Appointment(appointmentID, doctorID, patientID, date, time, status, service, medName, medStatus, notes));
                 }
             }
 
@@ -48,14 +48,14 @@ public class AppointmentManager {
  
     }
 
-    public static void writeAppointments(List<appointment> appointments) throws IOException {
+    public static void writeAppointments(List<Appointment> appointments) throws IOException {
         AppointmentFileHandler file = new AppointmentFileHandler();
         List<String[]> rows = new ArrayList<>();
 
         String[] header = {"appointmentID","doctorID","patientID","date","time","status","service","medName","medStatus","notes"};
         rows.add(header);
 
-        for (appointment item : appointments) {
+        for (Appointment item : appointments) {
             String[] temp = {
                 item.getAppointmentID(),
                 item.getDoctorID(),
@@ -74,6 +74,8 @@ public class AppointmentManager {
         file.writeFile(rows);
 
     }
+
+    //Helper methods
 
     public static String[] getSlotInput() {
 
@@ -94,9 +96,9 @@ public class AppointmentManager {
         return appt;
     }
     
-    public static int findAppointment(List<appointment> appt, String dId, LocalDate date, LocalTime time) {
+    public static int findAppointment(List<Appointment> appt, String dId, LocalDate date, LocalTime time) {
 
-        for (appointment appointment : appt) {
+        for (Appointment appointment : appt) {
             if (dId.equals(appointment.getDoctorID()) && date.equals(appointment.getDate()) && time.equals(appointment.getTime())) {
                 if (appointment.getStatus().equals("Unbooked")) {
                     return 0;
@@ -110,9 +112,9 @@ public class AppointmentManager {
 
     }
 
-    public static int findAppointmentByPatient(List<appointment> appt, String patientID, String dId, LocalDate date, LocalTime time) {
+    public static int findAppointmentByPatient(List<Appointment> appt, String patientID, String dId, LocalDate date, LocalTime time) {
 
-        for (appointment appointment : appt) {
+        for (Appointment appointment : appt) {
             if (patientID.equals(appointment.getPatientID()) && dId.equals(appointment.getDoctorID()) && date.equals(appointment.getDate()) && time.equals(appointment.getTime())) {
                 if (appointment.getStatus().equals("Completed") || appointment.getStatus().equals("Cancelled")) {
                     return 1;
@@ -126,33 +128,15 @@ public class AppointmentManager {
 
     }
 
-    public static void printAppointments() throws Exception {
-
-        List<appointment> appts = readAppointments();
-
-        for (appointment appointment : appts) {
-            System.out.println(
-                appointment.getAppointmentID() + " " +
-                appointment.getDoctorID() + " " +
-                appointment.getPatientID() + " " +
-                appointment.getDate() + " " +
-                appointment.getTime() + " " +
-                appointment.getStatus() +  " " +
-                appointment.getMedName() + " " +
-                appointment.getMedStatus() + " " +
-                appointment.getNotes()
-            );
-        }
-
-    }
-
     //Main functionality methods
 
-    public static void printAvailableAppointments() throws Exception {
+    //Patient
 
-        List<appointment> appts = readAppointments();
+    public static void patientPrintAvailableAppointments() throws Exception {
 
-        for (appointment appointment : appts) {
+        List<Appointment> appts = readAppointments();
+
+        for (Appointment appointment : appts) {
 
             if (appointment.getStatus().equals("Unbooked")) {
                 System.out.println(
@@ -169,34 +153,34 @@ public class AppointmentManager {
 
     public static void patientPrintScheduledAppointments(String patientID) throws Exception {
 
-        List<appointment> appts = readAppointments();
+        List<Appointment> appts = readAppointments();
 
-        for (appointment appointment : appts) {
+        for (Appointment appointment : appts) {
 
             if (appointment.getPatientID() == null) {
                 continue;
             }
 
-            if (!appointment.getStatus().equals("Completed"))
+            if (!appointment.getStatus().equals("Completed")) {
 
-            if (appointment.getPatientID().equals(patientID)) {
-                System.out.println(
-                appointment.getAppointmentID() + " " +
-                appointment.getDoctorID() + " " +
-                appointment.getPatientID() + " " +
-                appointment.getDate() + " " +
-                appointment.getTime() + " " +
-                appointment.getStatus()
-            );
+                if (appointment.getPatientID().equals(patientID)) {
+                    System.out.println(
+                        appointment.getAppointmentID() + " " +
+                        appointment.getDoctorID() + " " +
+                        appointment.getPatientID() + " " +
+                        appointment.getDate() + " " +
+                        appointment.getTime() + " " +
+                        appointment.getStatus()
+                    );
+                }
             }
-
         }
 
     }
 
     public static void patientScheduleAppointment(String patientID) throws Exception {
         
-        List<appointment> appts = readAppointments();
+        List<Appointment> appts = readAppointments();
         System.out.println("Scheduling appointment..."); 
 
         String doctorID;
@@ -222,7 +206,7 @@ public class AppointmentManager {
             }
         }
 
-        for (appointment appointment : appts) {
+        for (Appointment appointment : appts) {
             if (appointment.getDoctorID().equals(doctorID) && appointment.getDate().equals(date) && appointment.getTime().equals(time)) {
                 appointment.setPatientID(patientID);
                 appointment.setStatus("Pending Confirmation");
@@ -236,7 +220,7 @@ public class AppointmentManager {
 
     public static void patientRescheduleAppointment(String patientID) throws Exception {
 
-        List<appointment> appts = readAppointments();
+        List<Appointment> appts = readAppointments();
         System.out.println("Rescheduling appointment..."); 
 
         String doctorID;
@@ -261,7 +245,7 @@ public class AppointmentManager {
             }
         }
 
-        for (appointment appointment : appts) {
+        for (Appointment appointment : appts) {
 
             if (appointment.getPatientID() == null) {
                 continue;
@@ -281,7 +265,7 @@ public class AppointmentManager {
     }
 
     public static void patientCancelAppointment(String patientID) throws Exception {
-        List<appointment> appts = readAppointments();
+        List<Appointment> appts = readAppointments();
         System.out.println("Cancelling appointment..."); 
 
         String doctorID;
@@ -306,7 +290,7 @@ public class AppointmentManager {
             }
         }
 
-        for (appointment appointment : appts) {
+        for (Appointment appointment : appts) {
 
             if (appointment.getPatientID() == null) {
                 continue;
@@ -324,9 +308,9 @@ public class AppointmentManager {
 
     public static void patientPrintAppointmentRecords(String patientID) throws Exception {
         
-        List<appointment> appts = readAppointments();
+        List<Appointment> appts = readAppointments();
 
-        for (appointment appointment : appts) {
+        for (Appointment appointment : appts) {
 
             if (appointment.getPatientID() == null) {
                 continue;
@@ -351,6 +335,224 @@ public class AppointmentManager {
             );
             }
 
+        }
+
+    }
+
+    //Doctor
+
+    public static void doctorAddAppointments(String doctorId) throws Exception {
+
+    }
+
+    public static void doctorAppointmentRequests(String doctorId) throws Exception {
+        List<Appointment> appts = readAppointments();
+        Scanner sc = new Scanner(System.in);
+
+        for (Appointment appt : appts) {
+
+            if (appt.getDoctorID().equals(doctorId)) {
+                if (appt.getStatus().equals("Pending Confirmation")) {
+                    System.out.println(
+                        appt.getAppointmentID() + " " +
+                        appt.getPatientID() + " " +
+                        appt.getDate() + " " +
+                        appt.getTime()
+                    );
+                    while(true) {
+                        System.out.println("Do you wish to accept this appointment request? (Y/N): ");
+                        char choice = sc.next().charAt(0);
+                        sc.nextLine();
+                        if (choice == 'Y' || choice == 'y') {
+                            appt.setStatus("Confirmed");
+                            System.out.println("Appointment confirmed!");
+                            break;
+                        } else if (choice == 'N' || choice == 'n') {
+                            appt.setStatus("Cancelled");
+                            System.out.println("Appointment cancelled!");
+                            break;
+                        } else {
+                            System.out.println("Invalid choice! Please enter Y or N: ");
+                        }
+
+                    }
+
+                    
+
+                }
+            }
+        }
+
+        writeAppointments(appts);
+
+    }
+
+    public static void doctorViewUpcomingAppointments(String doctorId) throws Exception {
+        List<Appointment> appts = readAppointments();
+
+        for (Appointment appointment : appts) {
+
+            if (appointment.getDoctorID().equals(doctorId)) {
+                if (appointment.getStatus().equals("Confirmed")) {
+                    System.out.println(
+                        appointment.getAppointmentID() + " " +
+                        appointment.getDoctorID() + " " +
+                        appointment.getPatientID() + " " +
+                        appointment.getDate() + " " +
+                        appointment.getTime()
+                    );
+                }
+            }
+        }
+
+    }
+
+    public static void doctorRecordAppointmentOutcome(String doctorId) throws Exception {
+        List<Appointment> appts = readAppointments();
+        Scanner sc = new Scanner(System.in);
+
+        for (Appointment appt : appts) {
+
+            if (appt.getDoctorID().equals(doctorId)) {
+                if (appt.getStatus().equals("Confirmed")) {
+                    System.out.println(
+                        appt.getAppointmentID() + " " +
+                        appt.getPatientID() + " " +
+                        appt.getDate() + " " +
+                        appt.getTime()
+                    );
+                    while(true) {
+                        System.out.println("Have you completed this appointment? (Y/N): ");
+                        char choice = sc.next().charAt(0);
+                        sc.nextLine();
+                        
+                        if (choice == 'Y' || choice == 'y') {
+                            appt.setStatus("Completed");
+                            System.out.println("Service provided?: ");
+                            String service = sc.nextLine();
+
+                            while(true) {
+                                System.out.println("Medicine prescribed? (Y/N): ");
+                                char a = sc.next().charAt(0);
+                                sc.nextLine();
+                                if (a == 'Y' || a == 'y') {
+                                    System.out.println("Name of medicine prescribed?: ");
+                                    String medName = sc.nextLine();
+                                    appt.setMedName(medName);
+                                    appt.setMedStatus("Pending");
+                                    break;
+                                } else if (a == 'N' || a == 'n') {
+                                    break;
+                                } else {
+                                    System.out.println("Invalid choice! Please enter Y or N: ");
+                                }
+                            }
+
+                            System.out.println("Any notes?: ");
+                            String notes = sc.nextLine();
+
+                            appt.setService(service);
+                            appt.setNotes(notes);
+                            
+                            System.out.println("Appointment outcome recorded!");
+
+                            break;
+                        } else if (choice == 'N' || choice == 'n') {
+                            break;
+                        } else {
+                            System.out.println("Invalid choice! Please enter Y or N: ");
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        writeAppointments(appts);
+    }
+
+    //Pharmacist
+
+    public static void pharmacistViewAppointmentOutcome() throws Exception {
+        List<Appointment> appts = readAppointments();
+
+        for (Appointment appointment : appts) {
+
+            if (appointment.getStatus().equals("Completed")) {
+                if (appointment.getMedStatus() != null) {
+
+                    System.out.println(
+                        appointment.getAppointmentID() + " " +
+                        appointment.getDoctorID() + " " +
+                        appointment.getPatientID() + " " +
+                        appointment.getMedName() + " " +
+                        appointment.getMedStatus()
+                    );
+
+                }
+            }
+
+        }
+    }
+
+    public static void pharmacistUpdatePrescriptionStatus() throws Exception {
+        List<Appointment> appts = readAppointments();
+        Scanner sc = new Scanner(System.in);
+
+        for (Appointment appointment : appts) {
+
+            if (appointment.getStatus().equals("Completed")) {
+                if (appointment.getMedStatus().equals("Pending")) {
+
+                    System.out.println(
+                        appointment.getAppointmentID() + " " +
+                        appointment.getDoctorID() + " " +
+                        appointment.getPatientID() + " " +
+                        appointment.getMedName() + " " +
+                        appointment.getMedStatus()
+                    );
+
+                    while(true) {
+                        System.out.println("Medicine dispensed? (Y/N): ");
+                        char choice = sc.next().charAt(0);
+                        
+                        if (choice == 'Y' || choice == 'y') {
+                            appointment.setMedStatus("Dispensed");
+                            System.out.println("Medicine status updated!");
+                            break;
+                        } else if (choice == 'N' || choice == 'n') {
+                            break;
+                        } else {
+                            System.out.println("Invalid choice! Please enter Y or N: ");
+                        }
+                    }
+
+                }
+            }
+        }
+
+        writeAppointments(appts);
+    }
+
+    //Admin
+
+    public static void adminPrintAppointmentDetails() throws Exception {
+
+        List<Appointment> appts = readAppointments();
+
+        for (Appointment appointment : appts) {
+            System.out.println(
+                appointment.getAppointmentID() + " " +
+                appointment.getDoctorID() + " " +
+                appointment.getPatientID() + " " +
+                appointment.getDate() + " " +
+                appointment.getTime() + " " +
+                appointment.getStatus() +  " " +
+                appointment.getMedName() + " " +
+                appointment.getMedStatus() + " " +
+                appointment.getNotes()
+            );
         }
 
     }

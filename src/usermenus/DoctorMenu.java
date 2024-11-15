@@ -2,6 +2,7 @@ package usermenus;
 
 import entities.Doctor;
 import entities.Patient;
+import managers.AppointmentManager;
 import managers.DoctorManager;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class DoctorMenu implements IUserMenu {
      * The menu includes options like viewing and updating patient records, managing appointments and logging out.
      */
     @Override
-    public void mainMenu() {
+    public void mainMenu() throws Exception{
         while (true) {
             printChoices();
             System.out.print("Enter your selection: ");
@@ -54,15 +55,18 @@ public class DoctorMenu implements IUserMenu {
                 case 2:
                     updatePatientRecordsMenu();
                     break;
-                case 3:
+                case 3: //View personal schedule
                     break;
-                case 4:
+                case 4: //Set availability for appointments
                     break;
-                case 5:
+                case 5: //Accept or decline appointment requests
+                    AppointmentManager.doctorAppointmentRequests(doctor.getId());
                     break;
-                case 6:
+                case 6: //View upcoming appointments
+                    AppointmentManager.doctorViewUpcomingAppointments(doctor.getId());
                     break;
-                case 7:
+                case 7: //Record Appointment Outcome 
+                    AppointmentManager.doctorRecordAppointmentOutcome(doctor.getId());
                     break;
                 case 8:
                     System.out.println("Logging out...");

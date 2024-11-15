@@ -8,6 +8,7 @@
   * 
 * Doctor can update medical records (diagnoses, treatments, and prescriptions) of patients under their care
 * Patient can update their contact info (Phone number and email)
+* Appointments now has full working functionality for all users - patients, doctors*, pharmacists and admins (* doctors cannot see personal schedule and set availability for appointments just yet - need some clarification on this)
 
 ## Extra features
 * Password hashing (SHA256) - default pw is password
@@ -19,10 +20,9 @@
 
 ## To be implemented
 * Pharmacist and Administrator Roles
-* Appointments
 * Medications and Inventory
 * Error Handling for inputs
-* 
+* UI improvements on the appointment side
 
 ## Packages
 1. managers
@@ -47,7 +47,7 @@
 * Patient_Records.csv - list of patient medical record information
 * Doctor_Records.csv - list of doctorIDs, their names, and their patients
 * User_List.csv - list of userIDs and their corresponding passwords
-* 
+* Appointments.csv - list of Appointment details, including outcome records
 
 ## Bugs to fix
 *

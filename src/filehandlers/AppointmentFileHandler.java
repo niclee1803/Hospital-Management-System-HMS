@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-import entities.appointment;
+import entities.Appointment;
 
 import java.io.*;
 import java.nio.file.*;

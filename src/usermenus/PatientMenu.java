@@ -1,6 +1,7 @@
 package usermenus;
 
 import entities.Patient;
+import managers.AppointmentManager;
 import managers.PatientManager;
 import utility.CheckValidity;
 
@@ -32,7 +33,7 @@ public class PatientMenu implements IUserMenu {
      * appointments.
      */
     @Override
-    public void mainMenu() {
+    public void mainMenu() throws Exception {
         while (true) {
             printChoices();
             System.out.print("Enter your selection: ");
@@ -55,17 +56,22 @@ public class PatientMenu implements IUserMenu {
                     updateContactMenu();
                     break;
                 case 3: //View appointment slots
-                    //apptMain.viewAppointments();
+                    AppointmentManager.patientPrintAvailableAppointments();
                     break;
                 case 4: //Schedule appointment
+                    AppointmentManager.patientScheduleAppointment(patient.getId());
                     break;
                 case 5: //Reschedule appointment
+                    AppointmentManager.patientRescheduleAppointment(patient.getId());
                     break;
                 case 6: //Cancel appointment
+                    AppointmentManager.patientCancelAppointment(patient.getId());
                     break;
                 case 7: //View scheduled appointment
+                    AppointmentManager.patientPrintScheduledAppointments(patient.getId());
                     break;
                 case 8: //View past appointment records
+                    AppointmentManager.patientPrintAppointmentRecords(patient.getId());
                     break;
                 case 9: //Logout
                     System.out.println("Logging out...");

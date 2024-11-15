@@ -3,7 +3,7 @@ package entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class appointment {
+public class Appointment {
     
     private String appointmentID;
     private String doctorID;
@@ -16,7 +16,7 @@ public class appointment {
     private String medStatus;
     private String notes;
 
-    public appointment(String appointmentID, String doctorID, String patientID, LocalDate date, LocalTime time, String status, String service, String medName, String medStatus, String notes) {
+    public Appointment(String appointmentID, String doctorID, String patientID, LocalDate date, LocalTime time, String status, String service, String medName, String medStatus, String notes) {
         this.appointmentID = appointmentID;
         this.doctorID = doctorID;
         this.patientID = patientID;
