@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 import managers.MedInventoryManager;
 import managers.MedRequestManager;
-import managers.PatientManager;
 import entities.*;
 import appointments.appointmentController;
 
@@ -33,8 +32,8 @@ public class PharmacistMenu implements IUserMenu {
         this.scanner = new Scanner(System.in);
         this.inventoryManager = new MedInventoryManager();
         this.requestManager = new MedRequestManager();
-       this.pharmacistmanager = new PharmacistManager(); // Assuming this is a valid instance
-    this.pharmacist = (Pharmacist) pharmacistmanager.createUser(pharmacistID);
+        this.pharmacistmanager = new PharmacistManager(); // Assuming this is a valid instance
+        this.pharmacist = (Pharmacist) pharmacistmanager.createUser(pharmacistID);
     }
 
     /**
@@ -46,18 +45,16 @@ public class PharmacistMenu implements IUserMenu {
     public void mainMenu() {
         while (true) {
             // Displaying the pharmacist menu in the specified format
-            System.out.println("Pharmacist Menu:");
-            System.out.println("● View Appointment Outcome Record");
-            System.out.println("● Update Prescription Status");
-            System.out.println("● View Medication Inventory");
-            System.out.println("● Submit Replenishment Request");
-            System.out.println("● Logout");
-            System.out.print("Choose an option (1-5): ");
-
+            printChoices();
+            System.out.print("Enter your selection: ");
             // Read user choice
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
-
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                choice = 0;
+            }
+            System.out.println();
             switch (choice) {
                 case 1:
                     // Placeholder for View Appointment Outcome Record
@@ -83,6 +80,22 @@ public class PharmacistMenu implements IUserMenu {
                     System.out.println("Invalid choice, please try again.");
             }
         }
+    }
+
+    /**
+     * Prints the choices for the main menu, showing options available to the Pharmacist.
+     */
+    private void printChoices() {
+        System.out.println("╔═══════════════════════════════════════════════════════════╗");
+        System.out.printf("║ %28s %-28s ║%n", "Welcome, Pharmacist ", pharmacist.getName() + "!");
+        System.out.println("╠═══════════════════════════════════════════════════════════╣");
+        System.out.println("║ (1) View Appointment Outcome Record                       ║");
+        System.out.println("║ (2) Update Prescription Status                            ║");
+        System.out.println("║ (3) View Medication Inventory                             ║");
+        System.out.println("║ (4) Submit Replenishment Request                          ║");
+        System.out.println("║ (5) Logout                                                ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        System.out.println();
     }
 
     /**
