@@ -3,6 +3,11 @@ package entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * The {@code Appointment} class represents an appointment between a patient and a doctor.
+ * It includes details such as the appointment ID, doctor ID, date, time, status, service, medication name and status,
+ * and additional notes.
+ */
 public class Appointment {
     
     private String appointmentID;
@@ -16,6 +21,20 @@ public class Appointment {
     private String medStatus;
     private String notes;
 
+    /**
+     * Constructs a new {@code Appointment} with the specified details.
+     *
+     * @param appointmentID the ID of the appointment
+     * @param doctorID the ID of the doctor associated with the appointment
+     * @param patientID the ID of the patient associated with the appointment
+     * @param date the date of the appointment
+     * @param time the time of the appointment
+     * @param status the status of the appointment (eg "Unbooked", "Pending Confirmation", "Completed")
+     * @param service the service provided during the appointment
+     * @param medName the name of the prescribed medication
+     * @param medStatus the status of the medication (eg "Dispensed", "Pending")
+     * @param notes additional notes about the appointment
+     */
     public Appointment(String appointmentID, String doctorID, String patientID, LocalDate date, LocalTime time, String status, String service, String medName, String medStatus, String notes) {
         this.appointmentID = appointmentID;
         this.doctorID = doctorID;
@@ -29,91 +48,182 @@ public class Appointment {
         this.notes = notes;
     }
 
+    /**
+     * Gets the appointment ID
+     *
+     * @return the ID of the appointment
+     */
     public String getAppointmentID() {
         return appointmentID;
     }
 
+    /**
+     * Sets the appointment ID.
+     *
+     * @param appointmentID the ID to set for the appointment
+     */
     public void setAppointmentID(String appointmentID) {
         this.appointmentID = appointmentID;
     }
 
-    // Getter and Setter for doctorID
+    /**
+     * Gets the doctorID
+     *
+     * @return the ID of the doctor
+     */
     public String getDoctorID() {
         return doctorID;
     }
 
+    /**
+     * Sets the Doctor ID.
+     *
+     * @param doctorID the ID to set for the doctor
+     */
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
 
-    // Getter and Setter for patientID
+    /**
+     * Gets the patient ID
+     *
+     * @return the ID of the patient
+     */
     public String getPatientID() {
         return patientID;
     }
 
+    /**
+     * Sets the patient ID
+     *
+     * @param patientID the ID to set for the patient
+     */
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
-    // Getter and Setter for date
+    /**
+     * Gets the date of the appointment.
+     *
+     * @return the date of the appointment
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /**
+     * Sets the date of the appointment
+     *
+     * @param date the date to set for the appointment
+     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    // Getter and Setter for time
+    /**
+     * Gets the time of the appointment
+     *
+     * @return the time of the appointment
+     */
     public LocalTime getTime() {
         return time;
     }
 
+    /**
+     * Sets the time of the appointment
+     *
+     * @param time the time to set for the appointment
+     */
     public void setTime(LocalTime time) {
         this.time = time;
     }
 
-    // Getter and Setter for status
+    /**
+     * Gets the status of the appointment
+     *
+     * @return the status of the appointment
+     */
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Sets the status of the appointment
+     *
+     * @param status the status to set for the appointment
+     */
     public void setStatus(String status) {
         this.status = status;
     }
 
-    // Getter and Setter for service
+    /**
+     * Gets the service provided during the appointment
+     *
+     * @return the service provided
+     */
     public String getService() {
         return service;
     }
 
+    /**
+     * Sets the service provided during the appointment
+     *
+     * @param service the service to set
+     */
     public void setService(String service) {
         this.service = service;
     }
 
-    // Getter and Setter for medName
+    /**
+     * Gets the name of the prescribed medication
+     *
+     * @return the name of the medication
+     */
     public String getMedName() {
         return medName;
     }
 
+    /**
+     * Sets the name of the prescribed medication
+     *
+     * @param medName the name of the medication to set
+     */
     public void setMedName(String medName) {
         this.medName = medName;
     }
 
-    // Getter and Setter for medStatus
+    /**
+     * Gets the status of the prescribed medication
+     *
+     * @return the status of the medication
+     */
     public String getMedStatus() {
         return medStatus;
     }
 
+    /**
+     * Sets the status of the prescribed medication
+     *
+     * @param medStatus the status of the medication to set
+     */
     public void setMedStatus(String medStatus) {
         this.medStatus = medStatus;
     }
 
-    // Getter and Setter for notes
+    /**
+     * Gets the notes associated with the appointment
+     *
+     * @return additional notes about the appointment
+     */
     public String getNotes() {
         return notes;
     }
 
+    /**
+     * Sets the notes associated with the appointment
+     *
+     * @param notes additional notes to set
+     */
     public void setNotes(String notes) {
         this.notes = notes;
     }

@@ -5,9 +5,22 @@ import java.time.LocalTime;
 import java.util.*;
 import java.io.IOException;
 
+import utility.table;
+
+import managers.DoctorManager;
+import managers.PatientManager;
+
 import entities.Appointment;
+import entities.Doctor;
+import entities.Patient;
 import filehandlers.AppointmentFileHandler;
 
+/**
+ * The (@code AppointmentManager} class provides methods to manage the scheduling, rescheduling
+ * and cancellation of appointments for patients. It interacts with the {@code AppointmentFileHandler}
+ * to read and write appointments from a CSV file and provides functionalities such as finding appointments,
+ * printing available appointments, and displaying patient-specific appointment records.
+ */
 public class AppointmentManager {
 
     //File methods
@@ -77,6 +90,11 @@ public class AppointmentManager {
 
     //Helper methods
 
+    /**
+     * Prompts the user for Doctor ID, date and time of an appointment slot.
+     *
+     * @return Returns a string array containing doctor ID, date and time of the appointment
+     */
     public static String[] getSlotInput() {
 
         String[] appt = new String[3];
@@ -96,6 +114,15 @@ public class AppointmentManager {
         return appt;
     }
     
+    /**
+     * Finds an appointment based on doctor ID, date and time
+     *
+     * @param appt the lsit of {@code appointment} objects to search
+     * @param dId the doctor's ID
+     * @param date the date of the appointment
+     * @param time the time of the appointment
+     * @return Returns 0 if the appointment is found and unbooked, 1 if the appointment is booked and -1 if no appointment is found
+     */
     public static int findAppointment(List<Appointment> appt, String dId, LocalDate date, LocalTime time) {
 
         for (Appointment appointment : appt) {
@@ -112,6 +139,16 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Finds an appointment by pateitn ID, doctor ID, date and time
+     *
+     * @param appt the list of {@code appointment} objects to search
+     * @param patientID the patient's ID
+     * @param dId the doctor's ID
+     * @param date the date of the appointment
+     * @param time the time of the appointment
+     * @return Returns 0 if the appointment is scheduled but not completed or canceled, 1 if the appointment is completed or canceled, and -1 if no appointment is found
+     */
     public static int findAppointmentByPatient(List<Appointment> appt, String patientID, String dId, LocalDate date, LocalTime time) {
 
         for (Appointment appointment : appt) {
@@ -131,29 +168,68 @@ public class AppointmentManager {
     //Main functionality methods
 
     //Patient
-
+    
+    /**
+     * Prints available (unbooked) appointment slots
+     *
+     * @throws Exception if there is an error reading from the file
+     */
     public static void patientPrintAvailableAppointments() throws Exception {
 
         List<Appointment> appts = readAppointments();
+        boolean isEmpty = true;
+
+        String[] headers = {
+            "Doctor ID", "Doctor Name", "Date", "Time"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
 
         for (Appointment appointment : appts) {
 
             if (appointment.getStatus().equals("Unbooked")) {
-                System.out.println(
-                appointment.getAppointmentID() + " " +
-                appointment.getDoctorID() + " " +
-                appointment.getDate() + " " +
-                appointment.getTime()
-            );
+                isEmpty = false;
+                DoctorManager manager = new DoctorManager();
+                Doctor doc = (Doctor) manager.createUser(appointment.getDoctorID());
+
+                rows.add(new String[]{
+                    appointment.getDoctorID(),
+                    doc.getName(),
+                    appointment.getDate().toString(),
+                    appointment.getTime().toString()
+                });
             }
 
         }
 
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< There are no available appointments >>");
+            System.out.println();
+        } else {
+            table.printTable(rows);
+        }
+
     }
 
+    /**
+     * Prints all scheduled appointments for a given patient
+     *
+     * @param patientID the patient's ID
+     * @throws Exception if there is an error reading from the file
+     */
     public static void patientPrintScheduledAppointments(String patientID) throws Exception {
 
         List<Appointment> appts = readAppointments();
+        boolean isEmpty = true;
+
+        String[] headers = {
+            "Doctor ID", "Doctor Name", "Date", "Time", "Status"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
 
         for (Appointment appointment : appts) {
 
@@ -161,23 +237,43 @@ public class AppointmentManager {
                 continue;
             }
 
-            if (!appointment.getStatus().equals("Completed")) {
-
-                if (appointment.getPatientID().equals(patientID)) {
-                    System.out.println(
-                        appointment.getAppointmentID() + " " +
-                        appointment.getDoctorID() + " " +
-                        appointment.getPatientID() + " " +
-                        appointment.getDate() + " " +
-                        appointment.getTime() + " " +
-                        appointment.getStatus()
-                    );
-                }
+            if (appointment.getStatus().equals("Completed")) {
+                continue;
             }
+
+            if (appointment.getPatientID().equals(patientID)) {
+                isEmpty = false;
+                DoctorManager manager = new DoctorManager();
+                Doctor doc = (Doctor) manager.createUser(appointment.getDoctorID());
+
+                rows.add(new String[]{
+                    appointment.getDoctorID(),
+                    doc.getName(),
+                    appointment.getDate().toString(),
+                    appointment.getTime().toString(),
+                    appointment.getStatus()
+                });
+            }
+            
+        }
+
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< You have no scheduled appointments >>");
+            System.out.println();
+        } else {
+            table.printTable(rows);
         }
 
     }
 
+    /**
+     * Allows a patient to schedule an appointment. The method promps the patient for doctor ID, dae and time, and then
+     * schedules an available appointment
+     *
+     * @param patientID the patient's ID
+     * @throws Exception if there is an error reading or writing to the file
+     */
     public static void patientScheduleAppointment(String patientID) throws Exception {
         
         List<Appointment> appts = readAppointments();
@@ -218,6 +314,13 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Allows a patient to reschedule an appointment. The method first removes the existing appointment and then prompts
+     * the patient to schedule a new one.
+     *
+     * @param patientID the patient's ID
+     * @throws Exception if there is an error reading or writing to the file
+     */
     public static void patientRescheduleAppointment(String patientID) throws Exception {
 
         List<Appointment> appts = readAppointments();
@@ -264,6 +367,12 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Cancels a scheduled appointment for a patient
+     *
+     * @param patientID the patient's ID
+     * @throws Exception if there is an error reading or writing to the file
+     */
     public static void patientCancelAppointment(String patientID) throws Exception {
         List<Appointment> appts = readAppointments();
         System.out.println("Cancelling appointment..."); 
@@ -306,9 +415,22 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Prints all completed appointment records for a given patient
+     *
+     * @param patientID the patient's ID
+     * @throws Exception if there is an error reading from the file
+     */
     public static void patientPrintAppointmentRecords(String patientID) throws Exception {
         
         List<Appointment> appts = readAppointments();
+        boolean isEmpty = true;
+        String[] headers = {
+            "Doctor ID", "Doctor Name", "Date", "Time", "Status", "Service", "Med Name", "Notes"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
 
         for (Appointment appointment : appts) {
 
@@ -321,44 +443,153 @@ public class AppointmentManager {
             }
 
             if (appointment.getPatientID().equals(patientID)) {
-                System.out.println(
-                appointment.getAppointmentID() + " " +
-                appointment.getDoctorID() + " " +
-                appointment.getPatientID() + " " +
-                appointment.getDate() + " " +
-                appointment.getTime() + " " +
-                appointment.getStatus() + " " +
-                appointment.getService() + " " +
-                appointment.getMedName() + " " +
-                appointment.getMedStatus() + " " + 
-                appointment.getNotes()
-            );
+                isEmpty = false;
+                DoctorManager manager = new DoctorManager();
+                Doctor doc = (Doctor) manager.createUser(appointment.getDoctorID());
+
+                rows.add(new String[]{
+                    appointment.getDoctorID(),
+                    doc.getName(),
+                    appointment.getDate().toString(),
+                    appointment.getTime().toString(),
+                    appointment.getStatus(),
+                    appointment.getService(),
+                    appointment.getMedName(),
+                    appointment.getNotes()
+                });
             }
 
+        }
+
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< You have no completed appointments >>");
+            System.out.println();
+        } else {
+            table.printTable(rows);
         }
 
     }
 
     //Doctor
 
+    public static void doctorViewPersonalSchedule(String doctorId) throws Exception {
+        List<Appointment> appts = readAppointments();
+        boolean isEmpty = true;
+        String[] headers = {
+            "Patient ID", "Patient Name", "Date", "Time", "Status"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
+
+        for (Appointment appointment : appts) {
+
+            if (appointment.getDoctorID().equals(doctorId)) {
+
+                if (!appointment.getStatus().equals("Completed") && !appointment.getStatus().equals("Cancelled")) {
+                    isEmpty = false;
+
+                    if (appointment.getPatientID() != null) {
+                        PatientManager manager = new PatientManager();
+                        Patient patient = (Patient) manager.createUser(appointment.getPatientID());
+
+                        rows.add(new String[] {
+                            appointment.getPatientID(),
+                            patient.getName(),
+                            appointment.getDate().toString(),
+                            appointment.getTime().toString(),
+                            appointment.getStatus()
+                        });
+        
+                    } else {
+
+                        rows.add(new String[] {
+                            "None",
+                            "None",
+                            appointment.getDate().toString(),
+                            appointment.getTime().toString(),
+                            appointment.getStatus()
+                        });
+
+                    }
+                }
+            }
+        }
+
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< You have no appointments on your schedule >>");
+            System.out.println();
+        } else {
+            table.printTable(rows);
+        }
+    }
+
     public static void doctorAddAppointments(String doctorId) throws Exception {
 
+        List<Appointment> appts = readAppointments();
+        Scanner sc = new Scanner(System.in);
+        LocalDate date;
+        LocalTime time;
+
+        System.out.println();
+        System.out.println("<< Enter the appointment date and time >>");
+        System.out.println();
+        
+        while(true) {
+            System.out.println("Enter the date (yyyy-MM-dd): ");
+            date = LocalDate.parse(sc.nextLine());
+            System.out.println("Enter the time (hh:mm) :");
+            time = LocalTime.parse(sc.nextLine());
+
+            if (findAppointment(appts, doctorId, date, time) >= 0) {
+                System.out.println("You have already indicated availability for this slot! Enter a new slot");
+            } else {
+                break;
+            }
+        }
+
+        int length = appts.size() + 1;
+        String number = String.format("%03d", length);
+        String apptId = "A" + number;
+
+        Appointment newSlot = new Appointment(apptId, doctorId, null, date, time, "Unbooked", null, null, null, null);
+        appts.add(newSlot);
+        writeAppointments(appts);
     }
 
     public static void doctorAppointmentRequests(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
+        boolean isEmpty = true;
 
         for (Appointment appt : appts) {
 
             if (appt.getDoctorID().equals(doctorId)) {
                 if (appt.getStatus().equals("Pending Confirmation")) {
-                    System.out.println(
-                        appt.getAppointmentID() + " " +
-                        appt.getPatientID() + " " +
-                        appt.getDate() + " " +
-                        appt.getTime()
-                    );
+                    
+                    isEmpty = false;
+
+                    PatientManager manager = new PatientManager();
+                    Patient patient = (Patient) manager.createUser(appt.getPatientID());
+
+                    String[] headers = {
+                        "Patient ID", "Patient Name", "Date", "Time"
+                    };
+                
+                    List<String[]> rows = new ArrayList<>();
+                    rows.add(headers);
+
+                    rows.add(new String[] {
+                        appt.getPatientID(),
+                        patient.getName(),
+                        appt.getDate().toString(),
+                        appt.getTime().toString()
+                    });
+
+                    table.printTable(rows);
+
                     while(true) {
                         System.out.println("Do you wish to accept this appointment request? (Y/N): ");
                         char choice = sc.next().charAt(0);
@@ -383,26 +614,52 @@ public class AppointmentManager {
             }
         }
 
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< You have no appointment requests >>");
+            System.out.println();
+        }
+
         writeAppointments(appts);
 
     }
 
     public static void doctorViewUpcomingAppointments(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
+        boolean isEmpty = true;
+        String[] headers = {
+            "Patient ID", "Patient Name", "Date", "Time"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
 
         for (Appointment appointment : appts) {
 
             if (appointment.getDoctorID().equals(doctorId)) {
+
                 if (appointment.getStatus().equals("Confirmed")) {
-                    System.out.println(
-                        appointment.getAppointmentID() + " " +
-                        appointment.getDoctorID() + " " +
-                        appointment.getPatientID() + " " +
-                        appointment.getDate() + " " +
-                        appointment.getTime()
-                    );
+                    isEmpty = false;
+
+                    PatientManager manager = new PatientManager();
+                    Patient patient = (Patient) manager.createUser(appointment.getPatientID());
+
+                    rows.add(new String[] {
+                        appointment.getPatientID(),
+                        patient.getName(),
+                        appointment.getDate().toString(),
+                        appointment.getTime().toString()
+                    });
                 }
             }
+        }
+
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< You have no upcoming confirmed appointments >>");
+            System.out.println();
+        } else {
+            table.printTable(rows);
         }
 
     }
@@ -410,17 +667,33 @@ public class AppointmentManager {
     public static void doctorRecordAppointmentOutcome(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
+        boolean isEmpty = true;
 
         for (Appointment appt : appts) {
 
             if (appt.getDoctorID().equals(doctorId)) {
                 if (appt.getStatus().equals("Confirmed")) {
-                    System.out.println(
-                        appt.getAppointmentID() + " " +
-                        appt.getPatientID() + " " +
-                        appt.getDate() + " " +
-                        appt.getTime()
-                    );
+                    isEmpty = false;
+
+                    PatientManager manager = new PatientManager();
+                    Patient patient = (Patient) manager.createUser(appt.getPatientID());
+
+                    String[] headers = {
+                        "Patient ID", "Patient Name", "Date", "Time"
+                    };
+                
+                    List<String[]> rows = new ArrayList<>();
+                    rows.add(headers);
+
+                    rows.add(new String[] {
+                        appt.getPatientID(),
+                        patient.getName(),
+                        appt.getDate().toString(),
+                        appt.getTime().toString()
+                    });
+
+                    table.printTable(rows);
+
                     while(true) {
                         System.out.println("Have you completed this appointment? (Y/N): ");
                         char choice = sc.next().charAt(0);
@@ -469,6 +742,12 @@ public class AppointmentManager {
             }
         }
 
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< You have no confirmed appointments to complete >>");
+            System.out.println();
+        }
+
         writeAppointments(appts);
     }
 
@@ -476,42 +755,70 @@ public class AppointmentManager {
 
     public static void pharmacistViewAppointmentOutcome() throws Exception {
         List<Appointment> appts = readAppointments();
+        boolean isEmpty = true;
+
+        String[] headers = {
+            "Appointment ID", "Doctor ID", "Patient ID", "Med Name", "Med Status"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
 
         for (Appointment appointment : appts) {
 
             if (appointment.getStatus().equals("Completed")) {
                 if (appointment.getMedStatus() != null) {
-
-                    System.out.println(
-                        appointment.getAppointmentID() + " " +
-                        appointment.getDoctorID() + " " +
-                        appointment.getPatientID() + " " +
-                        appointment.getMedName() + " " +
+                    isEmpty = false;
+                    rows.add(new String[] {
+                        appointment.getAppointmentID(),
+                        appointment.getDoctorID(),
+                        appointment.getPatientID(),
+                        appointment.getMedName(),
                         appointment.getMedStatus()
-                    );
+                    });
 
                 }
             }
-
         }
+
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< There are no completed appointments >>");
+            System.out.println();
+        } else {
+            table.printTable(rows);
+        }
+
     }
 
     public static void pharmacistUpdatePrescriptionStatus() throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
+        boolean isEmpty = true;
 
         for (Appointment appointment : appts) {
 
             if (appointment.getStatus().equals("Completed")) {
                 if (appointment.getMedStatus().equals("Pending")) {
 
-                    System.out.println(
-                        appointment.getAppointmentID() + " " +
-                        appointment.getDoctorID() + " " +
-                        appointment.getPatientID() + " " +
-                        appointment.getMedName() + " " +
+                    isEmpty = false;
+
+                    String[] headers = {
+                        "Appointment ID", "Doctor ID", "Patient ID", "Med Name", "Med Status"
+                    };
+                
+                    List<String[]> rows = new ArrayList<>();
+                    rows.add(headers);
+
+                    rows.add(new String[] {
+                        appointment.getAppointmentID(),
+                        appointment.getDoctorID(),
+                        appointment.getPatientID(),
+                        appointment.getMedName(),
                         appointment.getMedStatus()
-                    );
+                    });
+
+                    table.printTable(rows);
 
                     while(true) {
                         System.out.println("Medicine dispensed? (Y/N): ");
@@ -532,6 +839,12 @@ public class AppointmentManager {
             }
         }
 
+        if (isEmpty) {
+            System.out.println();
+            System.out.println("<< There are no completed appointments to dispense medicines for >>");
+            System.out.println();
+        }
+
         writeAppointments(appts);
     }
 
@@ -541,20 +854,37 @@ public class AppointmentManager {
 
         List<Appointment> appts = readAppointments();
 
-        for (Appointment appointment : appts) {
-            System.out.println(
-                appointment.getAppointmentID() + " " +
-                appointment.getDoctorID() + " " +
-                appointment.getPatientID() + " " +
-                appointment.getDate() + " " +
-                appointment.getTime() + " " +
-                appointment.getStatus() +  " " +
-                appointment.getMedName() + " " +
-                appointment.getMedStatus() + " " +
-                appointment.getNotes()
-            );
+        if (appts.isEmpty()) {
+            System.out.println();
+            System.out.println("<< No appointment details available >>");
+            System.out.println();
+            return; 
         }
-
+    
+        String[] headers = {
+            "ApptID", "DoctorID", "PatientID", "Date", "Time", "Status", "Med Name", "Med Status", "Notes"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
+    
+        // Iterate through the appointments and add each as a row in the table
+        for (Appointment appointment : appts) {
+            rows.add(new String[]{
+                appointment.getAppointmentID(),
+                appointment.getDoctorID(),
+                appointment.getPatientID() == null ? "None" : appointment.getPatientID(),
+                appointment.getDate().toString(),
+                appointment.getTime().toString(),
+                appointment.getStatus(),
+                appointment.getMedName() == null ? "None" : appointment.getMedName(),
+                appointment.getMedStatus() == null ? "None" : appointment.getMedStatus(),
+                appointment.getNotes() == null ? "None" : appointment.getNotes()
+            });
+        }
+    
+        // Print the table
+        table.printTable(rows);
     }
 
 }

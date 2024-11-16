@@ -56,8 +56,10 @@ public class DoctorMenu implements IUserMenu {
                     updatePatientRecordsMenu();
                     break;
                 case 3: //View personal schedule
+                    AppointmentManager.doctorViewPersonalSchedule(doctor.getId());
                     break;
                 case 4: //Set availability for appointments
+                    AppointmentManager.doctorAddAppointments(doctor.getId());
                     break;
                 case 5: //Accept or decline appointment requests
                     AppointmentManager.doctorAppointmentRequests(doctor.getId());
