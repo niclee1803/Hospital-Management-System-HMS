@@ -449,7 +449,7 @@ public class AppointmentManager {
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
         String[] headers = {
-            "Doctor ID", "Doctor Name", "Date", "Time", "Status", "Service", "Med Name", "Notes"
+            "Doctor ID", "Doctor Name", "Date", "Time", "Service", "Med Name", "Notes"
         };
     
         List<String[]> rows = new ArrayList<>();
@@ -475,7 +475,6 @@ public class AppointmentManager {
                     doc.getName(),
                     appointment.getDate().toString(),
                     appointment.getTime().toString(),
-                    appointment.getStatus(),
                     appointment.getService(),
                     appointment.getMedName(),
                     appointment.getNotes()
