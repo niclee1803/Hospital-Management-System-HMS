@@ -37,6 +37,22 @@ public class Doctor extends User {
     }
 
     /**
+     * Gets the doctor's gender
+     * @return The gender of the doctor
+     */
+    public Gender getGender() {
+        return gender;
+    }
+
+    /**
+     * Gets the doctor's age
+     * @return The age of the doctor
+     */
+    public int getAge() {
+        return age;
+    }
+
+    /**
      * Gets a list of patient IDs assigned to this doctor
      * @return A list of patient IDs as Strings
      */
