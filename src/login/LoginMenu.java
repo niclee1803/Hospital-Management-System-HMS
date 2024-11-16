@@ -2,6 +2,7 @@ package login;
 
 import utility.CheckValidity;
 
+import java.io.Console;
 import java.util.Scanner;
 
 /**
@@ -90,6 +91,7 @@ public class LoginMenu {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter Patient ID: ");
         String patientID = sc.nextLine().toUpperCase();
+        Console console = System.console();
 
         if (patientID.equals("X")) {
             System.out.println();
@@ -99,8 +101,14 @@ public class LoginMenu {
             patientLoginMenu();
             return;
         }
-        System.out.print("Enter password: ");
-        String password = sc.nextLine();
+        String password;
+        if (console == null) {
+            System.out.print("Enter password: ");
+            password = sc.nextLine(); 
+        } else {
+            char[] passwordArray = console.readPassword("Enter password: ");
+            password = new String(passwordArray);
+        }
         if (loginManager.authenticatePatient(patientID, password)) {
             id = patientID;
             authenticated = true;
@@ -125,6 +133,7 @@ public class LoginMenu {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter Staff ID: ");
         String staffID = sc.nextLine().toUpperCase();
+        Console console = System.console();
 
         if (staffID.equals("X")) {
             System.out.println();
@@ -134,8 +143,16 @@ public class LoginMenu {
             staffLoginMenu();
             return;
         }
-        System.out.print("Enter password: ");
-        String password = sc.nextLine();
+        
+        String password;
+        if (console == null) {
+            System.out.print("Enter password: ");
+            password = sc.nextLine(); 
+        } else {
+            char[] passwordArray = console.readPassword("Enter password: ");
+            password = new String(passwordArray);
+        }
+
         if (loginManager.authenticateStaff(staffID, password)) {
             id = staffID;
             authenticated = true;
@@ -156,15 +173,33 @@ public class LoginMenu {
     private void changePasswordMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Initial Login - Please change password\n");
-        System.out.print("Enter new password: ");
-        String newPassword = sc.nextLine();
+        Console console = System.console();
+
+        String newPassword;
+        if (console == null) {
+            System.out.print("Enter new password: ");
+            newPassword = sc.nextLine(); 
+        } else {
+            char[] passwordArray = console.readPassword("Enter new password: ");
+            newPassword = new String(passwordArray);
+        }
+
         if (!CheckValidity.isValidPassword(newPassword)) {
             System.out.println("Password too weak! (At least 8 characters, 1 letter, 1 number) Please try again.");
             changePasswordMenu();
             return;
         }
-        System.out.print("Confirm new password: ");
-        String confirmPassword = sc.nextLine();
+
+        String confirmPassword;
+        if (console == null) {
+            System.out.print("Confirm new password: ");
+            confirmPassword = sc.nextLine(); 
+        } else {
+            char[] passwordArray = console.readPassword("Confirm new password: ");
+            confirmPassword = new String(passwordArray);
+        }
+
+
         if (!newPassword.equals(confirmPassword)) {
             System.out.println("The 2 passwords you entered do not match. Please try again.");
             changePasswordMenu();
