@@ -13,7 +13,7 @@ import java.nio.file.*;
  */
 public class appointmentFileHandler {
 
-    private static String fileName = "src/appointments/Appointments.csv";
+    private static String fileName = "Database/Appointments.csv";
 
     /**
      * Reads the appointment data from the CSV file and returns a list of {@code appointment} objects.

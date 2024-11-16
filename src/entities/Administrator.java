@@ -1,20 +1,22 @@
 package entities;
 
-/**
- * Represents an Administrator user in the system, inheriting the basic properties of a User.
- * This class can be extended further to add specific properties or methods related to the administrator role.
- */
 public class Administrator extends User {
+    private String role;
 
-    /**
-     * Constructs an Administrator object with the specified ID and name.
-     *
-     * @param id   The unique identifier for the administrator
-     * @param name The name of the administrator
-     */
-    public Administrator(String id, String name) {
+    public Administrator(String id, String name, String role) {
         super(id, name);
+        this.role = role;
     }
 
-    // Additional administrator-specific fields and methods can be added here
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setName(String name) {
+        this.setName(name); // Use the User's setName method
+    }
 }
