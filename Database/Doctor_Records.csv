@@ -2,3 +2,4 @@ DoctorID,Name,PatientIDs
 D001,John Smith,P1001;P1002
 D002,Emily Clarke,P1003;P1004
 D003,Steven Smith,P1003;P1004
+D004,Joseph,doctor

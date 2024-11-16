@@ -1,5 +1,6 @@
 import login.LoginMenu;
 import login.UserType;
+import usermenus.AdministratorMenu;
 import usermenus.DoctorMenu;
 import usermenus.IUserMenu;
 import usermenus.PatientMenu;
@@ -25,14 +26,14 @@ public class Main {
             } else if (loginMenu.getUserType() == UserType.STAFF && loginMenu.isAuthenticated()) {
                 switch (loginMenu.getId().charAt(0)) {
                     case 'A':
-                        //menu = new AdministratorMenu(loginManager.getId());
-                        //menu.displayMenu();
+                        menu = new AdministratorMenu(loginMenu.getId());
+                        menu.mainMenu();
                         break;
                     case 'D':
                         menu = new DoctorMenu(loginMenu.getId());
                         menu.mainMenu();
                         break;
-                        case 'P':
+                    case 'P':
                         menu = new PharmacistMenu(loginMenu.getId());
                         menu.mainMenu(); 
                         break;

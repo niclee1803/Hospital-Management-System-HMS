@@ -1,118 +1,147 @@
 package usermenus;
 
-import managers.AppointmentManager;
-import managers.AppointmentRecordManager;
+import entities.Administrator;
+import managers.AdministratorManager;
+import managers.MedInventoryManager;
+import appointments.appointmentController;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
-import java.util.ArrayList;
 
-public class AdministratorMenu implements IHasMenu {
-   private String adminID;
+public class AdministratorMenu implements IUserMenu {
+    private final AdministratorManager administratorManager;
+    private final MedInventoryManager inventoryManager;
+    private final Administrator administrator;
 
-   public AdministratorMenu(String adminID) {
-       this.adminID = adminID;
-   }
+    public AdministratorMenu(String adminID) throws Exception {
+        administratorManager = new AdministratorManager();
+        inventoryManager = new MedInventoryManager();
+        administrator = (Administrator) administratorManager.createUser(adminID);
+    }
 
-   @Override
-   public void displayMenu() throws Exception {
-       while (true) {
-           System.out.println("Welcome Administrator " + adminID + ",\n");
+    @Override
+    public void mainMenu() {
+        while (true) {
+            printChoices();
+            System.out.print("Enter your selection: ");
+            Scanner sc = new Scanner(System.in);
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
 
-           System.out.println("(1) View and Manage Hospital Staff (Coming Soon)\n" +
-                              "(2) View Appointments Details\n" +
-                              "(3) View and Manage Medication Inventory (Coming Soon)\n" +
-                              "(4) Approve Replenishment Requests (Coming Soon)\n" +
-                              "(5) Log Out\n");
+            switch (choice) {
+                case 1: // View and Manage Hospital Staff
+                    manageStaffMenu(sc);
+                    break;
+                case 2: // View Appointments Details
+                    viewAppointmentsMenu();
+                    break;
+                // case 3: // View and Manage Medication Inventory
+                //     manageMedInventoryMenu(sc);
+                //     break;
+                // case 4: // Approve Replenishment Requests
+                //     approveReplenishmentRequests(sc);
+                    // break;
+                case 5: // Log Out
+                    System.out.println("Logging out...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
 
-           Scanner sc = new Scanner(System.in);
-           int choice;
-           try {
-               choice = Integer.parseInt(sc.nextLine());
-           } catch (NumberFormatException e) {
-               choice = 0;
-           }
-           System.out.println();
-           switch (choice) {
-               case 1:
-                   viewAndManageHospitalStaff();
-                   break;
-               case 2:
-                   break;
-               case 3:
-                   viewAndManageMedicationInventory();
-                   break;
-               case 4:
-                   approveReplenishmentRequests();
-                   break;
-               case 5:
-                   System.out.println("Logging out...");
-                   System.out.println("Successfully logged out!\n\n");
-                   return;
-               default:
-                   System.out.println("Invalid choice\n");
-                   break;
-           }
-       }
-   }
+    private void printChoices() {
+        System.out.println("╔═══════════════════════════════════════════════════════════╗");
+        System.out.printf("║ %28s %-28s ║%n", "Welcome, Administrator", administrator.getName() + "!");
+        System.out.println("╠═══════════════════════════════════════════════════════════╣");
+        System.out.println("║ (1) View and Manage Hospital Staff                        ║");
+        System.out.println("║ (2) View Appointments Details                             ║");
+        System.out.println("║ (3) View and Manage Medication Inventory                  ║");
+        System.out.println("║ (4) Approve Replenishment Requests                        ║");
+        System.out.println("║ (5) Log Out                                               ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        System.out.println();
+    }
 
-   private void viewAppointmentsDetails() throws Exception {
-       System.out.println("<<Appointment View>>");
-       System.out.println("Enter (X) to return\n");
+    private void manageStaffMenu(Scanner sc) {
+        System.out.println("<< Manage Hospital Staff >>");
+        System.out.println("(1) Add Staff");
+        System.out.println("(2) Update Staff");
+        System.out.println("(3) Remove Staff");
+        System.out.println("(4) View Staff List");
+        System.out.println("(X) Return to Main Menu");
+        System.out.print("Enter your selection: ");
 
-       List<String[]> appointments = AppointmentRecordManager.loadAllAppointments();
-       if (appointments.isEmpty()) {
-           System.out.println("No appointments found.\n");
-           return;
-       }
+        String action = sc.nextLine().toUpperCase();
+        switch (action) {
+            case "1": // Add Staff
+                administratorManager.addStaff(sc);
+                break;
+            case "2": // Update Staff
+                administratorManager.updateStaff(sc);
+                break;
+            case "3": // Remove Staff
+                administratorManager.removeStaff(sc);
+                break;
+            case "4": // View Staff List
+                administratorManager.viewStaff();
+                break;
+            case "X": // Return to Main Menu
+                System.out.println("Returning to main menu...");
+                break;
+            default: // Invalid Choice
+                System.out.println("Invalid choice. Please try again.");
+                break;
+        }
+    }
 
-       // Group appointments by date using a TreeMap to maintain sorted order by date
-       Map<String, List<String[]>> appointmentsByDate = new TreeMap<>();
-       for (String[] appointment : appointments) {
-           String date = appointment[4]; // DateTime field
+    private void viewAppointmentsMenu() {
+        System.out.println("<< View Appointments >>");
+        try {
+            appointmentController.printAppointments();
+        } catch (Exception e) {
+            System.out.println("An error occurred while retrieving appointments: " + e.getMessage());
+        }
+        System.out.println("Press Enter to return to the main menu.");
+        new Scanner(System.in).nextLine();
+    }
 
-           // Add appointment to the list for the corresponding date
-           appointmentsByDate
-               .computeIfAbsent(date, k -> new ArrayList<>())
-               .add(appointment);
-       }
+//     private void manageMedInventoryMenu(Scanner sc) {
+//         System.out.println("<< Manage Medication Inventory >>");
+//         System.out.println("(1) Add Medication");
+//         System.out.println("(2) Update Medication Stock");
+//         System.out.println("(3) Remove Medication");
+//         System.out.println("(X) Return to Main Menu");
+//         System.out.print("Enter your selection: ");
 
-       // Display appointments grouped by date
-       for (Map.Entry<String, List<String[]>> entry : appointmentsByDate.entrySet()) {
-           String date = entry.getKey();
-           List<String[]> appointmentsForDate = entry.getValue();
+//         String action = sc.nextLine().toUpperCase();
+//         switch (action) {
+//             case "1":
+//                 inventoryManager.addMedication(sc);
+//                 break;
+//             case "2":
+//                 inventoryManager.updateStock(sc);
+//                 break;
+//             case "3":
+//                 inventoryManager.removeMedication(sc);
+//                 break;
+//             case "X":
+//                 System.out.println("Returning to main menu...");
+//                 break;
+//             default:
+//                 System.out.println("Invalid choice. Please try again.");
+//                 break;
+//         }
+//     }
 
-           System.out.println("\n" + date + " (underline this format)"); // Display date header
-           int count = 1;
-           for (String[] appointment : appointmentsForDate) {
-               String appointmentID = appointment[0];
-               String patientID = appointment[1];
-               String doctorID = appointment[2];
-               String status = appointment[3];
-
-               System.out.println(count + ". " + appointmentID);
-               System.out.println("   Patient ID: " + patientID);
-               System.out.println("   Doctor ID: " + doctorID);
-               System.out.println("   Status: " + status);
-               count++;
-           }
-       }
-
-       System.out.println("\nPress enter to continue...");
-       new Scanner(System.in).nextLine();
-   }
-
-   private void viewAndManageHospitalStaff() {
-       // Placeholder for future implementation
-   }
-
-   private void viewAndManageMedicationInventory() {
-       // Placeholder for future implementation
-   }
-
-   private void approveReplenishmentRequests() {
-       // Placeholder for future implementation
-   }
+//     private void approveReplenishmentRequests(Scanner sc) {
+//         System.out.println("<< Approve Replenishment Requests >>");
+//         inventoryManager.approveReplenishment(sc);
+//         System.out.println("Replenishment requests processed. Returning to the main menu...");
+//     }
 }

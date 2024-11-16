@@ -42,13 +42,24 @@ public class FileHandler {
      * @param record The record to be added, represented as an array of Strings.
      */
     public void writeLine(String[] record) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
-            bw.write(String.join(",", record));  // Join array elements with commas
-            bw.newLine();  // Move to the next line after writing the record
+        File file = new File(filePath);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
+            if (file.exists() && file.length() > 0) {
+                try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+                    raf.seek(file.length() - 1);  // Move to the last byte
+                    int lastByte = raf.read();
+                    if (lastByte != '\n') {  // Check if it ends with a newline
+                        bw.newLine();  // Add a newline if missing
+                    }
+                }
+            }
+            bw.write(String.join(",", record));
+            bw.newLine();  // Always add a newline after the record
         } catch (IOException e) {
             System.err.println("An error occurred while writing to the CSV file: " + e.getMessage());
         }
     }
+    
 
     /**
      * Delets a line in the CSV file by the given ID.
