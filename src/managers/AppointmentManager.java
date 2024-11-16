@@ -846,6 +846,11 @@ public class AppointmentManager {
         for (Appointment appointment : appts) {
 
             if (appointment.getStatus().equals("Completed")) {
+
+                if (appointment.getMedStatus() == null) {
+                    continue;
+                }
+
                 if (appointment.getMedStatus().equals("Pending")) {
 
                     isEmpty = false;
