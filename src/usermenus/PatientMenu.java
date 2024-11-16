@@ -57,21 +57,33 @@ public class PatientMenu implements IUserMenu {
                     break;
                 case 3: //View appointment slots
                     AppointmentManager.patientPrintAvailableAppointments();
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 4: //Schedule appointment
                     AppointmentManager.patientScheduleAppointment(patient.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 5: //Reschedule appointment
                     AppointmentManager.patientRescheduleAppointment(patient.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 6: //Cancel appointment
                     AppointmentManager.patientCancelAppointment(patient.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 7: //View scheduled appointment
                     AppointmentManager.patientPrintScheduledAppointments(patient.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 8: //View past appointment records
                     AppointmentManager.patientPrintAppointmentRecords(patient.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 9: //Logout
                     System.out.println("Logging out...");

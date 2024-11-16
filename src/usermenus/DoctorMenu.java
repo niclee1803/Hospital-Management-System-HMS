@@ -57,18 +57,28 @@ public class DoctorMenu implements IUserMenu {
                     break;
                 case 3: //View personal schedule
                     AppointmentManager.doctorViewPersonalSchedule(doctor.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 4: //Set availability for appointments
                     AppointmentManager.doctorAddAppointments(doctor.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 5: //Accept or decline appointment requests
                     AppointmentManager.doctorAppointmentRequests(doctor.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 6: //View upcoming appointments
                     AppointmentManager.doctorViewUpcomingAppointments(doctor.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 7: //Record Appointment Outcome 
                     AppointmentManager.doctorRecordAppointmentOutcome(doctor.getId());
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 8:
                     System.out.println("Logging out...");

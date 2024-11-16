@@ -2,13 +2,11 @@ package managers;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.io.IOException;
 
 import utility.table;
-
-import managers.DoctorManager;
-import managers.PatientManager;
 
 import entities.Appointment;
 import entities.Doctor;
@@ -25,7 +23,7 @@ public class AppointmentManager {
 
     //File methods
     
-    public static List<Appointment> readAppointments() throws IOException {
+    private static List<Appointment> readAppointments() throws IOException {
 
         AppointmentFileHandler file = new AppointmentFileHandler();
         List<Appointment> appointments = new ArrayList<>();
@@ -61,7 +59,7 @@ public class AppointmentManager {
  
     }
 
-    public static void writeAppointments(List<Appointment> appointments) throws IOException {
+    private static void writeAppointments(List<Appointment> appointments) throws IOException {
         AppointmentFileHandler file = new AppointmentFileHandler();
         List<String[]> rows = new ArrayList<>();
 
@@ -95,17 +93,37 @@ public class AppointmentManager {
      *
      * @return Returns a string array containing doctor ID, date and time of the appointment
      */
-    public static String[] getSlotInput() {
+    private static String[] getSlotInput() {
 
         String[] appt = new String[3];
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the Doctor ID: ");
         String dId = sc.nextLine();
-        System.out.println("Enter the date (yyyy-MM-dd): ");
-        String date = sc.nextLine();
-        System.out.println("Enter the time (hh:mm) :");
-        String time = sc.nextLine();
+        String date = null;
+        String time = null;
+        
+        while (date == null) {
+            System.out.println("Enter the date (yyyy-MM-dd): ");
+            String dateInput = sc.nextLine();
+            try {
+                LocalDate.parse(dateInput);
+                date = dateInput; 
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format! Please enter the date in yyyy-MM-dd format.");
+            }
+        }
+        
+        while (time == null) {
+            System.out.println("Enter the time (hh:mm): ");
+            String timeInput = sc.nextLine();
+            try {
+                LocalTime.parse(timeInput);
+                time = timeInput; 
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format! Please enter the time in hh:mm format.");
+            }
+        }
 
         appt[0] = dId;
         appt[1] = date;
@@ -123,7 +141,7 @@ public class AppointmentManager {
      * @param time the time of the appointment
      * @return Returns 0 if the appointment is found and unbooked, 1 if the appointment is booked and -1 if no appointment is found
      */
-    public static int findAppointment(List<Appointment> appt, String dId, LocalDate date, LocalTime time) {
+    private static int findAppointment(List<Appointment> appt, String dId, LocalDate date, LocalTime time) {
 
         for (Appointment appointment : appt) {
             if (dId.equals(appointment.getDoctorID()) && date.equals(appointment.getDate()) && time.equals(appointment.getTime())) {
@@ -149,7 +167,7 @@ public class AppointmentManager {
      * @param time the time of the appointment
      * @return Returns 0 if the appointment is scheduled but not completed or canceled, 1 if the appointment is completed or canceled, and -1 if no appointment is found
      */
-    public static int findAppointmentByPatient(List<Appointment> appt, String patientID, String dId, LocalDate date, LocalTime time) {
+    private static int findAppointmentByPatient(List<Appointment> appt, String patientID, String dId, LocalDate date, LocalTime time) {
 
         for (Appointment appointment : appt) {
             if (patientID.equals(appointment.getPatientID()) && dId.equals(appointment.getDoctorID()) && date.equals(appointment.getDate()) && time.equals(appointment.getTime())) {
@@ -208,6 +226,8 @@ public class AppointmentManager {
             System.out.println("<< There are no available appointments >>");
             System.out.println();
         } else {
+            System.out.println();
+            System.out.println("<< Available appointment slots >>");
             table.printTable(rows);
         }
 
@@ -262,6 +282,8 @@ public class AppointmentManager {
             System.out.println("<< You have no scheduled appointments >>");
             System.out.println();
         } else {
+            System.out.println();
+            System.out.println("<< Your scheduled appointments >>");
             table.printTable(rows);
         }
 
@@ -277,8 +299,9 @@ public class AppointmentManager {
     public static void patientScheduleAppointment(String patientID) throws Exception {
         
         List<Appointment> appts = readAppointments();
-        System.out.println("Scheduling appointment..."); 
-
+        System.out.println();
+        System.out.println("<< Scheduling appointment >>"); 
+        System.out.println();
         String doctorID;
         LocalDate date;
         LocalTime time;
@@ -310,7 +333,7 @@ public class AppointmentManager {
         }
 
         writeAppointments(appts);
-        System.out.println("Appointment request sent!"); 
+        System.out.println("<< Appointment request sent! >>"); 
 
     }
 
@@ -324,7 +347,7 @@ public class AppointmentManager {
     public static void patientRescheduleAppointment(String patientID) throws Exception {
 
         List<Appointment> appts = readAppointments();
-        System.out.println("Rescheduling appointment..."); 
+        System.out.println("<< Rescheduling appointment >>"); 
 
         String doctorID;
         LocalDate date;
@@ -375,7 +398,7 @@ public class AppointmentManager {
      */
     public static void patientCancelAppointment(String patientID) throws Exception {
         List<Appointment> appts = readAppointments();
-        System.out.println("Cancelling appointment..."); 
+        System.out.println("<< Cancelling appointment >>"); 
 
         String doctorID;
         LocalDate date;
@@ -411,7 +434,7 @@ public class AppointmentManager {
         }
 
         writeAppointments(appts);
-        System.out.println("Appointment cancelled!");
+        System.out.println("<< Appointment cancelled! >>");
 
     }
 
@@ -466,6 +489,8 @@ public class AppointmentManager {
             System.out.println("<< You have no completed appointments >>");
             System.out.println();
         } else {
+            System.out.println();
+            System.out.println("<< Your completed appointment outcome records >>");
             table.printTable(rows);
         }
 
@@ -522,6 +547,8 @@ public class AppointmentManager {
             System.out.println("<< You have no appointments on your schedule >>");
             System.out.println();
         } else {
+            System.out.println();
+            System.out.println("<< Your personal schedule >>");
             table.printTable(rows);
         }
     }
@@ -530,18 +557,34 @@ public class AppointmentManager {
 
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
-        LocalDate date;
-        LocalTime time;
+        LocalDate date = null;
+        LocalTime time = null;
 
         System.out.println();
         System.out.println("<< Enter the appointment date and time >>");
         System.out.println();
         
         while(true) {
-            System.out.println("Enter the date (yyyy-MM-dd): ");
-            date = LocalDate.parse(sc.nextLine());
-            System.out.println("Enter the time (hh:mm) :");
-            time = LocalTime.parse(sc.nextLine());
+            
+            while (date == null) {
+                try {
+                    System.out.println("Enter the date (yyyy-MM-dd): ");
+                    String dateInput = sc.nextLine();
+                    date = LocalDate.parse(dateInput);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid date format! Please enter the date in yyyy-MM-dd format.");
+                }
+            }
+
+            while (time == null) {
+                try {
+                    System.out.println("Enter the time (hh:mm): ");
+                    String timeInput = sc.nextLine();
+                    time = LocalTime.parse(timeInput);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid time format! Please enter the time in hh:mm format.");
+                }
+            }
 
             if (findAppointment(appts, doctorId, date, time) >= 0) {
                 System.out.println("You have already indicated availability for this slot! Enter a new slot");
@@ -659,6 +702,8 @@ public class AppointmentManager {
             System.out.println("<< You have no upcoming confirmed appointments >>");
             System.out.println();
         } else {
+            System.out.println();
+            System.out.println("<< Your upcoming appointments >>");
             table.printTable(rows);
         }
 
@@ -786,6 +831,8 @@ public class AppointmentManager {
             System.out.println("<< There are no completed appointments >>");
             System.out.println();
         } else {
+            System.out.println();
+            System.out.println("<< Medication status >>");
             table.printTable(rows);
         }
 
@@ -884,6 +931,8 @@ public class AppointmentManager {
         }
     
         // Print the table
+        System.out.println();
+        System.out.println("<< All appointment details >>");
         table.printTable(rows);
     }
 
