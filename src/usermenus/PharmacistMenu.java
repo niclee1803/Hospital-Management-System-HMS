@@ -59,11 +59,15 @@ public class PharmacistMenu implements IUserMenu {
             switch (choice) {
                 case 1:
                     // Placeholder for View Appointment Outcome Record
-                    viewAppointmentOutcomeRecord();
+                    AppointmentManager.pharmacistViewAppointmentOutcome();
+                    System.out.println("Press enter to continue...\n");
+                    scanner.nextLine();
                     break;
                 case 2:
                     // Placeholder for Update Prescription Status
                     AppointmentManager.pharmacistUpdatePrescriptionStatus();
+                    System.out.println("Press enter to continue...\n");
+                    scanner.nextLine();
                     break;
                 case 3:
                     // View medication inventory
