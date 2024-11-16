@@ -8,6 +8,8 @@ import java.util.List;
  * Represents a doctor, which is a type of User. A doctor has a list of patients and can manage them
  */
 public class Doctor extends User {
+    private Gender gender;
+    private int age;
     private List<Patient> patients;
     //private List<Appointment> appointments;
 
@@ -15,10 +17,14 @@ public class Doctor extends User {
      * Constructs a Doctor with the specified ID, name and list of patients
      * @param doctorID the unique ID of the doctor
      * @param name the name of the doctor
+     * @param gender the gender of the doctor
+     * @param age the age of the doctor
      * @param patients the list of patients assigned to the doctor
      */
-    public Doctor(String doctorID, String name, List<Patient> patients) {
+    public Doctor(String doctorID, String name, Gender gender, int age, List<Patient> patients) {
         super(doctorID, name);
+        this.gender = gender;
+        this.age = age;
         this.patients = patients;
     }
 

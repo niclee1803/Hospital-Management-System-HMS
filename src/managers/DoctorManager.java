@@ -1,6 +1,7 @@
 package managers;
 
 import entities.Doctor;
+import entities.Gender;
 import entities.Patient;
 import entities.User;
 import filehandlers.DoctorFileHandler;
@@ -37,7 +38,9 @@ public class DoctorManager extends UserManager {
         String[] record = fileHandler.readLine(id);
         String userId = record[0];
         String name = record[1];
-        String[] patientIds = record[2].split(";");
+        Gender gender = Gender.valueOf(record[2].toUpperCase());
+        int age = Integer.parseInt(record[3]);
+        String[] patientIds = record[4].split(";");
         List<Patient> patients = new ArrayList<Patient>();
         for (String patientId : patientIds) {
             Patient patient = (Patient) patientManager.createUser(patientId);
@@ -47,7 +50,7 @@ public class DoctorManager extends UserManager {
                 System.err.println("Patient with ID " + patientId + " not found.");
             }
         }
-        return new Doctor(userId, name, patients);
+        return new Doctor(userId, name, gender, age, patients);
     }
 
     /**
