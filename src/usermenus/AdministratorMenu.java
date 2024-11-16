@@ -59,11 +59,11 @@ public class AdministratorMenu implements IUserMenu {
         System.out.println("╔═══════════════════════════════════════════════════════════╗");
         System.out.printf("║ %28s %-28s ║%n", "Welcome, Administrator", administrator.getName() + "!");
         System.out.println("╠═══════════════════════════════════════════════════════════╣");
-        System.out.println("║ (1) View and Manage Hospital Staff                       ║");
-        System.out.println("║ (2) View Appointments Details                            ║");
-        System.out.println("║ (3) View and Manage Medication Inventory                 ║");
-        System.out.println("║ (4) Approve Replenishment Requests                       ║");
-        System.out.println("║ (5) Log Out                                              ║");
+        System.out.println("║ (1) View and Manage Hospital Staff                        ║");
+        System.out.println("║ (2) View Appointments Details                             ║");
+        System.out.println("║ (3) View and Manage Medication Inventory                  ║");
+        System.out.println("║ (4) Approve Replenishment Requests                        ║");
+        System.out.println("║ (5) Log Out                                               ║");
         System.out.println("╚═══════════════════════════════════════════════════════════╝");
         System.out.println();
     }
