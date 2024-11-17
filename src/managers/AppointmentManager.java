@@ -23,16 +23,24 @@ public class AppointmentManager {
 
     //File methods
     
-    private static List<Appointment> readAppointments() throws IOException {
+    private List<Appointment> readAppointments() throws IOException {
 
         AppointmentFileHandler file = new AppointmentFileHandler();
         List<Appointment> appointments = new ArrayList<>();
 
         try {
             List<String[]> rows = file.readFile();
+
+            boolean isFirstRow = true;
             
             // Convert each row into an Appointment object
             for (String[] row : rows) {
+
+                if (isFirstRow) {
+                    isFirstRow = false; // Skip the first iteration
+                    continue;           // Move to the next row
+                }
+                
                 // Make sure the row has the expected number of elements
                 if (row.length >= 10) {
                     String appointmentID = row[0];
@@ -55,11 +63,11 @@ public class AppointmentManager {
             e.printStackTrace(); // Handle the exception appropriately
         }
 
-    return appointments;
+        return appointments;
  
     }
 
-    private static void writeAppointments(List<Appointment> appointments) throws IOException {
+    private void writeAppointments(List<Appointment> appointments) throws IOException {
         AppointmentFileHandler file = new AppointmentFileHandler();
         List<String[]> rows = new ArrayList<>();
 
@@ -93,7 +101,7 @@ public class AppointmentManager {
      *
      * @return Returns a string array containing doctor ID, date and time of the appointment
      */
-    private static String[] getSlotInput() {
+    private String[] getSlotInput() {
 
         String[] appt = new String[3];
 
@@ -141,7 +149,7 @@ public class AppointmentManager {
      * @param time the time of the appointment
      * @return Returns 0 if the appointment is found and unbooked, 1 if the appointment is booked and -1 if no appointment is found
      */
-    private static int findAppointment(List<Appointment> appt, String dId, LocalDate date, LocalTime time) {
+    private int findAppointment(List<Appointment> appt, String dId, LocalDate date, LocalTime time) {
 
         for (Appointment appointment : appt) {
             if (dId.equals(appointment.getDoctorID()) && date.equals(appointment.getDate()) && time.equals(appointment.getTime())) {
@@ -167,7 +175,7 @@ public class AppointmentManager {
      * @param time the time of the appointment
      * @return Returns 0 if the appointment is scheduled but not completed or canceled, 1 if the appointment is completed or canceled, and -1 if no appointment is found
      */
-    private static int findAppointmentByPatient(List<Appointment> appt, String patientID, String dId, LocalDate date, LocalTime time) {
+    private int findAppointmentByPatient(List<Appointment> appt, String patientID, String dId, LocalDate date, LocalTime time) {
 
         for (Appointment appointment : appt) {
             if (patientID.equals(appointment.getPatientID()) && dId.equals(appointment.getDoctorID()) && date.equals(appointment.getDate()) && time.equals(appointment.getTime())) {
@@ -308,7 +316,7 @@ public class AppointmentManager {
 
         while(true) {
             
-            String[] slotDetails = AppointmentManager.getSlotInput();
+            String[] slotDetails = getSlotInput();
             
             doctorID = slotDetails[0];
             date = LocalDate.parse(slotDetails[1]);
@@ -354,7 +362,7 @@ public class AppointmentManager {
         LocalTime time;
 
         while(true) {
-            String[] slotDetails = AppointmentManager.getSlotInput();
+            String[] slotDetails = getSlotInput();
             
             doctorID = slotDetails[0];
             date = LocalDate.parse(slotDetails[1]);
@@ -406,7 +414,7 @@ public class AppointmentManager {
         LocalTime time;
 
         while(true) {
-            String[] slotDetails = AppointmentManager.getSlotInput();
+            String[] slotDetails = getSlotInput();
             
             doctorID = slotDetails[0];
             date = LocalDate.parse(slotDetails[1]);
@@ -477,7 +485,7 @@ public class AppointmentManager {
                     appointment.getDate().toString(),
                     appointment.getTime().toString(),
                     appointment.getService(),
-                    appointment.getMedName(),
+                    appointment.getMedName() == null ? "" : appointment.getMedName(),
                     appointment.getNotes()
                 });
             }
@@ -530,8 +538,8 @@ public class AppointmentManager {
                     } else {
 
                         rows.add(new String[] {
-                            "None",
-                            "None",
+                            "",
+                            "",
                             appointment.getDate().toString(),
                             appointment.getTime().toString(),
                             appointment.getStatus()
