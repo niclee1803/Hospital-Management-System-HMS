@@ -64,10 +64,12 @@ public class DoctorManager extends UserManager {
         if (!(user instanceof Doctor doctor)) {
             throw new IllegalArgumentException("Provided user is not a Doctor.");
         }
-        String[] record = new String[3];
+        String[] record = new String[5];
         record[0] = doctor.getId();
         record[1] = doctor.getName();
-        record[2] = String.join(";", doctor.getPatientIds());
+        record[2] = doctor.getGender().toString();
+        record[3] = Integer.toString(doctor.getAge());
+        record[4] = String.join(";", doctor.getPatientIds());
 
         return record;
     }
