@@ -42,10 +42,10 @@ public class AdministratorMenu implements IUserMenu {
                     viewAppointmentsMenu();
                     break;
                 case 3: // View and Manage Medication Inventory
-                    // manageMedInventoryMenu(sc);
+                    manageMedicationInventory(sc);
                     break;
                 case 4: // Approve Replenishment Requests
-                    // approveReplenishmentRequests(sc);
+                    approveReplenishmentRequests();
                     break;
                 case 5: // Log Out
                     System.out.println("Logging out...");
@@ -127,49 +127,44 @@ public class AdministratorMenu implements IUserMenu {
         new Scanner(System.in).nextLine(); // Pause and wait for the user to press Enter
     }
 
-    // private void manageMedInventoryMenu(Scanner sc) {
-    //     while (true) {
-    //         System.out.println("<< Manage Medication Inventory >>");
-    //         System.out.println("(1) Add Medication");
-    //         System.out.println("(2) Update Medication Stock");
-    //         System.out.println("(3) Remove Medication");
-    //         System.out.println("(X) Return to Main Menu");
-    //         System.out.print("Enter your selection: ");
-
-    //         String action = sc.nextLine().trim().toUpperCase();
-            
-    //         if (action.isEmpty()) {
-    //             System.out.println("No input detected. Please enter a valid choice.");
-    //             continue;
-    //         }
-            
-    //         switch (action) {
-    //             case "1":
-    //                 inventoryManager.addMedication(sc);
-    //                 break;
-    //             case "2":
-    //                 inventoryManager.updateStock(sc);
-    //                 break;
-    //             case "3":
-    //                 inventoryManager.removeMedication(sc);
-    //                 break;
-    //             case "X":
-    //                 System.out.println("Returning to main menu...");
-    //                 return; // Exit the method
-    //             default:
-    //                 System.out.println("Invalid choice. Please try again.");
-    //                 break;
-    //         }
-    //     }
-    // }
-
-    // private void approveReplenishmentRequests(Scanner sc) {
-    //     System.out.println("<< Approve Replenishment Requests >>");
-    //     try {
-    //         inventoryManager.approveReplenishment(sc);
-    //         System.out.println("Replenishment requests processed. Returning to the main menu...");
-    //     } catch (Exception e) {
-    //         System.out.println("An error occurred while approving requests: " + e.getMessage());
-    //     }
-    // }
+    private void manageMedicationInventory(Scanner sc) {
+        while (true) {
+            System.out.println("╔═══════════════════════════════════════════════════════════╗");
+            System.out.println("║             << Manage Medication Inventory >>             ║");
+            System.out.println("╠═══════════════════════════════════════════════════════════╣");
+            System.out.println("║ (1) View Medication Inventory                             ║");
+            System.out.println("║ (2) Add New Medication                                    ║");
+            System.out.println("║ (3) Update Medication Stock                               ║");
+            System.out.println("║ (4) Update Low Stock Alert Line                          ║");
+            System.out.println("║ (5) Return to Main Menu                                   ║");
+            System.out.println("╚═══════════════════════════════════════════════════════════╝");
+            System.out.print("Enter your selection: ");
+    
+            String input = sc.nextLine().trim();
+    
+            if (!input.matches("\\d+")) { // Validate numeric input
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+    
+            int choice = Integer.parseInt(input);
+    
+            switch (choice) {
+                case 1 -> administratorManager.viewMedicationInventory();
+                case 2 -> administratorManager.addMedication(sc);
+                case 3 -> administratorManager.updateMedicationStock(sc);
+                case 4 -> administratorManager.updateLowStockAlert(sc);
+                case 5 -> {
+                    System.out.println("Returning to main menu...");
+                    return; // Exit the inventory management menu
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+    
+    private void approveReplenishmentRequests() {
+        administratorManager.approveReplenishmentRequests();
+    }
+    
 }

@@ -39,7 +39,5 @@ public class MedInventoryManager {
             System.err.println("Error reading medication stock: " + e.getMessage());
         }
     }
-
-
     // INCLUDE other updating functions here 
 }

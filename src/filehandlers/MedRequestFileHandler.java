@@ -1,8 +1,12 @@
 package filehandlers;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The {@code MedRequestFileHandler} class is responsible for handling the writing of replenishment requests to CSV file.
@@ -11,7 +15,7 @@ import java.io.IOException;
  */
 public class MedRequestFileHandler {
 
-      private static final String FILE_PATH = "Replenishment_Requests.csv";
+      private static final String FILE_PATH = "Database/Replenishment_Requests.csv";
 
     /**
      * Appends a new row to the Replenishment_Requests.csv file.
@@ -35,5 +39,26 @@ public class MedRequestFileHandler {
             bw.newLine();
         }
     }
+
+    public List<String[]> readRequests() throws IOException {
+    List<String[]> requests = new ArrayList<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            requests.add(line.split(","));
+        }
+    }
+    return requests;
+}
+
+public void updateRequests(List<String[]> requests) throws IOException {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        for (String[] request : requests) {
+            bw.write(String.join(",", request));
+            bw.newLine();
+        }
+    }
+}
+
     
 }

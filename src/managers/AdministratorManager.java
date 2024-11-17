@@ -3,8 +3,16 @@ package managers;
 import filehandlers.AdministratorFileHandler;
 import filehandlers.DoctorFileHandler;
 import filehandlers.PharmacistFileHandler;
+import filehandlers.MedicationFileHandler;
+import filehandlers.MedRequestFileHandler;
 import utility.table;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,6 +27,8 @@ public class AdministratorManager {
     private final DoctorFileHandler doctorFileHandler = new DoctorFileHandler();
     private final PharmacistFileHandler pharmacistFileHandler = new PharmacistFileHandler();
     private final AdministratorFileHandler administratorFileHandler = new AdministratorFileHandler();
+    private final MedicationFileHandler medicationFileHandler = new MedicationFileHandler();
+    private final MedRequestFileHandler medRequestFileHandler = new MedRequestFileHandler();
 
     public Administrator createUser(String id) {
     String[] record = administratorFileHandler.readLine(id);
@@ -68,7 +78,7 @@ public class AdministratorManager {
     public void addStaff(Scanner sc) {
         System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
         char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
-    
+
         String role;
         if (roleChar == 'D') {
             role = "Doctor";
@@ -80,7 +90,7 @@ public class AdministratorManager {
             System.out.println("Invalid role. Please try again.");
             return; // Exit the method early if role is invalid
         }
-    
+
         System.out.println("Enter Staff ID:");
         String id = sc.nextLine().trim();
         System.out.println("Enter Staff Name:");
@@ -95,79 +105,114 @@ public class AdministratorManager {
             System.out.println("Invalid age. Please enter a valid number.");
             return;
         }
-    
-        // Create the record with the proper role
-        String[] record = {id, name, role, gender, String.valueOf(age)};
-    
-        // Write the record to the appropriate file
-        if (role.equals("Doctor")) {
-            doctorFileHandler.writeLine(record);
-            System.out.println("Doctor added successfully.");
-        } else if (role.equals("Pharmacist")) {
-            pharmacistFileHandler.writeLine(record);
-            System.out.println("Pharmacist added successfully.");
-        } else if (role.equals("Administrator")) {
-            administratorFileHandler.writeLine(record);
-            System.out.println("Administrator added successfully.");
+
+        String[] record;
+
+        // If the role is Administrator, prompt for an additional Role field
+        if (role.equals("Administrator")) {
+            System.out.println("Enter Administrator Role (e.g., CEO, Manager):");
+            String adminRole = sc.nextLine().trim();
+            record = new String[]{id, name, adminRole, gender, String.valueOf(age)};
+        } else {
+            record = new String[]{id, name, gender, String.valueOf(age)};
         }
-    
-        // Update User_List.csv with default password
-        String defaultPassword = "password";
-        String hashedPassword = hashPassword(defaultPassword); // Optional: Hash the password
-        String[] userRecord = {id, role, hashedPassword};
-        administratorFileHandler.writeLine(userRecord);
-        System.out.println("User_List.csv updated with default password.");
+
+        // Write to respective records file
+        administratorFileHandler.writeStaffRecord(record, role);
+
+        // Write to User_List.csv
+        administratorFileHandler.writeToUserList(id, role);
+
+        System.out.println(role + " added successfully.");
     }
-    
-    // Optional: Simulate password hashing (can use a proper library if required)
-    private String hashPassword(String password) {
-        // Simple hash simulation (replace with real hashing like BCrypt if needed)
-        return Integer.toHexString(password.hashCode());
-    }
-    
-    
 
     public void updateStaff(Scanner sc) {
-        System.out.println("Enter Staff Role (Doctor/Pharmacist/Administrator):");
-        String role = sc.nextLine().trim().toLowerCase();
+        System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
+        char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
+    
+        String role;
+        if (roleChar == 'D') {
+            role = "Doctor";
+        } else if (roleChar == 'P') {
+            role = "Pharmacist";
+        } else if (roleChar == 'A') {
+            role = "Administrator";
+        } else {
+            System.out.println("Invalid role. Please try again.");
+            return; // Exit the method early if role is invalid
+        }
+    
         System.out.println("Enter Staff ID to Update:");
         String id = sc.nextLine().trim();
-
-        System.out.println("Enter New Name:");
-        String newName = sc.nextLine().trim();
-
-        String[] updatedRecord = {id, newName, role};
-        if (role.equals("doctor")) {
-            doctorFileHandler.updateLine(updatedRecord);
-            System.out.println("Doctor updated successfully.");
-        } else if (role.equals("pharmacist")) {
-            pharmacistFileHandler.updateLine(updatedRecord);
-            System.out.println("Pharmacist updated successfully.");
-        } else if (role.equals("administrator")) {
-            administratorFileHandler.updateLine(updatedRecord);
-            System.out.println("Administrator updated successfully.");
+    
+        // Fetch existing record for validation
+        boolean exists = administratorFileHandler.recordExists(id, role);
+        if (!exists) {
+            System.out.println("No matching record found for ID: " + id);
+            return;
+        }
+    
+        // Gather updated details
+        System.out.println("Enter Updated Name:");
+        String name = sc.nextLine().trim();
+    
+        System.out.println("Enter Updated Gender (Male/Female):");
+        String gender = sc.nextLine().trim();
+    
+        System.out.println("Enter Updated Age:");
+        int age;
+        try {
+            age = Integer.parseInt(sc.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid age. Please enter a valid number.");
+            return;
+        }
+    
+        String[] updatedRecord;
+    
+        // Additional prompt if the role is Administrator
+        if (role.equals("Administrator")) {
+            System.out.println("Enter Updated Administrator Role (e.g., CEO, Manager):");
+            String adminRole = sc.nextLine().trim();
+            updatedRecord = new String[]{id, name, adminRole, gender, String.valueOf(age)};
+        } else {
+            updatedRecord = new String[]{id, name, gender, String.valueOf(age)};
+        }
+    
+        // Update records file
+        administratorFileHandler.updateStaffRecord(updatedRecord, role);
+    
+        System.out.println(role + " with ID " + id + " updated successfully.");
+    }
+    
+    public void removeStaff(Scanner sc) {
+        System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
+        char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
+    
+        String role;
+        if (roleChar == 'D') {
+            role = "Doctor";
+        } else if (roleChar == 'P') {
+            role = "Pharmacist";
+        } else if (roleChar == 'A') {
+            role = "Administrator";
         } else {
             System.out.println("Invalid role. Please try again.");
+            return; // Exit the method early if role is invalid
         }
-    }
-
-    public void removeStaff(Scanner sc) {
-        System.out.println("Enter Staff Role (Doctor/Pharmacist/Administrator):");
-        String role = sc.nextLine().trim().toLowerCase();
+    
         System.out.println("Enter Staff ID to Remove:");
         String id = sc.nextLine().trim();
-
-        if (role.equals("doctor")) {
-            doctorFileHandler.deleteLine(id);
-            System.out.println("Doctor removed successfully.");
-        } else if (role.equals("pharmacist")) {
-            pharmacistFileHandler.deleteLine(id);
-            System.out.println("Pharmacist removed successfully.");
-        } else if (role.equals("administrator")) {
-            administratorFileHandler.deleteLine(id);
-            System.out.println("Administrator removed successfully.");
+    
+        // Remove from the respective records file
+        boolean recordRemoved = administratorFileHandler.removeStaffRecord(id, role);
+    
+        if (recordRemoved) {
+            // Remove from User_List.csv
+            administratorFileHandler.removeFromUserList(id);
+            System.out.println(role + " with ID " + id + " removed successfully.");
         } else {
-            System.out.println("Invalid role. Please try again.");
+            System.out.println("No matching record found for ID: " + id);
         }
     }
 
@@ -227,5 +272,204 @@ public class AdministratorManager {
         }
     }
 
+    public void viewMedicationInventory() {
+        try {
+            List<String[]> medications = medicationFileHandler.readMedicationStock();
+            System.out.println("╔═══════════════════════════════════════════════════════════╗");
+            System.out.println("║                  Medication Inventory                     ║");
+            System.out.println("╠═══════════════════════════════════════════════════════════╣");
+            System.out.println("║ Medicine Name   | Current Stock   | Unit                 ║");
+            System.out.println("╠═══════════════════════════════════════════════════════════╣");
+
+            for (String[] medication : medications) {
+                System.out.printf("║ %-15s | %-15s | %-15s ║%n", medication[0], medication[1], medication[2]);
+            }
+
+            System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        } catch (IOException e) {
+            System.err.println("Error reading medication inventory: " + e.getMessage());
+        }
+    }
+
+    public void addMedication(Scanner sc) {
+        try {
+            System.out.println("Enter Medicine Name:");
+            String medicineName = sc.nextLine().trim();
     
+            System.out.println("Enter Initial Stock:");
+            String stockInput = sc.nextLine().trim();
+            int initialStock;
+            try {
+                initialStock = Integer.parseInt(stockInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid stock value. Please enter a valid number.");
+                return;
+            }
+    
+            System.out.println("Enter Unit (e.g., packs, bottles):");
+            String unit = sc.nextLine().trim();
+    
+            // Create a new medication record
+            String[] newMedication = {medicineName, String.valueOf(initialStock), unit};
+    
+            // Write the new medication to the file
+            medicationFileHandler.addMedication(newMedication);
+    
+            System.out.println("Medication added successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while adding medication: " + e.getMessage());
+        }
+    }
+    
+    public void updateMedicationStock(Scanner sc) {
+        try {
+            System.out.println("Enter Medicine Name to Update:");
+            String medicineName = sc.nextLine().trim();
+    
+            // Read medication stock and check if the medicine exists
+            List<String[]> medications = medicationFileHandler.readMedicationStock();
+            boolean exists = false;
+    
+            for (String[] medication : medications) {
+                if (medication[0].equalsIgnoreCase(medicineName)) { // Case-insensitive check
+                    exists = true;
+                    break;
+                }
+            }
+    
+            if (!exists) {
+                System.out.println("Medicine with name " + medicineName + " not found.");
+                return; // Exit if medicine does not exist
+            }
+    
+            // If the medicine exists, prompt for stock value
+            System.out.println("Enter New Stock Value:");
+            String stockInput = sc.nextLine().trim();
+    
+            int newStock;
+            try {
+                newStock = Integer.parseInt(stockInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid stock value. Please enter a valid number.");
+                return; // Exit if the stock value is invalid
+            }
+    
+            // Update the stock in the file
+            medicationFileHandler.updateMedicationStock(medicineName, newStock);
+            System.out.println("Medication stock updated successfully.");
+    
+        } catch (IOException e) {
+            System.out.println("An error occurred while updating medication stock: " + e.getMessage());
+        }
+    }
+
+    public void updateLowStockAlert(Scanner sc) {
+        try {
+            System.out.println("Enter Medicine Name for Low Stock Alert Update:");
+            String medicineName = sc.nextLine().trim();
+    
+            // Check if the medicine exists
+            List<String[]> medications = medicationFileHandler.readMedicationStock();
+            boolean exists = false;
+            for (String[] medication : medications) {
+                if (medication[0].equalsIgnoreCase(medicineName)) {
+                    exists = true;
+                    break;
+                }
+            }
+    
+            if (!exists) {
+                System.out.println("Medicine with name " + medicineName + " not found.");
+                return; // Exit if the medicine doesn't exist
+            }
+    
+            System.out.println("Enter New Low Stock Alert Level:");
+            String alertInput = sc.nextLine().trim();
+    
+            int lowStockAlert;
+            try {
+                lowStockAlert = Integer.parseInt(alertInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid alert value. Please enter a valid number.");
+                return;
+            }
+    
+            // Update the Low Stock Alert in the file
+            boolean updated = medicationFileHandler.updateLowStockAlert(medicineName, lowStockAlert);
+    
+            if (updated) {
+                System.out.println("Low stock alert updated successfully.");
+            } else {
+                System.out.println("An unexpected error occurred while updating the alert.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while updating low stock alert: " + e.getMessage());
+        }
+    }
+
+    public void approveReplenishmentRequests() {
+        try {
+            // Read all requests from the file
+            List<String[]> requests = medRequestFileHandler.readRequests();
+            List<String[]> updatedRequests = new ArrayList<>();
+    
+            boolean anyPending = false;
+    
+            for (String[] request : requests) {
+                // Check if the status is "Pending"
+                if (request[3].trim().equalsIgnoreCase("Pending")) {
+                    anyPending = true;
+                    System.out.println("Pending Request: " +
+                            "Medicine: " + request[0] +
+                            ", Amount: " + request[1] +
+                            ", Unit: " + request[2]);
+                    System.out.println("Approve or Reject this request? (A/R): ");
+    
+                    Scanner sc = new Scanner(System.in);
+                    String decision = sc.nextLine().trim().toUpperCase();
+    
+                    if (decision.equals("A")) {
+                        request[3] = "Approved";
+    
+                        // Update stock in medication inventory
+                        String medicineName = request[0];
+                        int replenishAmount;
+                        try {
+                            replenishAmount = Integer.parseInt(request[1].trim());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid amount in request. Skipping update.");
+                            updatedRequests.add(request);
+                            continue;
+                        }
+    
+                        boolean stockUpdated = medicationFileHandler.updateOrAddStock(medicineName, replenishAmount, request[2]);
+                        if (stockUpdated) {
+                            System.out.println("Request approved. Stock updated.");
+                        }
+                    } else if (decision.equals("R")) {
+                        request[3] = "Rejected";
+                        System.out.println("Request rejected.");
+                    } else {
+                        System.out.println("Invalid input. Request left as Pending.");
+                    }
+                }
+                updatedRequests.add(request);
+            }
+    
+            if (!anyPending) {
+                System.out.println("No pending replenishment requests found.");
+            } else {
+                // Update the file with the modified requests
+                medRequestFileHandler.updateRequests(updatedRequests);
+                System.out.println("All requests processed.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while processing replenishment requests: " + e.getMessage());
+        }
+    }
+    
+    
+    
+    
+
 }
