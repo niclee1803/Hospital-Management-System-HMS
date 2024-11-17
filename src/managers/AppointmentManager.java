@@ -383,6 +383,10 @@ public class AppointmentManager {
             patientPrintScheduledAppointments(patientID);
 
             String[] slotDetails = getSlotInput();
+
+            if (slotDetails[2] == null) {
+                return;
+            }
             
             doctorID = slotDetails[0];
             date = LocalDate.parse(slotDetails[1]);
@@ -438,6 +442,10 @@ public class AppointmentManager {
             patientPrintScheduledAppointments(patientID);
 
             String[] slotDetails = getSlotInput();
+
+            if (slotDetails[2] == null) {
+                return;
+            }
             
             doctorID = slotDetails[0];
             date = LocalDate.parse(slotDetails[1]);
@@ -671,7 +679,7 @@ public class AppointmentManager {
                     table.printTable(rows);
 
                     while(true) {
-                        System.out.println("Do you wish to accept this appointment request? (Y/N): ");
+                        System.out.println("Do you wish to accept this appointment request? (Y/N) (Enter to skip): ");
                         char choice = sc.next().charAt(0);
                         sc.nextLine();
                         if (choice == 'Y' || choice == 'y') {
@@ -683,7 +691,8 @@ public class AppointmentManager {
                             System.out.println("Appointment cancelled!");
                             break;
                         } else {
-                            System.out.println("Invalid choice! Please enter Y or N: ");
+                            System.out.println("Appointment skipped!");
+                            break;
                         }
 
                     }
