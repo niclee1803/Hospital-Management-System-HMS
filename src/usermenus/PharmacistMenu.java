@@ -5,7 +5,7 @@ import managers.AppointmentManager;
 import managers.MedInventoryManager;
 import managers.MedRequestManager;
 import entities.*;
-import appointments.appointmentController;
+
 
 import java.io.IOException;
 import managers.PharmacistManager;
@@ -142,16 +142,16 @@ public class PharmacistMenu implements IUserMenu {
      * Prompts the pharmacist for a patient ID and then calls {@link appointmentController#patientPrintAppointmentRecords(String)}
      * to display the records.
      */
-    private void viewAppointmentOutcomeRecord() {
-        try {
-            System.out.print("Enter Patient ID to view completed appointments: ");
-            String patientID = scanner.nextLine();
+    // private void viewAppointmentOutcomeRecord() {
+    //     try {
+    //         System.out.print("Enter Patient ID to view completed appointments: ");
+    //         String patientID = scanner.nextLine();
 
-            // Calling the static method from appointmentController
-            appointmentController.patientPrintAppointmentRecords(patientID);
-        } catch (Exception e) {
-            System.err.println("An error occurred while retrieving appointment records: " + e.getMessage());
-        }
-    }
+    //         // Calling the static method from appointmentController
+    //         appointmentController.patientPrintAppointmentRecords(patientID);
+    //     } catch (Exception e) {
+    //         System.err.println("An error occurred while retrieving appointment records: " + e.getMessage());
+    //     }
+    // }
 
 }
