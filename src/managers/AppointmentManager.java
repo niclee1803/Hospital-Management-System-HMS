@@ -771,6 +771,10 @@ public class AppointmentManager {
 
                             appt.setService(service);
                             appt.setNotes(notes);
+
+                            DoctorManager docManager = new DoctorManager();
+                            Doctor doc = (Doctor) docManager.createUser(appt.getDoctorID());
+                            docManager.addPatientByID(doc, appt.getPatientID());
                             
                             System.out.println("Appointment outcome recorded!");
 
