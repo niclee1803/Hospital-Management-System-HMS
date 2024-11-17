@@ -52,7 +52,7 @@
 ## Bugs to fix
 *
 
-## How to run
+## Set-up Instructions
 1. Clone the repository
    
    ```sh
