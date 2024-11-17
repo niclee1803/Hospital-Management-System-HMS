@@ -601,6 +601,9 @@ public class AppointmentManager {
                 try {
                     System.out.println("Enter the date (yyyy-MM-dd): ");
                     String dateInput = sc.nextLine();
+                    if (dateInput.equalsIgnoreCase("x")) {
+                        return;
+                    }
                     date = LocalDate.parse(dateInput);
                 } catch (DateTimeParseException e) {
                     System.out.println("Invalid date format! Please enter the date in yyyy-MM-dd format.");
@@ -611,6 +614,9 @@ public class AppointmentManager {
                 try {
                     System.out.println("Enter the time (hh:mm): ");
                     String timeInput = sc.nextLine();
+                    if (timeInput.equalsIgnoreCase("x")) {
+                        return;
+                    }
                     time = LocalTime.parse(timeInput);
                 } catch (DateTimeParseException e) {
                     System.out.println("Invalid time format! Please enter the time in hh:mm format.");
