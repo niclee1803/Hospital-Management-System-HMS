@@ -106,14 +106,22 @@ public class AppointmentManager {
         String[] appt = new String[3];
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the Doctor ID: ");
+        System.out.println("Enter the Doctor ID (x to go back): ");
         String dId = sc.nextLine();
+
+        if (dId.equalsIgnoreCase("x")) {
+            return appt;
+        }
+
         String date = null;
         String time = null;
         
         while (date == null) {
-            System.out.println("Enter the date (yyyy-MM-dd): ");
+            System.out.println("Enter the date (yyyy-MM-dd) (x to go back): ");
             String dateInput = sc.nextLine();
+            if (dateInput.equalsIgnoreCase("x")) {
+                return appt;
+            }
             try {
                 LocalDate.parse(dateInput);
                 date = dateInput; 
@@ -123,8 +131,11 @@ public class AppointmentManager {
         }
         
         while (time == null) {
-            System.out.println("Enter the time (hh:mm): ");
+            System.out.println("Enter the time (hh:mm) (x to go back): ");
             String timeInput = sc.nextLine();
+            if (timeInput.equalsIgnoreCase("x")) {
+                return appt;
+            }
             try {
                 LocalTime.parse(timeInput);
                 time = timeInput; 
@@ -315,8 +326,14 @@ public class AppointmentManager {
         LocalTime time;
 
         while(true) {
+
+            patientPrintAvailableAppointments();
             
             String[] slotDetails = getSlotInput();
+
+            if (slotDetails[2] == null) {
+                return;
+            }
             
             doctorID = slotDetails[0];
             date = LocalDate.parse(slotDetails[1]);
@@ -362,6 +379,9 @@ public class AppointmentManager {
         LocalTime time;
 
         while(true) {
+
+            patientPrintScheduledAppointments(patientID);
+
             String[] slotDetails = getSlotInput();
             
             doctorID = slotDetails[0];
@@ -414,6 +434,9 @@ public class AppointmentManager {
         LocalTime time;
 
         while(true) {
+
+            patientPrintScheduledAppointments(patientID);
+
             String[] slotDetails = getSlotInput();
             
             doctorID = slotDetails[0];
