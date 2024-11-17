@@ -78,7 +78,7 @@ public class AdministratorManager {
     public void addStaff(Scanner sc) {
         System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
         char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
-
+    
         String role;
         if (roleChar == 'D') {
             role = "Doctor";
@@ -90,9 +90,20 @@ public class AdministratorManager {
             System.out.println("Invalid role. Please try again.");
             return; // Exit the method early if role is invalid
         }
-
-        System.out.println("Enter Staff ID:");
-        String id = sc.nextLine().trim();
+    
+        String id;
+        while (true) { // Loop until a unique ID is provided
+            System.out.println("Enter Staff ID:");
+            id = sc.nextLine().trim();
+    
+            // Check for duplicate ID in User_List.csv
+            if (administratorFileHandler.checkDuplicateID(id)) {
+                System.out.println("ID already exists. Please enter a different ID.");
+            } else {
+                break; // Exit the loop if ID is unique
+            }
+        }
+    
         System.out.println("Enter Staff Name:");
         String name = sc.nextLine().trim();
         System.out.println("Enter Gender (Male/Female):");
@@ -105,9 +116,9 @@ public class AdministratorManager {
             System.out.println("Invalid age. Please enter a valid number.");
             return;
         }
-
+    
         String[] record;
-
+    
         // If the role is Administrator, prompt for an additional Role field
         if (role.equals("Administrator")) {
             System.out.println("Enter Administrator Role (e.g., CEO, Manager):");
@@ -116,15 +127,16 @@ public class AdministratorManager {
         } else {
             record = new String[]{id, name, gender, String.valueOf(age)};
         }
-
+    
         // Write to respective records file
         administratorFileHandler.writeStaffRecord(record, role);
-
+    
         // Write to User_List.csv
         administratorFileHandler.writeToUserList(id, role);
-
+    
         System.out.println(role + " added successfully.");
     }
+    
 
     public void updateStaff(Scanner sc) {
         System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");

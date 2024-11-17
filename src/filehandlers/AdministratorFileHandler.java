@@ -270,4 +270,27 @@ public class AdministratorFileHandler extends FileHandler {
         }
     }
 
+    /**
+     * Checks if a given ID exists in the User_List.csv file.
+     *
+     * @param id The ID to check for duplicates.
+     * @return True if the ID exists, false otherwise.
+     */
+    public boolean checkDuplicateID(String id) {
+        String filePath = "Database/User_List.csv";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] record = line.split(",", -1); // Split by commas
+                if (record[0].equals(id)) { // Check if the first column matches the ID
+                    return true; // Duplicate found
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error checking duplicate ID in User_List.csv: " + e.getMessage());
+        }
+        return false; // No duplicate found
+    }
+
+
 }
