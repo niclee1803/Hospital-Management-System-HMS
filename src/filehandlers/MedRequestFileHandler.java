@@ -38,16 +38,18 @@ public class MedRequestFileHandler extends ItemFileHandler {
         if (requestData == null || requestData.length != 4) {
             throw new IllegalArgumentException("Request data must have exactly 4 elements: Medicine, Amount, Unit, Status.");
         }
-
+    
         // Read existing rows to preserve existing data
         List<String[]> rows = readFile();
+    
+        // Add the new request as a row
         rows.add(requestData);
-
-            // Write the row to the file, followed by a new line
-            bw.write(row);
-            bw.newLine();
-        }
+    
+        // Write all rows back to the file
+        writeFile(rows);
+    
     }
+    
 
     public List<String[]> readRequests() throws IOException {
     List<String[]> requests = new ArrayList<>();
