@@ -44,6 +44,9 @@ public class PharmacistMenu implements IUserMenu {
      */
     @Override
     public void mainMenu() throws Exception{
+
+        AppointmentManager apptManager = new AppointmentManager();
+
         while (true) {
             // Displaying the pharmacist menu in the specified format
             printChoices();
@@ -59,13 +62,13 @@ public class PharmacistMenu implements IUserMenu {
             switch (choice) {
                 case 1:
                     // Placeholder for View Appointment Outcome Record
-                    AppointmentManager.pharmacistViewAppointmentOutcome();
+                    apptManager.pharmacistViewAppointmentOutcome();
                     System.out.println("Press enter to continue...\n");
                     scanner.nextLine();
                     break;
                 case 2:
                     // Placeholder for Update Prescription Status
-                    AppointmentManager.pharmacistUpdatePrescriptionStatus();
+                    apptManager.pharmacistUpdatePrescriptionStatus();
                     System.out.println("Press enter to continue...\n");
                     scanner.nextLine();
                     break;

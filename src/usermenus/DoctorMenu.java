@@ -37,6 +37,9 @@ public class DoctorMenu implements IUserMenu {
      */
     @Override
     public void mainMenu() throws Exception{
+
+        AppointmentManager apptManager = new AppointmentManager();
+
         while (true) {
             printChoices();
             System.out.print("Enter your selection: ");
@@ -56,27 +59,27 @@ public class DoctorMenu implements IUserMenu {
                     updatePatientRecordsMenu();
                     break;
                 case 3: //View personal schedule
-                    AppointmentManager.doctorViewPersonalSchedule(doctor.getId());
+                    apptManager.doctorViewPersonalSchedule(doctor.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 4: //Set availability for appointments
-                    AppointmentManager.doctorAddAppointments(doctor.getId());
+                    apptManager.doctorAddAppointments(doctor.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 5: //Accept or decline appointment requests
-                    AppointmentManager.doctorAppointmentRequests(doctor.getId());
+                    apptManager.doctorAppointmentRequests(doctor.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 6: //View upcoming appointments
-                    AppointmentManager.doctorViewUpcomingAppointments(doctor.getId());
+                    apptManager.doctorViewUpcomingAppointments(doctor.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 7: //Record Appointment Outcome 
-                    AppointmentManager.doctorRecordAppointmentOutcome(doctor.getId());
+                    apptManager.doctorRecordAppointmentOutcome(doctor.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
