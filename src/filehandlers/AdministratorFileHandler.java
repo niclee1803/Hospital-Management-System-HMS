@@ -69,7 +69,12 @@ public class AdministratorFileHandler extends FileHandler {
             }
 
             // Write the new record
-            bw.write(String.join(",", record));
+        // Append a comma for Doctor records specifically
+        if (role.equalsIgnoreCase("Doctor")) {
+            bw.write(String.join(",", record) + ","); // Add a trailing comma for Doctor records
+        } else {
+            bw.write(String.join(",", record)); // Write the new record without extra comma
+        }
             bw.newLine();
         } catch (IOException e) {
             System.err.println("Error writing to records file: " + e.getMessage());

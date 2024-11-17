@@ -3,6 +3,7 @@ package managers;
 import java.io.IOException;
 import java.util.List;
 import filehandlers.MedicationFileHandler;
+import utility.*;
 
 /**
  * The {@code MedInventoryManager} class is responsible for managing the medical inventory, specifically the medications
@@ -23,17 +24,15 @@ public class MedInventoryManager {
      * Retrieves all rows from the medication stock file and prints them.
      */
     public void printFullInventory() {
+
+        table newtable = new table();
+
         try {
             List<String[]> inventory = fileHandler.readMedicationStock();
 
-            // Print header
-            System.out.printf("%-20s %-15s %-10s%n", "Medicine Name", "Current Stock", "Unit");
-            System.out.println("-----------------------------------------------------");
+            newtable.printTable(inventory);
 
-            // Print each row in a formatted way
-            for (String[] row : inventory) {
-                System.out.printf("%-20s %-15s %-10s%n", row[0], row[1], row[2]);
-            }
+
 
         } catch (IOException e) {
             System.err.println("Error reading medication stock: " + e.getMessage());
