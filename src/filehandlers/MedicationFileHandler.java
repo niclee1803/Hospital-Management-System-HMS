@@ -1,35 +1,34 @@
 package filehandlers;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handles file operations for medication stock in the CSV file.
+ * The {@code MedicationFileHandler} class manages the medication stock CSV file.
+ * It extends {@code ItemFileHandler} to reuse generic file handling operations.
  */
-public class MedicationFileHandler {
-    // Hardcoded file path for the medication stock CSV
+public class MedicationFileHandler extends ItemFileHandler {
+
+    // Static constant for the file path
     private static final String FILE_PATH = "Database/Medicine_List.csv";
 
     /**
-     * Reads the medication stock CSV file and returns the rows as a list of string arrays.
+     * Default constructor for {@code MedicationFileHandler}.
+     * Initializes the handler with the predefined file path.
+     */
+    public MedicationFileHandler() {
+        super(FILE_PATH);
+    }
+
+    /**
+     * Reads the medication stock from the CSV file and returns the rows.
+     * Each row is represented as a string array.
      *
-     * @return List of string arrays where each array represents a row from the CSV.
+     * @return List of string arrays where each array is a row from the CSV.
      * @throws IOException if the file cannot be read.
      */
     public List<String[]> readMedicationStock() throws IOException {
-        List<String[]> rows = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                rows.add(line.split(",")); // Split by comma
-            }
-        }
-        return rows;
+        return readFile(); // Reuse the inherited readFile method
     }
 
     /**

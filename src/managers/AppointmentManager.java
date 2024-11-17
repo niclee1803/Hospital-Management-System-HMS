@@ -192,7 +192,7 @@ public class AppointmentManager {
      *
      * @throws Exception if there is an error reading from the file
      */
-    public static void patientPrintAvailableAppointments() throws Exception {
+    public void patientPrintAvailableAppointments() throws Exception {
 
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
@@ -239,7 +239,7 @@ public class AppointmentManager {
      * @param patientID the patient's ID
      * @throws Exception if there is an error reading from the file
      */
-    public static void patientPrintScheduledAppointments(String patientID) throws Exception {
+    public void patientPrintScheduledAppointments(String patientID) throws Exception {
 
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
@@ -296,7 +296,7 @@ public class AppointmentManager {
      * @param patientID the patient's ID
      * @throws Exception if there is an error reading or writing to the file
      */
-    public static void patientScheduleAppointment(String patientID) throws Exception {
+    public void patientScheduleAppointment(String patientID) throws Exception {
         
         List<Appointment> appts = readAppointments();
         System.out.println();
@@ -344,7 +344,7 @@ public class AppointmentManager {
      * @param patientID the patient's ID
      * @throws Exception if there is an error reading or writing to the file
      */
-    public static void patientRescheduleAppointment(String patientID) throws Exception {
+    public void patientRescheduleAppointment(String patientID) throws Exception {
 
         List<Appointment> appts = readAppointments();
         System.out.println("<< Rescheduling appointment >>"); 
@@ -385,7 +385,8 @@ public class AppointmentManager {
 
         writeAppointments(appts);
 
-        AppointmentManager.patientScheduleAppointment(patientID);
+        AppointmentManager manager = new AppointmentManager();
+        manager.patientScheduleAppointment(patientID);
 
 
     }
@@ -396,7 +397,7 @@ public class AppointmentManager {
      * @param patientID the patient's ID
      * @throws Exception if there is an error reading or writing to the file
      */
-    public static void patientCancelAppointment(String patientID) throws Exception {
+    public void patientCancelAppointment(String patientID) throws Exception {
         List<Appointment> appts = readAppointments();
         System.out.println("<< Cancelling appointment >>"); 
 
@@ -444,7 +445,7 @@ public class AppointmentManager {
      * @param patientID the patient's ID
      * @throws Exception if there is an error reading from the file
      */
-    public static void patientPrintAppointmentRecords(String patientID) throws Exception {
+    public void patientPrintAppointmentRecords(String patientID) throws Exception {
         
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
@@ -497,7 +498,7 @@ public class AppointmentManager {
 
     //Doctor
 
-    public static void doctorViewPersonalSchedule(String doctorId) throws Exception {
+    public void doctorViewPersonalSchedule(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
         String[] headers = {
@@ -552,7 +553,7 @@ public class AppointmentManager {
         }
     }
 
-    public static void doctorAddAppointments(String doctorId) throws Exception {
+    public void doctorAddAppointments(String doctorId) throws Exception {
 
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
@@ -601,7 +602,7 @@ public class AppointmentManager {
         writeAppointments(appts);
     }
 
-    public static void doctorAppointmentRequests(String doctorId) throws Exception {
+    public void doctorAppointmentRequests(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
@@ -666,7 +667,7 @@ public class AppointmentManager {
 
     }
 
-    public static void doctorViewUpcomingAppointments(String doctorId) throws Exception {
+    public void doctorViewUpcomingAppointments(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
         String[] headers = {
@@ -708,7 +709,7 @@ public class AppointmentManager {
 
     }
 
-    public static void doctorRecordAppointmentOutcome(String doctorId) throws Exception {
+    public void doctorRecordAppointmentOutcome(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
@@ -770,6 +771,10 @@ public class AppointmentManager {
 
                             appt.setService(service);
                             appt.setNotes(notes);
+
+                            DoctorManager docManager = new DoctorManager();
+                            Doctor doc = (Doctor) docManager.createUser(appt.getDoctorID());
+                            docManager.addPatientByID(doc, appt.getPatientID());
                             
                             System.out.println("Appointment outcome recorded!");
 
@@ -797,7 +802,7 @@ public class AppointmentManager {
 
     //Pharmacist
 
-    public static void pharmacistViewAppointmentOutcome() throws Exception {
+    public void pharmacistViewAppointmentOutcome() throws Exception {
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
 
@@ -837,7 +842,7 @@ public class AppointmentManager {
 
     }
 
-    public static void pharmacistUpdatePrescriptionStatus() throws Exception {
+    public void pharmacistUpdatePrescriptionStatus() throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
@@ -901,7 +906,7 @@ public class AppointmentManager {
 
     //Admin
 
-    public static void adminPrintAppointmentDetails() throws Exception {
+    public void adminPrintAppointmentDetails() throws Exception {
 
         List<Appointment> appts = readAppointments();
 

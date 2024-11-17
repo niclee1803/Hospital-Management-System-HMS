@@ -117,9 +117,10 @@ public class AdministratorMenu implements IUserMenu {
     }
 
     private void viewAppointmentsMenu() {
+        AppointmentManager apptManager = new AppointmentManager();
         System.out.println("<< View Appointments >>");
         try {
-            AppointmentManager.adminPrintAppointmentDetails();
+            apptManager.adminPrintAppointmentDetails();
         } catch (Exception e) {
             System.out.println("An error occurred while retrieving appointments: " + e.getMessage());
         }
