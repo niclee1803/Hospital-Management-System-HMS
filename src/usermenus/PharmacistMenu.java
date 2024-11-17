@@ -159,13 +159,13 @@ public class PharmacistMenu implements IUserMenu {
 
         System.out.println();
 
-        System.out.print("Enter Status (e.g., Pending, Approved): ");
-        String status = scanner.next();
-        System.out.println();
+        // System.out.print("Enter Status (e.g., Pending, Approved): ");
+        // String status = scanner.next();
+        // System.out.println();
 
 
         try {
-            requestManager.createNewRequest(medicine, amount, unit, status);
+            requestManager.createNewRequest(medicine, amount, unit, "Pending");
         } catch (IOException e) {
             System.err.println("Error submitting replenishment request: " + e.getMessage());
         }
