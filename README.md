@@ -59,20 +59,14 @@
    git clone https://github.com/niclee1803/Hospital-Management-System-HMS.git
    ```
    
-3. Navigate to the project directory
+2. Navigate to the build directory
    
    ```sh
-   cd Hospital-Management-System-HMS
+   cd Hospital-Management-System-HMS/out/production/HMS
    ```
-   
-4. Compile the project: If using the command line, navigate to the src/ directory and compile the Java files
-   
-   ```
-   javac -d ../out/production/HMS *.java
-   ```
-   
-5. Run the project: Make sure you’re in the project root directory, then execute the main class:
+     
+3. Run the Main class
    
    ```
-   java -cp out/production/HMS Main
+   java Main
    ```
