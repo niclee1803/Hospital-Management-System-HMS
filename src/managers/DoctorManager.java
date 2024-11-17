@@ -110,5 +110,7 @@ public class DoctorManager extends UserManager {
     public void addPatientByID(Doctor doctor, String patientId) {
         Patient patient = (Patient) patientManager.createUser(patientId);
         doctor.addPatient(patient);
+        String[] record = createRecordFromUser(doctor);
+        fileHandler.updateLine(record);
     }
 }
