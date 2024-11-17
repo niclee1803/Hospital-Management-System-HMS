@@ -45,8 +45,8 @@ public class PharmacistManager extends UserManager{
         // Extract data from the record
         String pharmacistId = record[0];
         String name = record[1];
-        Gender gender = Gender.valueOf(record[3].toUpperCase()); // Assuming gender is stored as a string like "MALE" or "FEMALE"
-        int age = Integer.parseInt(record[4]);
+        Gender gender = Gender.valueOf(record[2].toUpperCase()); // Assuming gender is stored as a string like "MALE" or "FEMALE"
+        int age = Integer.parseInt(record[3]);
     
         // Create and return a new Pharmacist instance
         return new Pharmacist(pharmacistId, name, gender, age);

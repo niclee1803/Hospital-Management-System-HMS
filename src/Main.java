@@ -17,8 +17,10 @@ public class Main {
                     " ███ ███  ███████ ███████  ██████  ██████  ██      ██ ███████           ██     ██████         ██   ██ ██      ██ ███████ \n" +
                     "                                                                                                                         \n" +
                     "                                                                                                                         \n");
+            
             LoginMenu loginMenu = new LoginMenu();
             loginMenu.displayMenu();
+
             IUserMenu menu;
             if (loginMenu.getUserType() == UserType.PATIENT && loginMenu.isAuthenticated()) {
                 menu = new PatientMenu(loginMenu.getId());

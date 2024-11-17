@@ -52,12 +52,29 @@ public class PharmacistMenu implements IUserMenu {
             printChoices();
             System.out.print("Enter your selection: ");
             // Read user choice
-            int choice;
-            try {
-                choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                choice = 0;
-            }
+            // int choice;
+            // try {
+            //     choice = Integer.parseInt(scanner.nextLine());
+            // } catch (NumberFormatException e) {
+            //     choice = 0;
+            // }
+
+            int choice = -1;
+  
+ 
+             choice = scanner.nextInt();
+   
+
+    
+            // try {
+            //     choice = Integer.parseInt(input);
+            // } catch (NumberFormatException e) {
+            //     System.out.println("Invalid input. Please enter a number between 1 and 5.\n");
+            //     continue; // Restart the loop for invalid input
+            // }
+    
+            System.out.println(); // Add a blank line for better readability
+
             System.out.println();
             switch (choice) {
                 case 1:
@@ -120,18 +137,32 @@ public class PharmacistMenu implements IUserMenu {
      * to create a new request
      */
     private void submitReplenishmentRequest() {
+
+ 
         System.out.print("Enter Medicine Name: ");
-        String medicine = scanner.nextLine();
+
+        String medicine = scanner.next();
+
+        System.out.println();
+
+
 
         System.out.print("Enter Amount Requested: ");
-        int amount = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+
+        int amount = Integer.parseInt(scanner.next());
+
+        System.out.println();
+  
 
         System.out.print("Enter Unit (e.g., tablets, bottles): ");
-        String unit = scanner.nextLine();
+        String unit = scanner.next();
+
+        System.out.println();
 
         System.out.print("Enter Status (e.g., Pending, Approved): ");
-        String status = scanner.nextLine();
+        String status = scanner.next();
+        System.out.println();
+
 
         try {
             requestManager.createNewRequest(medicine, amount, unit, status);

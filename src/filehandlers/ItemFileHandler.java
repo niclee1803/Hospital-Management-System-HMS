@@ -3,6 +3,7 @@ package filehandlers;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,46 +22,53 @@ public class ItemFileHandler {
         List<String[]> rows = new ArrayList<>();
         
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            br.readLine();
-            String line;
             
-            // Read each line in the CSV file
+            String line;
             while ((line = br.readLine()) != null) {
-                // Split the line by commas to handle CSV format
-                String[] row = line.split(",", -1);
-                rows.add(row);
+                // Skip any empty lines
+                if (!line.trim().isEmpty()) {
+                    String[] row = line.split(",", -1);
+                    rows.add(row);
+                }
             }
         }
         
         return rows;
     }
-
-    public void writeFile(List<String[]> rows) throws IOException {
-
-        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(FILE_PATH))) {
-            
-            for (String[] item : rows) {
-                // Use a StringBuilder to construct each line
-                StringBuilder line = new StringBuilder();
     
-                // Loop over each field in the current row
-                for (int i = 0; i < item.length; i++) {
-                    // Append the current field, or an empty string if it's null
-                    line.append(item[i] == null ? "" : item[i]);
-    
-                    // Append a comma if it's not the last field
-                    if (i < item.length - 1) {
-                        line.append(",");
-                    }
-                }
-    
-                // Write the constructed line to the file
-                bw.write(line.toString());
-                bw.newLine(); // Add a new line after each row
-            }
-
-        }
-
+   public void writeFile(List<String[]> rows) throws IOException {
+    if (rows == null || rows.isEmpty()) {
+        return; // If no rows exist, just return
     }
+
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        // Write the header (first row) from the data dynamically
+        String[] header = rows.get(0); // The first row is assumed to be the header
+        StringBuilder headerLine = new StringBuilder();
+        for (int i = 0; i < header.length; i++) {
+            headerLine.append(header[i] == null ? "" : header[i]);
+            if (i < header.length - 1) {
+                headerLine.append(",");
+            }
+        }
+        bw.write(headerLine.toString());
+        bw.newLine();  // Move to the next line after header
+        
+        // Write the remaining rows (data)
+        for (int i = 1; i < rows.size(); i++) {  // Start from the second row (skip the header)
+            String[] row = rows.get(i);
+            StringBuilder line = new StringBuilder();
+            for (int j = 0; j < row.length; j++) {
+                line.append(row[j] == null ? "" : row[j]);
+                if (j < row.length - 1) {
+                    line.append(",");
+                }
+            }
+            bw.write(line.toString());
+            bw.newLine();
+        }
+    }
+}
+
 
 }

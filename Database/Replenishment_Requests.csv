@@ -1,5 +1,7 @@
-﻿Medicine,Amount,Unit,Status
-Panadol,100,packs,Rejected
+Medicine,Amount,Unit,Status
 Asprin,3000,packs,Approved
 Loratadine,3000,packs,Approved
 Paracetamol,1000,packs,Approved
+panadol,23,tabs,Pending
+cancermeds,50,bottles,Pending
+greatrpills,40,tabs,Pending

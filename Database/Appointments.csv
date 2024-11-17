@@ -16,7 +16,7 @@ A014,D002,P1002,2024-11-29,15:30,Completed,Consultation,,,Patient advised to res
 A015,D003,P1003,2024-11-30,16:00,Completed,Physical Therapy,,,Successful session.
 A016,D001,P1004,2024-12-01,08:30,Completed,Examination,,,No issues found.
 A017,D002,P1001,2024-12-02,09:45,Completed,Vaccine,Paracetamol,Dispensed,Monitor for side effects.
-A018,D003,P1002,2024-12-03,10:15,Completed,Treatment,Ibuprofen,Pending,Take medication as needed.
+A018,D003,P1002,2024-12-03,10:15,Completed,Treatment,Ibuprofen,Dispensed,Take medication as needed.
 A019,D001,P1003,2024-12-04,11:45,Completed,Procedure,,,Further assessment required.
 A020,D002,P1004,2024-12-05,13:30,Completed,Consultation,,,No follow-up needed.
 A021,D003,P1001,2024-12-06,14:45,Completed,Examination,,,Patient stable.
@@ -38,4 +38,4 @@ A036,D003,P1001,2024-12-21,14:45,Cancelled,,,,
 A037,D001,P1002,2024-12-22,16:00,Completed,Health Assessment,,,Patient recovering well.
 A038,D002,P1003,2024-12-23,08:30,Completed,Follow-up,Amoxicillin,Dispensed,Complete full course.
 A039,D003,P1004,2024-12-24,09:45,Completed,Therapy,Antibiotic,Pending,Wait for lab results.
-A040,D001,P1001,2024-12-25,10:15,Completed,Examination,,,Discharge after observation.
+A040,D001,P1001,2024-12-25,10:15,Completed,Examination,,Pending,Discharge after observation.
