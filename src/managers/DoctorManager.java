@@ -104,4 +104,11 @@ public class DoctorManager extends UserManager {
     public void updatePatientPrescriptions(Doctor doctor, String patientID, List<String> newPrescriptions) {
         doctor.setPatientByID(patientID, patientManager.updatePrescriptions(patientID, newPrescriptions));
     }
+
+
+    // javadoc
+    public void addPatientByID(Doctor doctor, String patientId) {
+        Patient patient = (Patient) patientManager.createUser(patientId);
+        doctor.addPatient(patient);
+    }
 }

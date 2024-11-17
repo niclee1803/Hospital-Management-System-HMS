@@ -79,4 +79,15 @@ public class Doctor extends User {
         }
     }
 
+    /**
+     * Adds a patient in the list by matching the patient ID.
+     *
+     * @param patient the Patient object to be added
+     */
+    public void addPatient(Patient patient) {
+        if (!patients.contains(patient)) {
+            patients.add(patient);
+        }
+    }
+
 }
