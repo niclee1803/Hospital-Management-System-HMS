@@ -755,10 +755,11 @@ public class AppointmentManager {
 
     }
 
-    public void doctorRecordAppointmentOutcome(String doctorId) throws Exception {
+    public Doctor doctorRecordAppointmentOutcome(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
+        
 
         for (Appointment appt : appts) {
 
@@ -819,8 +820,18 @@ public class AppointmentManager {
                             appt.setNotes(notes);
 
                             DoctorManager docManager = new DoctorManager();
-                            Doctor doc = (Doctor) docManager.createUser(appt.getDoctorID());
-                            docManager.addPatientByID(doc, appt.getPatientID());
+                            Doctor doc = (Doctor) docManager.createUser(doctorId);
+
+                            boolean found = false;
+                            for (Patient p : doc.getPatients()) {
+                                if (p.getId().equals(appt.getPatientID())) {
+                                    found = true;
+                                }
+                            }
+                            
+                            if (found == false) {
+                                docManager.addPatientByID(doc, appt.getPatientID());
+                            }
                             
                             System.out.println("Appointment outcome recorded!");
 
@@ -841,9 +852,15 @@ public class AppointmentManager {
             System.out.println();
             System.out.println("<< You have no confirmed appointments to complete >>");
             System.out.println();
+            DoctorManager docManager = new DoctorManager();
+            Doctor doc = (Doctor) docManager.createUser(doctorId);
+            return doc;
         }
 
         writeAppointments(appts);
+        DoctorManager docManager = new DoctorManager();
+        Doctor doc = (Doctor) docManager.createUser(doctorId);
+        return doc;
     }
 
     //Pharmacist

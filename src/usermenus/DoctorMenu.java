@@ -79,7 +79,7 @@ public class DoctorMenu implements IUserMenu {
                     sc.nextLine();
                     break;
                 case 7: //Record Appointment Outcome 
-                    apptManager.doctorRecordAppointmentOutcome(doctor.getId());
+                    this.doctor = apptManager.doctorRecordAppointmentOutcome(doctor.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
