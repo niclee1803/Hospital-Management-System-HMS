@@ -17,12 +17,11 @@ import managers.PharmacistManager;
  * This class implements the {@link IUserMenu} interface to manage the pharmacist's main menu and functionalities.
  */
 public class PharmacistMenu implements IUserMenu {
-
-    private Scanner scanner;
     private MedInventoryManager inventoryManager;
     private MedRequestManager requestManager;
     private PharmacistManager pharmacistmanager;
     private Pharmacist pharmacist;
+    private Scanner sc;
 
     /**
      * Constructs a {@code PharmacistMenu} object for the specified pharmacist.
@@ -30,11 +29,11 @@ public class PharmacistMenu implements IUserMenu {
      * @param pharmacistID the ID of the pharmacist to load and manage.
      */
     public PharmacistMenu(String pharmacistID) {
-        this.scanner = new Scanner(System.in);
         this.inventoryManager = new MedInventoryManager();
         this.requestManager = new MedRequestManager();
         this.pharmacistmanager = new PharmacistManager(); // Assuming this is a valid instance
         this.pharmacist = (Pharmacist) pharmacistmanager.createUser(pharmacistID);
+        this.sc = new Scanner(System.in);
     }
 
     /**
@@ -62,7 +61,7 @@ public class PharmacistMenu implements IUserMenu {
             int choice = -1;
   
  
-             choice = scanner.nextInt();
+             choice = sc.nextInt();
    
 
     
@@ -81,13 +80,13 @@ public class PharmacistMenu implements IUserMenu {
                     // Placeholder for View Appointment Outcome Record
                     apptManager.pharmacistViewAppointmentOutcome();
                     System.out.println("Press enter to continue...\n");
-                    scanner.nextLine();
+                    sc.nextLine();
                     break;
                 case 2:
                     // Placeholder for Update Prescription Status
                     apptManager.pharmacistUpdatePrescriptionStatus();
                     System.out.println("Press enter to continue...\n");
-                    scanner.nextLine();
+                    sc.nextLine();
                     break;
                 case 3:
                     // View medication inventory
@@ -141,7 +140,7 @@ public class PharmacistMenu implements IUserMenu {
  
         System.out.print("Enter Medicine Name: ");
 
-        String medicine = scanner.next();
+        String medicine = sc.next();
 
         System.out.println();
 
@@ -149,13 +148,13 @@ public class PharmacistMenu implements IUserMenu {
 
         System.out.print("Enter Amount Requested: ");
 
-        int amount = Integer.parseInt(scanner.next());
+        int amount = Integer.parseInt(sc.next());
 
         System.out.println();
   
 
         System.out.print("Enter Unit (e.g., tablets, bottles): ");
-        String unit = scanner.next();
+        String unit = sc.next();
 
         System.out.println();
 

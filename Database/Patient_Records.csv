@@ -1,6 +1,13 @@
 ﻿PatientID,Name,DOB,Gender,Phone,Email,BloodType,Diagnoses,Treatments,Prescriptions
-P1001,Alice Brown,14/05/1990,FEMALE,91111111,alice@gmail.com,A_POSITIVE,foobar;hello,brainrotjuice;chemo,cancermeds
-P1002,Bob Stone,22/11/1975,MALE,91234567,bob.stone@example.com,B_POSITIVE,dumbass,,
-P1003,Charlie White,08/07/1990,MALE,92222222,charlie.white@example.com,O_NEGATIVE,,,
-P1004,Nic,18/03/2002,MALE,92333171,nic@gmail.com,O_POSITIVE,Stupid,Pills,Antibiotics;pills
+P1001,Alice Brown,14/05/1990,FEMALE,91111111,alice@gmail.com,A_POSITIVE,Hypertension,Lifestyle changes;Medication,Beta-blockers
+P1002,Bob Stone,22/11/1975,MALE,91234567,bob.stone@example.com,B_POSITIVE,Diabetes Mellitus,Insulin therapy;Diet control,Metformin;Insulin
+P1003,Charlie White,08/07/1990,MALE,92222222,charlie.white@example.com,O_NEGATIVE,Asthma,Bronchodilators;Inhaler,Corticosteroids
+P1004,Diana Ross,19/03/1985,FEMALE,93334444,diana.ross@example.com,O_POSITIVE,Chronic Kidney Disease,Dialysis;Dietary management,ACE inhibitors
+P1005,Eric Johnson,30/09/1980,MALE,94445555,eric.johnson@example.com,AB_NEGATIVE,Arthritis,Physical therapy;Anti-inflammatory drugs,NSAIDs
+P1006,Fiona Black,15/06/1995,FEMALE,95556666,fiona.black@example.com,A_NEGATIVE,Thyroid Disorder,Hormone replacement therapy,Levothyroxine
+P1007,George King,25/12/1970,MALE,96667777,george.king@example.com,B_POSITIVE,Parkinson’s Disease,Physical therapy;Medication,Levodopa
+P1008,Hannah Lee,11/11/2000,FEMALE,97778888,hannah.lee@example.com,O_POSITIVE,Epilepsy,Seizure control;Medication,Anticonvulsants
+P1009,Ian Bell,03/04/1987,MALE,98889999,ian.bell@example.com,AB_POSITIVE,COPD,Lung therapy;Medication,Bronchodilators
+P1010,Jenna Green,21/08/1992,FEMALE,99990000,jenna.green@example.com,A_POSITIVE,Multiple Sclerosis,Physical therapy;Immunomodulatory drugs,Interferons
+
 

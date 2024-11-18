@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.io.IOException;
 
-import utility.table;
+import utility.Table;
 
 import entities.Appointment;
 import entities.Doctor;
@@ -247,7 +247,7 @@ public class AppointmentManager {
         } else {
             System.out.println();
             System.out.println("<< Available appointment slots >>");
-            table.printTable(rows);
+            Table.printTable(rows);
         }
 
     }
@@ -303,7 +303,7 @@ public class AppointmentManager {
         } else {
             System.out.println();
             System.out.println("<< Your scheduled appointments >>");
-            table.printTable(rows);
+            Table.printTable(rows);
         }
 
     }
@@ -530,7 +530,7 @@ public class AppointmentManager {
         } else {
             System.out.println();
             System.out.println("<< Your completed appointment outcome records >>");
-            table.printTable(rows);
+            Table.printTable(rows);
         }
 
     }
@@ -588,7 +588,7 @@ public class AppointmentManager {
         } else {
             System.out.println();
             System.out.println("<< Your personal schedule >>");
-            table.printTable(rows);
+            Table.printTable(rows);
         }
     }
 
@@ -640,7 +640,7 @@ public class AppointmentManager {
 
         int length = appts.size() + 1;
         String number = String.format("%03d", length);
-        String apptId = "A" + number;
+        String apptId = "AP" + number;
 
         Appointment newSlot = new Appointment(apptId, doctorId, null, date, time, "Unbooked", null, null, null, null);
         appts.add(newSlot);
@@ -676,10 +676,10 @@ public class AppointmentManager {
                         appt.getTime().toString()
                     });
 
-                    table.printTable(rows);
+                    Table.printTable(rows);
 
                     while(true) {
-                        System.out.println("Do you wish to accept this appointment request? (Y/N) (Enter to skip): ");
+                        System.out.println("Do you wish to accept this appointment request? (Y/N) (Any to skip): ");
                         char choice = sc.next().charAt(0);
                         sc.nextLine();
                         if (choice == 'Y' || choice == 'y') {
@@ -696,9 +696,6 @@ public class AppointmentManager {
                         }
 
                     }
-
-                    
-
                 }
             }
         }
@@ -750,7 +747,7 @@ public class AppointmentManager {
         } else {
             System.out.println();
             System.out.println("<< Your upcoming appointments >>");
-            table.printTable(rows);
+            Table.printTable(rows);
         }
 
     }
@@ -784,7 +781,7 @@ public class AppointmentManager {
                         appt.getTime().toString()
                     });
 
-                    table.printTable(rows);
+                    Table.printTable(rows);
 
                     while(true) {
                         System.out.println("Have you completed this appointment? (Y/N): ");
@@ -900,7 +897,7 @@ public class AppointmentManager {
         } else {
             System.out.println();
             System.out.println("<< Medication status >>");
-            table.printTable(rows);
+            Table.printTable(rows);
         }
 
     }
@@ -937,7 +934,7 @@ public class AppointmentManager {
                         appointment.getMedStatus()
                     });
 
-                    table.printTable(rows);
+                    Table.printTable(rows);
 
                     while(true) {
                         System.out.println("Medicine dispensed? (Y/N): ");
@@ -1005,7 +1002,7 @@ public class AppointmentManager {
         // Print the table
         System.out.println();
         System.out.println("<< All appointment details >>");
-        table.printTable(rows);
+        Table.printTable(rows);
     }
 
 }

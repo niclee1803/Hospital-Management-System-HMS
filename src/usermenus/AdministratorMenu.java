@@ -9,29 +9,27 @@ import java.util.Scanner;
 
 public class AdministratorMenu implements IUserMenu {
     private final AdministratorManager administratorManager;
-    private final MedInventoryManager inventoryManager;
     private final Administrator administrator;
+    private final Scanner sc;
 
     public AdministratorMenu(String adminID) throws Exception {
         administratorManager = new AdministratorManager();
-        inventoryManager = new MedInventoryManager();
         administrator = (Administrator) administratorManager.createUser(adminID);
+        sc = new Scanner(System.in);
     }
 
     @Override
     public void mainMenu() {
-        Scanner sc = new Scanner(System.in); // Reuse the same Scanner instance
         while (true) {
             printChoices();
             System.out.print("Enter your selection: ");
             String input = sc.nextLine().trim(); // Trim whitespace
-
             int choice;
             try {
                 choice = Integer.parseInt(input);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
-                continue;
+                choice = 0;
             }
 
             switch (choice) {
@@ -105,9 +103,11 @@ public class AdministratorMenu implements IUserMenu {
                     break;
                 case 4: // View Staff List
                     administratorManager.viewStaff();
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 5: // Return to Main Menu
-                    System.out.println("Returning to main menu...");
+                    System.out.println("Returning to main menu...\n");
                     return; // Exit the method and go back to the main menu
                 default: // Invalid Choice
                     System.out.println("Invalid choice. Please try again.");
@@ -125,7 +125,7 @@ public class AdministratorMenu implements IUserMenu {
             System.out.println("An error occurred while retrieving appointments: " + e.getMessage());
         }
         System.out.println("Press Enter to return to the main menu.");
-        new Scanner(System.in).nextLine(); // Pause and wait for the user to press Enter
+        sc.nextLine(); // Pause and wait for the user to press Enter
     }
 
     private void manageMedicationInventory(Scanner sc) {
@@ -136,7 +136,7 @@ public class AdministratorMenu implements IUserMenu {
             System.out.println("║ (1) View Medication Inventory                             ║");
             System.out.println("║ (2) Add New Medication                                    ║");
             System.out.println("║ (3) Update Medication Stock                               ║");
-            System.out.println("║ (4) Update Low Stock Alert Line                          ║");
+            System.out.println("║ (4) Update Low Stock Alert Line                           ║");
             System.out.println("║ (5) Return to Main Menu                                   ║");
             System.out.println("╚═══════════════════════════════════════════════════════════╝");
             System.out.print("Enter your selection: ");

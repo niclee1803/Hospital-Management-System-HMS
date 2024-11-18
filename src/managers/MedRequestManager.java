@@ -42,7 +42,4 @@ public class MedRequestManager {
         fileHandler.addRequest(requestData);
         System.out.println("Request for " + medicine + " added successfully.");
     }
-
-
-    
 }

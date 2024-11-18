@@ -32,4 +32,12 @@ public class User {
     public String getName() {
         return name;
     }
+
+    /**
+     * Sets the name of the user
+     * @param name new name for the user
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 }

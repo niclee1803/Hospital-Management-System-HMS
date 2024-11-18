@@ -36,7 +36,7 @@ public class PharmacistManager extends UserManager{
      */
      public User createUser(String id){
 
-        String[] record = fileHandler.readLine(id);
+        String[] record = userFileHandler.readLine(id);
         if (record == null || record.length < 4) {
             System.err.println("Pharmacist with ID " + id + " not found or has incomplete data.");
             return null;

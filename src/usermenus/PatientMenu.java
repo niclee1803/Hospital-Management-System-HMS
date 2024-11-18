@@ -16,15 +16,16 @@ import java.util.Scanner;
 public class PatientMenu implements IUserMenu {
     private Patient patient;
     private final PatientManager patientManager;
+    private final Scanner sc;
 
     /**
      * Constructs a {@code PatientMenu} object for the specified patient.
      * @param patientID The ID of the patient to load and manage.
-     * @throws Exception If the patient cannot be found or loaded
      */
-    public PatientMenu(String patientID) throws Exception {
+    public PatientMenu(String patientID) {
         patientManager = new PatientManager();
         this.patient = (Patient) patientManager.createUser(patientID);
+        sc = new Scanner(System.in);
     }
 
     /**
@@ -40,7 +41,6 @@ public class PatientMenu implements IUserMenu {
         while (true) {
             printChoices();
             System.out.print("Enter your selection: ");
-            Scanner sc = new Scanner(System.in);
             int choice;
             try {
                 choice = Integer.parseInt(sc.nextLine());
@@ -123,7 +123,6 @@ public class PatientMenu implements IUserMenu {
      * Provides the menu for updating contact details and prompts the patient to choose between updating their phone number or email.
      */
     private void updateContactMenu() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("<<Update Contact Details>>\n");
         System.out.println("Your current contact details: ");
         System.out.println(patient.getContactInfo());
@@ -152,7 +151,6 @@ public class PatientMenu implements IUserMenu {
      * Validates the new phone number and updates it in the system.
      */
     private void updatePhoneNumberMenu() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Enter new phone number (x to go back): ");
         String input = sc.nextLine();
         if (input.equalsIgnoreCase("x")) {
@@ -180,7 +178,6 @@ public class PatientMenu implements IUserMenu {
      * Validates the new email and updates it in the system.
      */
     private void updateEmailMenu() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Enter new email (x to go back): ");
         String newEmail = sc.nextLine();
         if (newEmail.equalsIgnoreCase("x")) {

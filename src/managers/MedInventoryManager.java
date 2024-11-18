@@ -2,6 +2,8 @@ package managers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
+
 import filehandlers.MedicationFileHandler;
 import utility.*;
 
@@ -25,7 +27,7 @@ public class MedInventoryManager {
      */
     public void printFullInventory() {
 
-        table newtable = new table();
+        Table newtable = new Table();
 
         try {
             List<String[]> inventory = fileHandler.readMedicationStock();
@@ -37,6 +39,10 @@ public class MedInventoryManager {
         } catch (IOException e) {
             System.err.println("Error reading medication stock: " + e.getMessage());
         }
+
+        System.out.println("Press enter to continue...\n");
+
+        new Scanner(System.in).nextLine();
     }
     // INCLUDE other updating functions here 
 }
