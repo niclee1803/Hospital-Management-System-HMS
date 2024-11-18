@@ -740,6 +740,8 @@ public class AppointmentManager {
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
 
+        System.out.println("<< Enter x to go back to the menu >> ");
+
         for (Appointment appt : appts) {
 
             if (appt.getDoctorID().equals(doctorId)) {
@@ -767,17 +769,21 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
-                        System.out.print("Do you wish to accept this appointment request? (Y/N) (Enter to skip): ");
-                        char choice = sc.next().charAt(0);
-                        sc.nextLine();
-                        if (choice == 'Y' || choice == 'y') {
+                        System.out.print("Do you wish to accept this appointment request? (Y/N/Any to skip): ");
+                        String choice = sc.nextLine();
+
+                        if (choice.equalsIgnoreCase("Y")) {
                             appt.setStatus("Confirmed");
+                            writeAppointments(appts);
                             System.out.println("Appointment confirmed!");
                             break;
-                        } else if (choice == 'N' || choice == 'n') {
+                        } else if (choice.equalsIgnoreCase("N")) {
                             appt.setStatus("Cancelled");
+                            writeAppointments(appts);
                             System.out.println("Appointment cancelled!");
                             break;
+                        } else if (choice.equalsIgnoreCase("X")) {
+                            return;
                         } else {
                             System.out.println("Appointment skipped!");
                             break;
@@ -792,8 +798,6 @@ public class AppointmentManager {
             System.out.println("<< You have no appointment requests >>");
             System.out.println();
         }
-
-        writeAppointments(appts);
 
     }
 

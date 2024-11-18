@@ -61,12 +61,9 @@ public class PharmacistMenu implements IUserMenu {
             }
 
             // int choice = -1;
-  
  
             // choice = sc.nextInt();
    
-
-    
             // try {
             //     choice = Integer.parseInt(input);
             // } catch (NumberFormatException e) {
