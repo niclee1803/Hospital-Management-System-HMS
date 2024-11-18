@@ -197,15 +197,15 @@ public class DoctorMenu implements IUserMenu {
         List<String> updatedList;
         switch (choice) {
             case 1 -> {
-                updatedList = manageList(selectedPatient.getDiagnoses(), "Diagnoses");
+                updatedList = manageList(selectedPatient.getDiagnoses(), "Diagnoses", patientID);
                 doctorManager.updatePatientDiagnoses(doctor, patientID, updatedList);
             }
             case 2 -> {
-                updatedList = manageList(selectedPatient.getTreatments(), "Treatments");
+                updatedList = manageList(selectedPatient.getTreatments(), "Treatments", patientID);
                 doctorManager.updatePatientTreatments(doctor, patientID, updatedList);
             }
             case 3 -> {
-                updatedList = manageList(selectedPatient.getPrescriptions(), "Prescriptions");
+                updatedList = manageList(selectedPatient.getPrescriptions(), "Prescriptions", patientID);
                 doctorManager.updatePatientPrescriptions(doctor, patientID, updatedList);
             }
             default -> System.out.println("Invalid choice. Returning to main menu.");
@@ -219,7 +219,7 @@ public class DoctorMenu implements IUserMenu {
      * @param listName The name of the list (eg "Diagnoses")
      * @return The updated list
      */
-    private List<String> manageList(List<String> list, String listName) {
+    private List<String> manageList(List<String> list, String listName, String patientID) {
         List<String> modifiedList = new ArrayList<>(list);
         while (true) {
             System.out.println("\n" + listName + ": " + modifiedList);
@@ -287,6 +287,13 @@ public class DoctorMenu implements IUserMenu {
                     }
                 }
                 default -> System.out.println("Invalid action. Try again.");
+            }
+            if (listName.equals("Diagnoses")) {
+                doctorManager.updatePatientDiagnoses(doctor, patientID, modifiedList);
+            } else if (listName.equals("Treatments")) {
+                doctorManager.updatePatientTreatments(doctor, patientID, modifiedList);
+            } else if (listName.equals("Prescriptions")) {
+                doctorManager.updatePatientPrescriptions(doctor, patientID, modifiedList);
             }
         }
         return modifiedList; // Return the updated list
