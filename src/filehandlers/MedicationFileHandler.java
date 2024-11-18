@@ -48,7 +48,7 @@ public class MedicationFileHandler {
         // Update the stock for the specified medication
         for (String[] row : rows) {
             if (row[0].equalsIgnoreCase(medicineName)) { // Medicine Name is in the first column
-                row[1] = String.valueOf(newStock); // Update the Current Stock column
+                row[2] = String.valueOf(newStock); // Update the Current Stock column
                 updated = true;
                 break;
             }

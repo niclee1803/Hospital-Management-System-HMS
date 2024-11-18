@@ -48,6 +48,7 @@ public class AdministratorManager {
         return new Administrator(id, name, gender, age); // ID, Name, Role
     }
 
+    // Staff functions
 
     public void addStaff(Scanner sc) {
         System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
@@ -106,7 +107,6 @@ public class AdministratorManager {
         System.out.println(role + " added successfully.");
     }
     
-
     public void updateStaff(Scanner sc) {
         System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
         char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
@@ -279,31 +279,86 @@ public class AdministratorManager {
         }
     }
 
+    //Medication functions
+
     public void viewMedicationInventory() {
         System.out.println("Viewing medication inventory...");
         medInventoryManager.printFullInventory();
+        System.out.print("Press enter to continue...\n");
+        new Scanner(System.in).nextLine();
     }
 
     public void addMedication(Scanner sc) {
         try {
-            System.out.println("Enter Medicine Name:");
-            String medicineName = sc.nextLine().trim();
-    
-            System.out.println("Enter Initial Stock:");
-            String stockInput = sc.nextLine().trim();
-            int initialStock;
-            try {
-                initialStock = Integer.parseInt(stockInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid stock value. Please enter a valid number.");
-                return;
+
+            String medicineName;
+            System.out.println();
+            System.out.println("<< Enter x to go back to the menu >> ");
+
+            while(true) {
+                System.out.print("Enter Medicine Name: ");
+                medicineName = sc.nextLine().trim();
+                if (medicineName.equalsIgnoreCase("x")) {
+                    return;
+                }
+        
+                // Read medication stock and check if the medicine exists
+                List<String[]> medications = medicationFileHandler.readMedicationStock();
+                boolean exists = false;
+        
+                for (String[] medication : medications) {
+                    if (medication[0].equalsIgnoreCase(medicineName)) { // Case-insensitive check
+                        exists = true;
+                        break;
+                    }
+                }
+        
+                if (exists) {
+                    System.out.println("Medicine with name " + medicineName + " already exists.");
+                } else {
+                    break;
+                }
             }
-    
+            
+
+
+            int lowStock;
+            int initialStock;
+
+            while(true){
+                System.out.print("Enter Low Stock Level: ");
+                String lowStockInput = sc.nextLine().trim();
+                if (lowStockInput.equalsIgnoreCase("x")) {
+                    return;
+                }
+                
+                try {
+                    lowStock = Integer.parseInt(lowStockInput);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid stock value. Please enter a valid number.");
+                }
+            }
+
+            while(true) {
+                System.out.print("Enter Initial Stock: ");
+                String stockInput = sc.nextLine().trim();
+                if (stockInput.equalsIgnoreCase("x")) {
+                    return;
+                }
+                try {
+                    initialStock = Integer.parseInt(stockInput);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid stock value. Please enter a valid number.");
+                }
+            }
+            
             System.out.println("Enter Unit (e.g., packs, bottles):");
             String unit = sc.nextLine().trim();
     
             // Create a new medication record
-            String[] newMedication = {medicineName, String.valueOf(initialStock), unit};
+            String[] newMedication = {medicineName, String.valueOf(lowStock), String.valueOf(initialStock), unit};
     
             // Write the new medication to the file
             medicationFileHandler.addMedication(newMedication);
@@ -315,36 +370,55 @@ public class AdministratorManager {
     }
     
     public void updateMedicationStock(Scanner sc) {
+
+        medInventoryManager.printFullInventory();
+
         try {
-            System.out.println("Enter Medicine Name to Update:");
-            String medicineName = sc.nextLine().trim();
-    
-            // Read medication stock and check if the medicine exists
-            List<String[]> medications = medicationFileHandler.readMedicationStock();
-            boolean exists = false;
-    
-            for (String[] medication : medications) {
-                if (medication[0].equalsIgnoreCase(medicineName)) { // Case-insensitive check
-                    exists = true;
+
+            String medicineName;
+            System.out.println("<< Enter x to go back to the menu >> ");
+
+            while(true) {
+                System.out.print("Enter Medicine Name to Update: ");
+                medicineName = sc.nextLine().trim();
+
+                if (medicineName.equalsIgnoreCase("x")) {
+                    return;
+                }
+        
+                // Read medication stock and check if the medicine exists
+                List<String[]> medications = medicationFileHandler.readMedicationStock();
+                boolean exists = false;
+        
+                for (String[] medication : medications) {
+                    if (medication[0].equalsIgnoreCase(medicineName)) { // Case-insensitive check
+                        exists = true;
+                        break;
+                    }
+                }
+        
+                if (!exists) {
+                    System.out.println("Medicine with name " + medicineName + " not found.");
+                } else {
                     break;
                 }
             }
-    
-            if (!exists) {
-                System.out.println("Medicine with name " + medicineName + " not found.");
-                return; // Exit if medicine does not exist
-            }
-    
+
             // If the medicine exists, prompt for stock value
-            System.out.println("Enter New Stock Value:");
-            String stockInput = sc.nextLine().trim();
-    
             int newStock;
-            try {
-                newStock = Integer.parseInt(stockInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid stock value. Please enter a valid number.");
-                return; // Exit if the stock value is invalid
+
+            while(true){
+                System.out.print("Enter New Stock Value: ");
+                String stockInput = sc.nextLine().trim();
+                if (stockInput.equalsIgnoreCase("x")) {
+                    return;
+                }
+                try {
+                    newStock = Integer.parseInt(stockInput);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid stock value. Please enter a valid number.");
+                }
             }
     
             // Update the stock in the file
@@ -357,34 +431,54 @@ public class AdministratorManager {
     }
 
     public void updateLowStockAlert(Scanner sc) {
+
+        medInventoryManager.printFullInventory();
+
         try {
-            System.out.println("Enter Medicine Name for Low Stock Alert Update:");
-            String medicineName = sc.nextLine().trim();
-    
-            // Check if the medicine exists
-            List<String[]> medications = medicationFileHandler.readMedicationStock();
-            boolean exists = false;
-            for (String[] medication : medications) {
-                if (medication[0].equalsIgnoreCase(medicineName)) {
-                    exists = true;
+            String medicineName;
+
+            System.out.println("<< Enter x to go back to the menu >> ");
+
+            while(true) {
+                System.out.print("Enter Medicine Name for Low Stock Alert Update: ");
+                medicineName = sc.nextLine().trim();
+                if (medicineName.equalsIgnoreCase("x")) {
+                    return;
+                }
+        
+                // Read medication stock and check if the medicine exists
+                List<String[]> medications = medicationFileHandler.readMedicationStock();
+                boolean exists = false;
+        
+                for (String[] medication : medications) {
+                    if (medication[0].equalsIgnoreCase(medicineName)) { // Case-insensitive check
+                        exists = true;
+                        break;
+                    }
+                }
+        
+                if (!exists) {
+                    System.out.println("Medicine with name " + medicineName + " not found.");
+                } else {
                     break;
                 }
             }
-    
-            if (!exists) {
-                System.out.println("Medicine with name " + medicineName + " not found.");
-                return; // Exit if the medicine doesn't exist
-            }
-    
-            System.out.println("Enter New Low Stock Alert Level:");
-            String alertInput = sc.nextLine().trim();
-    
+            
             int lowStockAlert;
-            try {
-                lowStockAlert = Integer.parseInt(alertInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid alert value. Please enter a valid number.");
-                return;
+
+            while(true) {
+                System.out.print("Enter New Low Stock Alert Level: ");
+                String alertInput = sc.nextLine().trim();
+                if (alertInput.equalsIgnoreCase("x")) {
+                    return;
+                }
+
+                try {
+                    lowStockAlert = Integer.parseInt(alertInput);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid alert value. Please enter a valid number.");
+                }
             }
     
             // Update the Low Stock Alert in the file
@@ -460,4 +554,5 @@ public class AdministratorManager {
             System.out.println("An error occurred while processing replenishment requests: " + e.getMessage());
         }
     }
+
 }

@@ -56,6 +56,7 @@ public class AdministratorMenu implements IUserMenu {
     }
 
     private void printChoices() {
+        System.out.println();
         System.out.println("╔═══════════════════════════════════════════════════════════╗");
         System.out.printf("║ %28s %-28s ║%n", "Welcome, Administrator", administrator.getName() + "!");
         System.out.println("╠═══════════════════════════════════════════════════════════╣");
@@ -70,6 +71,7 @@ public class AdministratorMenu implements IUserMenu {
 
     private void manageStaffMenu(Scanner sc) {
         while (true) {
+            System.out.println();
             System.out.println("╔═══════════════════════════════════════════════════════════╗");
             System.out.println("║                << Manage Hospital Staff >>                ║");
             System.out.println("╠═══════════════════════════════════════════════════════════╣");
@@ -130,6 +132,7 @@ public class AdministratorMenu implements IUserMenu {
 
     private void manageMedicationInventory(Scanner sc) {
         while (true) {
+            System.out.println();
             System.out.println("╔═══════════════════════════════════════════════════════════╗");
             System.out.println("║             << Manage Medication Inventory >>             ║");
             System.out.println("╠═══════════════════════════════════════════════════════════╣");
