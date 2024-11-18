@@ -11,7 +11,6 @@ public class Doctor extends User {
     private Gender gender;
     private int age;
     private List<Patient> patients;
-    //private List<Appointment> appointments;
 
     /**
      * Constructs a Doctor with the specified ID, name and list of patients
