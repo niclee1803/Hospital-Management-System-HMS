@@ -51,25 +51,38 @@ public class AdministratorManager {
     // Staff functions
 
     public void addStaff(Scanner sc) {
-        System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
-        char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
-    
+
         String role;
-        if (roleChar == 'D') {
-            role = "Doctor";
-        } else if (roleChar == 'P') {
-            role = "Pharmacist";
-        } else if (roleChar == 'A') {
-            role = "Administrator";
-        } else {
-            System.out.println("Invalid role. Please try again.");
-            return; // Exit the method early if role is invalid
+        System.out.println();
+        System.out.println("<< Enter x to go back to the menu >> ");
+
+        while(true) {
+            System.out.print("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
+            char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
+        
+            if (roleChar == 'D') {
+                role = "Doctor";
+                break;
+            } else if (roleChar == 'P') {
+                role = "Pharmacist";
+                break;
+            } else if (roleChar == 'A') {
+                role = "Administrator";
+                break;
+            } else if (roleChar == 'X') {
+                return;
+            } else {
+                System.out.println("Invalid role. Please try again.");
+            }
         }
-    
+
         String id;
         while (true) { // Loop until a unique ID is provided
-            System.out.println("Enter Staff ID:");
+            System.out.print("Enter Staff ID: ");
             id = sc.nextLine().trim().toUpperCase();
+            if (id.equalsIgnoreCase("x")){
+                return;
+            }
     
             // Check for duplicate ID in User_List.csv
             if (administratorFileHandler.checkDuplicateID(id)) {
@@ -79,17 +92,39 @@ public class AdministratorManager {
             }
         }
     
-        System.out.println("Enter Staff Name:");
+        System.out.print("Enter Staff Name ");
         String name = sc.nextLine().trim();
-        System.out.println("Enter Gender (Male/Female):");
-        String gender = sc.nextLine().trim().toUpperCase();
-        System.out.println("Enter Age:");
-        int age;
-        try {
-            age = Integer.parseInt(sc.nextLine().trim());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid age. Please enter a valid number.");
+        if (name.equalsIgnoreCase("x")){
             return;
+        }
+
+        String gender;
+        while(true) {
+            System.out.print("Enter Gender (Male/Female): ");
+            gender = sc.nextLine().trim().toUpperCase();
+            if (gender.equalsIgnoreCase("x")){
+                return;
+            }
+
+            if (!(gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("FEMALE"))) {
+                System.out.println("Invalid gender. Please enter either Male/Female");
+            } else {
+                break;
+            }
+        }
+        int age;
+        while(true) {
+            System.out.print("Enter Age: ");
+            String ageInput = sc.nextLine().trim();
+            if (ageInput.equalsIgnoreCase("x")){
+                return;
+            }
+            try {
+                age = Integer.parseInt(ageInput);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid age. Please enter a valid number.");
+            }
         }
 
         String[] record;
@@ -113,58 +148,94 @@ public class AdministratorManager {
     }
     
     public void updateStaff(Scanner sc) {
-        System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
-        char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
-    
         String role;
-        if (roleChar == 'D') {
-            role = "Doctor";
-        } else if (roleChar == 'P') {
-            role = "Pharmacist";
-        } else if (roleChar == 'A') {
-            role = "Administrator";
-        } else {
-            System.out.println("Invalid role. Please try again.");
-            return; // Exit the method early if role is invalid
-        }
-    
-        System.out.println("Enter Staff ID to Update:");
-        String id = sc.nextLine().trim().toUpperCase();
+        System.out.println();
+        System.out.println("<< Enter x to go back to the menu >> ");
 
-        boolean exists = false;
-
-        // Fetch existing record for validation
-        switch(role) {
-            case "Doctor" -> {
-                exists = doctorFileHandler.recordExists(id);
-            }
-            case "Pharmacist" -> {
-                exists = pharmacistFileHandler.recordExists(id);
-            }
-            case "Administrator" -> {
-                exists = administratorFileHandler.recordExists(id);
+        while(true) {
+            System.out.print("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
+            char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
+        
+            if (roleChar == 'D') {
+                role = "Doctor";
+                break;
+            } else if (roleChar == 'P') {
+                role = "Pharmacist";
+                break;
+            } else if (roleChar == 'A') {
+                role = "Administrator";
+                break;
+            } else if (roleChar == 'X') {
+                return;
+            } else {
+                System.out.println("Invalid role. Please try again.");
             }
         }
 
-        if (!exists) {
-            System.out.println("No matching record found for ID: " + id);
-            return;
+        String id;
+        while(true) {
+            System.out.print("Enter Staff ID to Update: ");
+            id = sc.nextLine().trim().toUpperCase();
+            if (id.equalsIgnoreCase("x")){
+                return;
+            }
+
+            boolean exists = false;
+
+            // Fetch existing record for validation
+            switch(role) {
+                case "Doctor" -> {
+                    exists = doctorFileHandler.recordExists(id);
+                }
+                case "Pharmacist" -> {
+                    exists = pharmacistFileHandler.recordExists(id);
+                }
+                case "Administrator" -> {
+                    exists = administratorFileHandler.recordExists(id);
+                }
+            }
+
+            if (!exists) {
+                System.out.println("No matching record found for ID: " + id);
+            } else {
+                break;
+            }
         }
     
         // Gather updated details
-        System.out.println("Enter Updated Name:");
+        System.out.print("Enter Updated Name: ");
         String name = sc.nextLine().trim();
-    
-        System.out.println("Enter Updated Gender (Male/Female):");
-        String gender = sc.nextLine().trim().toUpperCase();
-    
-        System.out.println("Enter Updated Age:");
-        int age;
-        try {
-            age = Integer.parseInt(sc.nextLine().trim());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid age. Please enter a valid number.");
+        if (name.equalsIgnoreCase("x")){
             return;
+        }
+        
+        String gender;
+        while(true) {
+            System.out.print("Enter Gender (Male/Female): ");
+            gender = sc.nextLine().trim().toUpperCase();
+            if (gender.equalsIgnoreCase("x")){
+                return;
+            }
+            if (!(gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("FEMALE"))) {
+                System.out.println("Invalid gender. Please enter either Male/Female");
+            } else {
+                break;
+            }
+        }
+
+        int age;
+        while(true) {
+            System.out.print("Enter Updated Age: ");
+            String ageInput = sc.nextLine().trim();
+            if (ageInput.equalsIgnoreCase("x")){
+                return;
+            }
+            try {
+                age = Integer.parseInt(ageInput);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid age. Please enter a valid number.");
+            }
         }
 
         String[] updatedRecord = new String[]{id, name, gender, String.valueOf(age)};
@@ -186,46 +257,64 @@ public class AdministratorManager {
     }
     
     public void removeStaff(Scanner sc) {
-        System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
-        char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
-    
         String role;
-        if (roleChar == 'D') {
-            role = "Doctor";
-        } else if (roleChar == 'P') {
-            role = "Pharmacist";
-        } else if (roleChar == 'A') {
-            role = "Administrator";
-        } else {
-            System.out.println("Invalid role. Please try again.");
-            return; // Exit the method early if role is invalid
-        }
-    
-        System.out.println("Enter Staff ID to Remove:");
-        String id = sc.nextLine().trim().toUpperCase();
-    
-        // Remove from the respective records file
-        boolean recordRemoved = false;
+        System.out.println();
+        System.out.println("<< Enter x to go back to the menu >> ");
 
-        switch (role) {
-            case "Doctor"->{
-                recordRemoved = doctorFileHandler.deleteLine(id);
-            }
-            case "Pharmacist"->{
-                recordRemoved = pharmacistFileHandler.deleteLine(id);
-            }
-            case "Administrator"->{
-                recordRemoved = administratorFileHandler.deleteLine(id);
+        while(true) {
+            System.out.print("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
+            char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
+        
+            if (roleChar == 'D') {
+                role = "Doctor";
+                break;
+            } else if (roleChar == 'P') {
+                role = "Pharmacist";
+                break;
+            } else if (roleChar == 'A') {
+                role = "Administrator";
+                break;
+            } else if (roleChar == 'X') {
+                return;
+            } else {
+                System.out.println("Invalid role. Please try again.");
             }
         }
-    
-        if (recordRemoved) {
-            // Remove from User_List.csv
-            administratorFileHandler.removeFromUserList(id);
-            System.out.println(role + " with ID " + id + " removed successfully.");
-        } else {
-            System.out.println("No matching record found for ID: " + id);
+        String id;
+        while(true) {
+            System.out.print("Enter Staff ID to Remove: ");
+            id = sc.nextLine().trim().toUpperCase();
+            if (id.equalsIgnoreCase("x")) {
+                return;
+            }
+        
+            // Remove from the respective records file
+            boolean recordRemoved = false;
+
+            switch (role) {
+                case "Doctor"->{
+                    recordRemoved = doctorFileHandler.deleteLine(id);
+                }
+                case "Pharmacist"->{
+                    recordRemoved = pharmacistFileHandler.deleteLine(id);
+                }
+                case "Administrator"->{
+                    recordRemoved = administratorFileHandler.deleteLine(id);
+                }
+            }
+        
+            if (recordRemoved) {
+                // Remove from User_List.csv
+                administratorFileHandler.removeFromUserList(id);
+                System.out.println(role + " with ID " + id + " removed successfully.");
+                break;
+            } else {
+                System.out.println("No matching record found for ID: " + id);
+                System.out.println("Please enter a valid ID.");
+                System.out.println();
+            }
         }
+
     }
 
     public void viewStaff() {

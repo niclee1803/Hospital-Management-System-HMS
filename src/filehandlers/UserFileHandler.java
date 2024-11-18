@@ -95,7 +95,7 @@ public class UserFileHandler {
             }
 
             if (!found) {
-                System.out.println("Record with ID " + id + " not found.");
+                //System.out.println("Record with ID " + id + " not found.");
                 return false;
             }
         } catch (IOException e) {
