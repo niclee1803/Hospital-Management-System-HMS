@@ -92,7 +92,7 @@ public class AdministratorManager {
             }
         }
     
-        System.out.print("Enter Staff Name ");
+        System.out.print("Enter Staff Name: ");
         String name = sc.nextLine().trim();
         if (name.equalsIgnoreCase("x")){
             return;
@@ -318,6 +318,7 @@ public class AdministratorManager {
     }
 
     public void viewStaff() {
+        System.out.println();
         System.out.println("<< View Staff Details >>");
 
         // Define headers for the table

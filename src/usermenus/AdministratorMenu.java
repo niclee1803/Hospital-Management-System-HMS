@@ -96,12 +96,18 @@ public class AdministratorMenu implements IUserMenu {
             switch (action) {
                 case 1: // Add Staff
                     administratorManager.addStaff(sc);
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 2: // Update Staff
                     administratorManager.updateStaff(sc);
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 3: // Remove Staff
                     administratorManager.removeStaff(sc);
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 4: // View Staff List
                     administratorManager.viewStaff();
