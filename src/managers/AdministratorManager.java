@@ -596,16 +596,20 @@ public class AdministratorManager {
             List<String[]> updatedRequests = new ArrayList<>();
     
             boolean anyPending = false;
+            System.out.println("<< Enter x to go back to the menu >> ");
     
             for (String[] request : requests) {
                 // Check if the status is "Pending"
+
+
                 if (request[3].trim().equalsIgnoreCase("Pending")) {
                     anyPending = true;
-                    System.out.println("Pending Request: " +
-                            "Medicine: " + request[0] +
+                    System.out.println();
+                    System.out.println("Pending Request");
+                    System.out.println("Medicine: " + request[0] +
                             ", Amount: " + request[1] +
                             ", Unit: " + request[2]);
-                    System.out.println("Approve or Reject this request? (A/R/any key to skip): ");
+                    System.out.print("Approve or Reject this request? (A/R/any key to skip): ");
     
                     Scanner sc = new Scanner(System.in);
                     String decision = sc.nextLine().trim().toUpperCase();
@@ -631,8 +635,10 @@ public class AdministratorManager {
                     } else if (decision.equals("R")) {
                         request[3] = "Rejected";
                         System.out.println("Request rejected.");
+                    } else if (decision.equals("X")) {
+                        return;
                     } else {
-                        System.out.println("Invalid input. Request left as Pending.");
+                        System.out.println("Request left as Pending.");
                     }
                 }
                 updatedRequests.add(request);

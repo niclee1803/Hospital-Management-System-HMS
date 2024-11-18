@@ -1,6 +1,8 @@
 package usermenus;
+import java.util.List;
 import java.util.Scanner;
 
+import filehandlers.MedicationFileHandler;
 import managers.AppointmentManager;
 import managers.MedInventoryManager;
 import managers.MedRequestManager;
@@ -50,18 +52,18 @@ public class PharmacistMenu implements IUserMenu {
             // Displaying the pharmacist menu in the specified format
             printChoices();
             System.out.print("Enter your selection: ");
-            // Read user choice
-            // int choice;
-            // try {
-            //     choice = Integer.parseInt(scanner.nextLine());
-            // } catch (NumberFormatException e) {
-            //     choice = 0;
-            // }
+            //Read user choice
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                choice = 0;
+            }
 
-            int choice = -1;
+            // int choice = -1;
   
  
-             choice = sc.nextInt();
+            // choice = sc.nextInt();
    
 
     
@@ -72,7 +74,7 @@ public class PharmacistMenu implements IUserMenu {
             //     continue; // Restart the loop for invalid input
             // }
     
-            System.out.println(); // Add a blank line for better readability
+            //System.out.println(); // Add a blank line for better readability
 
             System.out.println();
             switch (choice) {
@@ -91,10 +93,14 @@ public class PharmacistMenu implements IUserMenu {
                 case 3:
                     // View medication inventory
                     viewMedicationInventory();
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 4:
                     // Submit a replenishment request
                     submitReplenishmentRequest();
+                    System.out.println("Press enter to continue...\n");
+                    sc.nextLine();
                     break;
                 case 5:
                     // Logout (exit the loop)
@@ -111,7 +117,7 @@ public class PharmacistMenu implements IUserMenu {
      */
     private void printChoices() {
         System.out.println("╔═══════════════════════════════════════════════════════════╗");
-        System.out.printf("║ %28s %-28s ║%n", "Welcome, Pharmacist ", pharmacist.getName() + "!");
+        System.out.printf("║ %28s %-28s ║%n", "Welcome, Pharmacist", pharmacist.getName() + "!");
         System.out.println("╠═══════════════════════════════════════════════════════════╣");
         System.out.println("║ (1) View Appointment Outcome Record                       ║");
         System.out.println("║ (2) Update Prescription Status                            ║");
@@ -135,26 +141,61 @@ public class PharmacistMenu implements IUserMenu {
      * Takes inputs for the medicine name, amount, unit and status and passes this data to the {@link MedRequestManager}
      * to create a new request
      */
-    private void submitReplenishmentRequest() {
+    private void submitReplenishmentRequest() throws Exception {
 
- 
-        System.out.print("Enter Medicine Name: ");
-
-        String medicine = sc.next();
-
+        String medicineName;
         System.out.println();
+        System.out.println("<< Enter x to go back to the menu >> ");
 
+        while(true) {
+            System.out.print("Enter Medicine Name: ");
+            medicineName = sc.nextLine().trim();
 
+            if (medicineName.equalsIgnoreCase("x")) {
+                return;
+            }
+    
+            // Read medication stock and check if the medicine exists
+            MedicationFileHandler medFileHandler = new MedicationFileHandler();
+            List<String[]> medications = medFileHandler.readMedicationStock();
+            boolean exists = false;
+    
+            for (String[] medication : medications) {
+                if (medication[0].equalsIgnoreCase(medicineName)) { // Case-insensitive check
+                    exists = true;
+                    break;
+                }
+            }
+    
+            if (!exists) {
+                System.out.println("Medicine with name " + medicineName + " does not exist.");
+            } else {
+                break;
+            }
+        }
 
-        System.out.print("Enter Amount Requested: ");
+        int amount;
 
-        int amount = Integer.parseInt(sc.next());
-
-        System.out.println();
+        while(true){
+            System.out.print("Enter Amount Requested: ");
+            String amountInput = sc.nextLine().trim();
+            if (amountInput.equalsIgnoreCase("x")) {
+                return;
+            }
+            try {
+                amount = Integer.parseInt(amountInput);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid stock value. Please enter a valid number.");
+            }
+        }
   
 
         System.out.print("Enter Unit (e.g., tablets, bottles): ");
         String unit = sc.next();
+        if (unit.equalsIgnoreCase("x")) {
+            return;
+        }
 
         System.out.println();
 
@@ -164,7 +205,7 @@ public class PharmacistMenu implements IUserMenu {
 
 
         try {
-            requestManager.createNewRequest(medicine, amount, unit, "Pending");
+            requestManager.createNewRequest(medicineName, amount, unit, "Pending");
         } catch (IOException e) {
             System.err.println("Error submitting replenishment request: " + e.getMessage());
         }
