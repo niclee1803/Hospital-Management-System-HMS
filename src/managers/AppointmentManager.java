@@ -985,11 +985,9 @@ public class AppointmentManager {
         }
 
         if (isEmpty) {
-            System.out.println();
             System.out.println("<< There are no completed appointments >>");
             System.out.println();
         } else {
-            System.out.println();
             System.out.println("<< Medication status >>");
             Table.printTable(rows);
         }
@@ -1000,6 +998,8 @@ public class AppointmentManager {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
+        System.out.println();
+        System.out.println("<< Enter x to go back to the menu >> ");
 
         for (Appointment appointment : appts) {
 
@@ -1031,17 +1031,18 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
-                        System.out.print("Medicine dispensed? (Y/N): ");
+                        System.out.print("Medicine dispensed? (Y/Any to skip): ");
                         char choice = sc.next().charAt(0);
+                        if (choice == 'X' || choice == 'x') {
+                            return;
+                        }
                         
                         if (choice == 'Y' || choice == 'y') {
                             appointment.setMedStatus("Dispensed");
                             System.out.print("Medicine status updated!");
                             break;
-                        } else if (choice == 'N' || choice == 'n') {
-                            break;
                         } else {
-                            System.out.println("Invalid choice! Please enter Y or N: ");
+                            break;
                         }
                     }
 
