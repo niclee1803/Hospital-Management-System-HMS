@@ -1,9 +1,6 @@
 Medicine,Amount,Unit,Status
-Asprin,3000,packs,Approved
-Loratadine,3000,packs,Approved
-Paracetamol,1000,packs,Approved
-panadol,23,tabs,Pending
-cancermeds,50,bottles,Pending
-greatrpills,40,tabs,Pending
-mecheckmed,45,bottles,Pending
-checker,33,tb,Pending
+Asprin,300,packs,Approved
+Loratadine,300,packs,Pending
+Paracetamol,100,packs,Approved
+Panadol,200,bottles,Pending
+Ibuprofen,100,packs,Pending
