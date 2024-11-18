@@ -1,19 +1,23 @@
 package filehandlers;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles basic file operations (reading, writing, updating and deleting) for a CSV file.
  * This class provides general methods that can be extended for more specific use cases.
  */
-public class FileHandler {
+public class UserFileHandler {
     private String filePath;
 
     /**
      * Constructs a FileHandler object with the specified file path
      * @param filePath The path to the CSV file to be managed by this handler
      */
-    public FileHandler(String filePath) {
+    public UserFileHandler(String filePath) {
         this.filePath = filePath;
     }
 
@@ -27,7 +31,7 @@ public class FileHandler {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] record = line.split(",", -1);
-                if (record.length > 0 && record[0].equals(id)) {  // Assuming ID is the first field
+                if (record.length > 0 && record[0].equalsIgnoreCase(id)) {  // Assuming ID is the first field
                     return record;  // Return the matching record
                 }
             }
@@ -62,10 +66,11 @@ public class FileHandler {
     
 
     /**
-     * Delets a line in the CSV file by the given ID.
+     * Deletes a line in the CSV file by the given ID.
      * @param id The ID of the record to delete
+     * @return returns a boolean true if record was found and deleted and false if record does not exist
      */
-    public void deleteLine(String id) {
+    public boolean deleteLine(String id) {
         File inputFile = new File(filePath);
         File tempFile = new File("temp.csv");
 
@@ -79,7 +84,7 @@ public class FileHandler {
             // Read each line in the original file
             while ((line = br.readLine()) != null) {
                 String[] currentRecord = line.split(",");
-                if (currentRecord.length > 0 && currentRecord[0].equals(id)) {
+                if (currentRecord.length > 0 && currentRecord[0].equalsIgnoreCase(id)) {
                     // Skip writing this line to the temp file if the ID matches (deletes the line)
                     found = true;
                     continue;
@@ -91,6 +96,7 @@ public class FileHandler {
 
             if (!found) {
                 System.out.println("Record with ID " + id + " not found.");
+                return false;
             }
         } catch (IOException e) {
             System.err.println("An error occurred while deleting the line in the CSV file: " + e.getMessage());
@@ -99,8 +105,10 @@ public class FileHandler {
         // Replace the original file with the updated temp file
         if (inputFile.delete()) {
             tempFile.renameTo(inputFile);
+            return true;
         } else {
             System.err.println("Could not replace the original file with the updated file.");
+            return false;
         }
     }
 
@@ -124,7 +132,7 @@ public class FileHandler {
                 String[] currentRecord = line.split(",");
 
                 // Check if the current line has the same ID as the record we want to update
-                if (currentRecord.length > 0 && currentRecord[0].equals(record[0])) {
+                if (currentRecord.length > 0 && currentRecord[0].equalsIgnoreCase(record[0])) {
                     // Write the new record instead of the old one
                     bw.write(String.join(",", record));
                     updated = true;
@@ -150,6 +158,42 @@ public class FileHandler {
         } else {
             System.err.println("Could not replace the original file with the updated file.");
         }
+    }
+
+    /**
+     * Reads all lines from the csv file.
+     *
+     * @return A list of records as String arrays.
+     */
+    public List<String[]> readAllLines() {
+        List<String[]> records = new ArrayList<>();
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePath))) {
+            String line;
+            br.readLine(); // Skip header
+            while ((line = br.readLine()) != null) {
+                String[] record = line.split(",", -1);
+                records.add(record);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading records: " + e.getMessage());
+        }
+        return records;
+    }
+
+
+    public boolean recordExists(String id) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] record = line.split(",", -1);
+                if (record[0].equalsIgnoreCase(id)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error checking record existence: " + e.getMessage());
+        }
+        return false;
     }
 
 }

@@ -19,16 +19,19 @@ import java.util.Scanner;
 public class DoctorMenu implements IUserMenu {
     private Doctor doctor;
     private final DoctorManager doctorManager;
+    private final AppointmentManager apptManager;
+    private final Scanner sc;
 
     /**
      * Constructs a new {@code DoctorMenu} for a specific doctor by their ID.
      * This constructor initializes the {@code DoctorMenu} and loads the doctor data from the system
      * @param doctorID The ID of the doctor for whom the menu is created.
-     * @throws Exception If the doctor cannot be found of there is an error loading the doctor data.
      */
-    public DoctorMenu(String doctorID) throws Exception {
+    public DoctorMenu(String doctorID) {
         doctorManager = new DoctorManager();
         doctor = (Doctor) doctorManager.createUser(doctorID);
+        apptManager = new AppointmentManager();
+        sc = new Scanner(System.in);
     }
 
     /**
@@ -37,13 +40,9 @@ public class DoctorMenu implements IUserMenu {
      */
     @Override
     public void mainMenu() throws Exception{
-
-        AppointmentManager apptManager = new AppointmentManager();
-
         while (true) {
             printChoices();
             System.out.print("Enter your selection: ");
-            Scanner sc = new Scanner(System.in);
             int choice;
             try {
                 choice = Integer.parseInt(sc.nextLine());
@@ -60,18 +59,16 @@ public class DoctorMenu implements IUserMenu {
                     break;
                 case 3: //View personal schedule
                     apptManager.doctorViewPersonalSchedule(doctor.getId());
-                    System.out.println("Press enter to continue...\n");
+                    System.out.println("\nPress enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 4: //Set availability for appointments
                     apptManager.doctorAddAppointments(doctor.getId());
-                    System.out.println("Press enter to continue...\n");
+                    System.out.println("\nPress enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 5: //Accept or decline appointment requests
                     apptManager.doctorAppointmentRequests(doctor.getId());
-                    System.out.println("Press enter to continue...\n");
-                    sc.nextLine();
                     break;
                 case 6: //View upcoming appointments
                     apptManager.doctorViewUpcomingAppointments(doctor.getId());
@@ -80,8 +77,6 @@ public class DoctorMenu implements IUserMenu {
                     break;
                 case 7: //Record Appointment Outcome 
                     this.doctor = apptManager.doctorRecordAppointmentOutcome(doctor.getId());
-                    System.out.println("Press enter to continue...\n");
-                    sc.nextLine();
                     break;
                 case 8:
                     System.out.println("Logging out...");
@@ -118,10 +113,13 @@ public class DoctorMenu implements IUserMenu {
      * The doctor can select a patient to view their record.
      */
     private void viewPatientRecordsMenu() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("<<Patient Records View>>");
         System.out.println("Enter (X) to return\n");
         System.out.println("Patient List:");
+        if (doctor.getPatients().isEmpty()) {
+            System.out.println("You currently have no patients under your care.\n");
+            return;
+        }
         for (Patient patient : doctor.getPatients()) {
             System.out.println(patient.getId() + " - " + patient.getName());
         }
@@ -154,10 +152,13 @@ public class DoctorMenu implements IUserMenu {
      * The doctor can update various aspects of a patient's records, such as diagnoses, treatments or prescriptions
      */
     private void updatePatientRecordsMenu() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("<<Update Patient Records>>");
         System.out.println("Enter (X) to return\n");
         System.out.println("Patient List:");
+        if (doctor.getPatients().isEmpty()) {
+            System.out.println("You currently have no patients under your care.\n");
+            return;
+        }
         for (Patient patient : doctor.getPatients()) {
             System.out.println(patient.getId() + " - " + patient.getName());
         }
@@ -196,15 +197,15 @@ public class DoctorMenu implements IUserMenu {
         List<String> updatedList;
         switch (choice) {
             case 1 -> {
-                updatedList = manageList(sc, selectedPatient.getDiagnoses(), "Diagnoses");
+                updatedList = manageList(selectedPatient.getDiagnoses(), "Diagnoses");
                 doctorManager.updatePatientDiagnoses(doctor, patientID, updatedList);
             }
             case 2 -> {
-                updatedList = manageList(sc, selectedPatient.getTreatments(), "Treatments");
+                updatedList = manageList(selectedPatient.getTreatments(), "Treatments");
                 doctorManager.updatePatientTreatments(doctor, patientID, updatedList);
             }
             case 3 -> {
-                updatedList = manageList(sc, selectedPatient.getPrescriptions(), "Prescriptions");
+                updatedList = manageList(selectedPatient.getPrescriptions(), "Prescriptions");
                 doctorManager.updatePatientPrescriptions(doctor, patientID, updatedList);
             }
             default -> System.out.println("Invalid choice. Returning to main menu.");
@@ -214,12 +215,11 @@ public class DoctorMenu implements IUserMenu {
     /**
      * Manages the list of attributes such as diagnoses, treatments or prescrptions.
      * Allows the doctor to add, edit, or remove items from the list.
-     * @param sc the {@code Scanner} object used for input
      * @param list The list to be modified (eg diagnoses, treatments or prescriptions)
      * @param listName The name of the list (eg "Diagnoses")
      * @return The updated list
      */
-    private List<String> manageList(Scanner sc, List<String> list, String listName) {
+    private List<String> manageList(List<String> list, String listName) {
         List<String> modifiedList = new ArrayList<>(list);
         while (true) {
             System.out.println("\n" + listName + ": " + modifiedList);

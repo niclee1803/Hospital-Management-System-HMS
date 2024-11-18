@@ -6,9 +6,7 @@ import java.util.List;
  * Represents a Pharmacist, which is a type of User. A pharmacist has a gender and an age.
  */
 public class Pharmacist extends User {
-
     private Gender gender;
-
     private int age;
 
     /**

@@ -1,17 +1,13 @@
 package managers;
 
+import entities.Gender;
 import filehandlers.AdministratorFileHandler;
 import filehandlers.DoctorFileHandler;
 import filehandlers.PharmacistFileHandler;
 import filehandlers.MedicationFileHandler;
 import filehandlers.MedRequestFileHandler;
-import utility.table;
+import utility.Table;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,56 +20,34 @@ import entities.Administrator;
  * including managing other staff members like doctors and pharmacists.
  */
 public class AdministratorManager {
-    private final DoctorFileHandler doctorFileHandler = new DoctorFileHandler();
-    private final PharmacistFileHandler pharmacistFileHandler = new PharmacistFileHandler();
-    private final AdministratorFileHandler administratorFileHandler = new AdministratorFileHandler();
-    private final MedicationFileHandler medicationFileHandler = new MedicationFileHandler();
-    private final MedRequestFileHandler medRequestFileHandler = new MedRequestFileHandler();
+    private final MedInventoryManager medInventoryManager;
+    private final DoctorFileHandler doctorFileHandler;
+    private final PharmacistFileHandler pharmacistFileHandler;
+    private final AdministratorFileHandler administratorFileHandler;
+    private final MedicationFileHandler medicationFileHandler;
+    private final MedRequestFileHandler medRequestFileHandler;
+
+    public AdministratorManager() {
+        this.medInventoryManager = new MedInventoryManager();
+        this.doctorFileHandler = new DoctorFileHandler();
+        this.pharmacistFileHandler = new PharmacistFileHandler();
+        this.administratorFileHandler = new AdministratorFileHandler();
+        this.medicationFileHandler = new MedicationFileHandler();
+        this.medRequestFileHandler = new MedRequestFileHandler();
+    }
 
     public Administrator createUser(String id) {
-    String[] record = administratorFileHandler.readLine(id);
-    if (record == null) {
-        return null;
-    }
-    return new Administrator(record[0], record[1], record[2]); // ID, Name, Role
-}
-
-
-    /**
-     * Handles the staff management menu and routes to specific actions.
-     *
-     * @param sc Scanner object for user input.
-     */
-    public void manageStaff(Scanner sc) {
-        System.out.println("Choose an action:");
-        System.out.println("1. Add Staff");
-        System.out.println("2. Update Staff");
-        System.out.println("3. Remove Staff");
-        System.out.println("4. View Staff");
-        System.out.println("X. Return to Main Menu");
-
-        String action = sc.nextLine().trim().toUpperCase();
-        switch (action) {
-            case "1":
-                addStaff(sc);
-                break;
-            case "2":
-                updateStaff(sc);
-                break;
-            case "3":
-                removeStaff(sc);
-                break;
-            case "4":
-                viewStaff();
-                break;
-            case "X":
-                System.out.println("Returning to main menu...");
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
-                break;
+        String[] record = administratorFileHandler.readLine(id);
+        if (record == null) {
+            return null;
         }
+        String name = record[1];
+        Gender gender = Gender.valueOf(record[2].toUpperCase());
+        int age = Integer.parseInt(record[3]);
+
+        return new Administrator(id, name, gender, age); // ID, Name, Role
     }
+
 
     public void addStaff(Scanner sc) {
         System.out.println("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
@@ -94,7 +68,7 @@ public class AdministratorManager {
         String id;
         while (true) { // Loop until a unique ID is provided
             System.out.println("Enter Staff ID:");
-            id = sc.nextLine().trim();
+            id = sc.nextLine().trim().toUpperCase();
     
             // Check for duplicate ID in User_List.csv
             if (administratorFileHandler.checkDuplicateID(id)) {
@@ -107,7 +81,7 @@ public class AdministratorManager {
         System.out.println("Enter Staff Name:");
         String name = sc.nextLine().trim();
         System.out.println("Enter Gender (Male/Female):");
-        String gender = sc.nextLine().trim();
+        String gender = sc.nextLine().trim().toUpperCase();
         System.out.println("Enter Age:");
         int age;
         try {
@@ -116,20 +90,15 @@ public class AdministratorManager {
             System.out.println("Invalid age. Please enter a valid number.");
             return;
         }
-    
-        String[] record;
-    
-        // If the role is Administrator, prompt for an additional Role field
-        if (role.equals("Administrator")) {
-            System.out.println("Enter Administrator Role (e.g., CEO, Manager):");
-            String adminRole = sc.nextLine().trim();
-            record = new String[]{id, name, adminRole, gender, String.valueOf(age)};
-        } else {
-            record = new String[]{id, name, gender, String.valueOf(age)};
-        }
+
+        String[] record = new String[]{id, name, gender, String.valueOf(age)};
     
         // Write to respective records file
-        administratorFileHandler.writeStaffRecord(record, role);
+        switch(role) {
+            case "Doctor"->doctorFileHandler.writeLine(record);
+            case "Pharmacist"->pharmacistFileHandler.writeLine(record);
+            case "Administrator"->administratorFileHandler.writeLine(record);
+        }
     
         // Write to User_List.csv
         administratorFileHandler.writeToUserList(id, role);
@@ -155,10 +124,23 @@ public class AdministratorManager {
         }
     
         System.out.println("Enter Staff ID to Update:");
-        String id = sc.nextLine().trim();
-    
+        String id = sc.nextLine().trim().toUpperCase();
+
+        boolean exists = false;
+
         // Fetch existing record for validation
-        boolean exists = administratorFileHandler.recordExists(id, role);
+        switch(role) {
+            case "Doctor" -> {
+                exists = doctorFileHandler.recordExists(id);
+            }
+            case "Pharmacist" -> {
+                exists = pharmacistFileHandler.recordExists(id);
+            }
+            case "Administrator" -> {
+                exists = administratorFileHandler.recordExists(id);
+            }
+        }
+
         if (!exists) {
             System.out.println("No matching record found for ID: " + id);
             return;
@@ -169,7 +151,7 @@ public class AdministratorManager {
         String name = sc.nextLine().trim();
     
         System.out.println("Enter Updated Gender (Male/Female):");
-        String gender = sc.nextLine().trim();
+        String gender = sc.nextLine().trim().toUpperCase();
     
         System.out.println("Enter Updated Age:");
         int age;
@@ -179,20 +161,21 @@ public class AdministratorManager {
             System.out.println("Invalid age. Please enter a valid number.");
             return;
         }
-    
-        String[] updatedRecord;
-    
-        // Additional prompt if the role is Administrator
-        if (role.equals("Administrator")) {
-            System.out.println("Enter Updated Administrator Role (e.g., CEO, Manager):");
-            String adminRole = sc.nextLine().trim();
-            updatedRecord = new String[]{id, name, adminRole, gender, String.valueOf(age)};
-        } else {
-            updatedRecord = new String[]{id, name, gender, String.valueOf(age)};
-        }
+
+        String[] updatedRecord = new String[]{id, name, gender, String.valueOf(age)};
     
         // Update records file
-        administratorFileHandler.updateStaffRecord(updatedRecord, role);
+        switch(role) {
+            case "Doctor" -> {
+                doctorFileHandler.updateLine(updatedRecord);
+            }
+            case "Pharmacist" -> {
+                pharmacistFileHandler.updateLine(updatedRecord);
+            }
+            case "Administrator" -> {
+                administratorFileHandler.updateLine(updatedRecord);
+            }
+        }
     
         System.out.println(role + " with ID " + id + " updated successfully.");
     }
@@ -214,10 +197,22 @@ public class AdministratorManager {
         }
     
         System.out.println("Enter Staff ID to Remove:");
-        String id = sc.nextLine().trim();
+        String id = sc.nextLine().trim().toUpperCase();
     
         // Remove from the respective records file
-        boolean recordRemoved = administratorFileHandler.removeStaffRecord(id, role);
+        boolean recordRemoved = false;
+
+        switch (role) {
+            case "Doctor"->{
+                recordRemoved = doctorFileHandler.deleteLine(id);
+            }
+            case "Pharmacist"->{
+                recordRemoved = pharmacistFileHandler.deleteLine(id);
+            }
+            case "Administrator"->{
+                recordRemoved = administratorFileHandler.deleteLine(id);
+            }
+        }
     
         if (recordRemoved) {
             // Remove from User_List.csv
@@ -271,36 +266,22 @@ public class AdministratorManager {
                 record[0],               // ID
                 record[1],               // Name
                 "Administrator",         // Role
-                record[3],               // Gender
-                record[4]                // Age
+                record[2],               // Gender
+                record[3]                // Age
             });
         }
 
         // Print the table
         if (rows.size() > 1) { // Check if there are records besides the header
-            table.printTable(rows);
+            Table.printTable(rows);
         } else {
             System.out.println("\n<< No staff details available >>\n");
         }
     }
 
     public void viewMedicationInventory() {
-        try {
-            List<String[]> medications = medicationFileHandler.readMedicationStock();
-            System.out.println("╔═══════════════════════════════════════════════════════════╗");
-            System.out.println("║                  Medication Inventory                     ║");
-            System.out.println("╠═══════════════════════════════════════════════════════════╣");
-            System.out.println("║ Medicine Name   | Current Stock   | Unit                 ║");
-            System.out.println("╠═══════════════════════════════════════════════════════════╣");
-
-            for (String[] medication : medications) {
-                System.out.printf("║ %-15s | %-15s | %-15s ║%n", medication[0], medication[1], medication[2]);
-            }
-
-            System.out.println("╚═══════════════════════════════════════════════════════════╝");
-        } catch (IOException e) {
-            System.err.println("Error reading medication inventory: " + e.getMessage());
-        }
+        System.out.println("Viewing medication inventory...");
+        medInventoryManager.printFullInventory();
     }
 
     public void addMedication(Scanner sc) {
@@ -435,7 +416,7 @@ public class AdministratorManager {
                             "Medicine: " + request[0] +
                             ", Amount: " + request[1] +
                             ", Unit: " + request[2]);
-                    System.out.println("Approve or Reject this request? (A/R): ");
+                    System.out.println("Approve or Reject this request? (A/R/any key to skip): ");
     
                     Scanner sc = new Scanner(System.in);
                     String decision = sc.nextLine().trim().toUpperCase();
@@ -479,9 +460,4 @@ public class AdministratorManager {
             System.out.println("An error occurred while processing replenishment requests: " + e.getMessage());
         }
     }
-    
-    
-    
-    
-
 }

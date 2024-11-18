@@ -35,23 +35,27 @@ public class DoctorManager extends UserManager {
      * @throws IllegalArgumentException if the doctor ID does not exist.
      */
     public User createUser(String id) {
-        String[] record = fileHandler.readLine(id);
+        String[] record = userFileHandler.readLine(id);
         String userId = record[0];
         String name = record[1];
         Gender gender = Gender.valueOf(record[2].toUpperCase());
         int age = Integer.parseInt(record[3]);
-        String[] patientIds = record[4].split(";");
-        List<Patient> patients = new ArrayList<Patient>();
-        for (String patientId : patientIds) {
-            Patient patient = (Patient) patientManager.createUser(patientId);
-            if (patient != null) {
-                patients.add(patient);
-            } else {
-                System.err.println("Patient with ID " + patientId + " not found.");
+        String patientIdsField = record[4];
+        List<Patient> patients = new ArrayList<>();
+        if (patientIdsField != null && !patientIdsField.isBlank()) {
+            String[] patientIds = patientIdsField.split(";");
+            for (String patientId : patientIds) {
+                Patient patient = (Patient) patientManager.createUser(patientId);
+                if (patient != null) {
+                    patients.add(patient);
+                } else {
+                    System.err.println("Patient with ID " + patientId + " not found.");
+                }
             }
         }
         return new Doctor(userId, name, gender, age, patients);
     }
+
 
     /**
      * Generates a record array from the provided {@code Doctor} object.
@@ -113,6 +117,6 @@ public class DoctorManager extends UserManager {
         Patient patient = (Patient) patientManager.createUser(patientId);
         doctor.addPatient(patient);
         String[] record = createRecordFromUser(doctor);
-        fileHandler.updateLine(record);
+        userFileHandler.updateLine(record);
     }
 }

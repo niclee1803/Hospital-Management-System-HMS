@@ -93,7 +93,7 @@ public class LoginManager {
      * @return The hashed password as a hexadecimal strong.
      * @throws RuntimeException If an error occurs during the hashing process
      */
-    String hashWith256(String password) {
+    public static String hashWith256(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(password.getBytes("UTF-8"));

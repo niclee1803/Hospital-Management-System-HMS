@@ -1,22 +1,17 @@
 package entities;
 
 public class Administrator extends User {
-    private String role;
+    private Gender gender;
+    private int age;
 
-    public Administrator(String id, String name, String role) {
+    public Administrator(String id, String name, Gender gender, int age) {
         super(id, name);
-        this.role = role;
+        this.gender = gender;
+        this.age = age;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public void setName(String name) {
-        this.setName(name); // Use the User's setName method
+        super.setName(name); // Use the User's setName method
     }
 }

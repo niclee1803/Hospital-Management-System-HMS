@@ -7,7 +7,7 @@ package filehandlers;
  *<p>This class inherits the core file handling methods from {@code FileHandler} and uses the file path for patient records
  * in the constructor</p>
  */
-public class PatientFileHandler extends FileHandler {
+public class PatientFileHandler extends UserFileHandler {
     /**
      * Constructs a {@code PatientFileHandler} object and sets the file path to "Database/Patient_Record.csv" for managing
      * patient record files.

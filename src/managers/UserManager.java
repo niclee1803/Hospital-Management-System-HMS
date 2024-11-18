@@ -1,7 +1,7 @@
 package managers;
 
 import entities.User;
-import filehandlers.FileHandler;
+import filehandlers.UserFileHandler;
 
 /**
  * The {@code UserManager} class serves as an abstract base class for managing user records.
@@ -16,15 +16,15 @@ public abstract class UserManager {
     /**
      * The file handler used to manage data storage and retrieval.
      */
-    protected FileHandler fileHandler;
+    protected UserFileHandler userFileHandler;
 
     /**
      * Consructs a new {@code UserManager} with the specified {@code FileHandler}. This constructor is called by subclasses
      * to intialize the {@code fileHandler} that will be used for reading and writing user data.
-     * @param fileHandler
+     * @param userFileHandler
      */
-    protected UserManager(FileHandler fileHandler) {
-        this.fileHandler = fileHandler;
+    protected UserManager(UserFileHandler userFileHandler) {
+        this.userFileHandler = userFileHandler;
     }
 
     /**

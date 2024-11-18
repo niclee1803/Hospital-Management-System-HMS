@@ -2,7 +2,7 @@ package utility;
 
 import java.util.List;
 
-public class table {
+public class Table {
     
         public static void printTable(List<String[]> rows) {
         if (rows.isEmpty()) return;
@@ -65,6 +65,4 @@ public class table {
     public static String padRight(String text, int length) {
         return String.format("%-" + length + "s", text);
     }
-
-
 }

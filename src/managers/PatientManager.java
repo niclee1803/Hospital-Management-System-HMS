@@ -32,7 +32,7 @@ public class PatientManager extends UserManager {
      * @return A {@code Patient} object with the corresponding data, or {@code null} if any error occurs
      */
     public User createUser(String id) {
-        String[] record = fileHandler.readLine(id);
+        String[] record = userFileHandler.readLine(id);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             String userId = record[0];
@@ -97,7 +97,7 @@ public class PatientManager extends UserManager {
         if (patient != null) {
             patient.setPhone(newPhone);
             String[] record = createRecordFromUser(patient);
-            fileHandler.updateLine(record);
+            userFileHandler.updateLine(record);
         }
         return patient;
     }
@@ -114,7 +114,7 @@ public class PatientManager extends UserManager {
         if (patient != null) {
             patient.setEmail(newEmail);
             String[] record = createRecordFromUser(patient);
-            fileHandler.updateLine(record);
+            userFileHandler.updateLine(record);
         }
         return patient;
     }
@@ -131,7 +131,7 @@ public class PatientManager extends UserManager {
         if (patient != null) {
             patient.setDiagnoses(newDiagnoses);
             String[] record = createRecordFromUser(patient);
-            fileHandler.updateLine(record);
+            userFileHandler.updateLine(record);
         }
         return patient;
     }
@@ -148,7 +148,7 @@ public class PatientManager extends UserManager {
         if (patient != null) {
             patient.setTreatments(newTreatments);
             String[] record = createRecordFromUser(patient);
-            fileHandler.updateLine(record);
+            userFileHandler.updateLine(record);
         }
         return patient;
     }
@@ -165,7 +165,7 @@ public class PatientManager extends UserManager {
         if (patient != null) {
             patient.setPrescriptions(newPrescriptions);
             String[] record = createRecordFromUser(patient);
-            fileHandler.updateLine(record);
+            userFileHandler.updateLine(record);
         }
         return patient;
     }
