@@ -107,7 +107,7 @@ public class AppointmentManager {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("<< Enter x to go back to the menu >> ");
-        System.out.println("Enter the Doctor ID: ");
+        System.out.print("Enter the Doctor ID: ");
         String dId = sc.nextLine();
 
         if (dId.equalsIgnoreCase("x")) {
@@ -118,7 +118,7 @@ public class AppointmentManager {
         String time = null;
         
         while (date == null) {
-            System.out.println("Enter the date (yyyy-MM-dd): ");
+            System.out.print("Enter the date (yyyy-MM-dd): ");
             String dateInput = sc.nextLine();
             if (dateInput.equalsIgnoreCase("x")) {
                 return appt;
@@ -132,7 +132,7 @@ public class AppointmentManager {
         }
         
         while (time == null) {
-            System.out.println("Enter the time (hh:mm): ");
+            System.out.print("Enter the time (hh:mm): ");
             String timeInput = sc.nextLine();
             if (timeInput.equalsIgnoreCase("x")) {
                 return appt;
@@ -691,9 +691,11 @@ public class AppointmentManager {
         
         while(true) {
             
+            System.out.println("<< Enter x to go back to the menu >> ");
+
             while (date == null) {
                 try {
-                    System.out.println("Enter the date (yyyy-MM-dd): ");
+                    System.out.print("Enter the date (yyyy-MM-dd): ");
                     String dateInput = sc.nextLine();
                     if (dateInput.equalsIgnoreCase("x")) {
                         return;
@@ -706,7 +708,7 @@ public class AppointmentManager {
 
             while (time == null) {
                 try {
-                    System.out.println("Enter the time (hh:mm): ");
+                    System.out.print("Enter the time (hh:mm): ");
                     String timeInput = sc.nextLine();
                     if (timeInput.equalsIgnoreCase("x")) {
                         return;
@@ -718,7 +720,7 @@ public class AppointmentManager {
             }
 
             if (findAppointment(appts, doctorId, date, time) >= 0) {
-                System.out.println("You have already indicated availability for this slot! Enter a new slot");
+                System.out.print("You have already indicated availability for this slot! Enter a new slot");
             } else {
                 break;
             }
@@ -765,7 +767,7 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
-                        System.out.println("Do you wish to accept this appointment request? (Y/N) (Any to skip): ");
+                        System.out.print("Do you wish to accept this appointment request? (Y/N) (Enter to skip): ");
                         char choice = sc.next().charAt(0);
                         sc.nextLine();
                         if (choice == 'Y' || choice == 'y') {
@@ -787,7 +789,6 @@ public class AppointmentManager {
         }
 
         if (isEmpty) {
-            System.out.println();
             System.out.println("<< You have no appointment requests >>");
             System.out.println();
         }
@@ -869,21 +870,21 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
-                        System.out.println("Have you completed this appointment? (Y/N): ");
+                        System.out.print("Have you completed this appointment? (Y/N): ");
                         char choice = sc.next().charAt(0);
                         sc.nextLine();
                         
                         if (choice == 'Y' || choice == 'y') {
                             appt.setStatus("Completed");
-                            System.out.println("Service provided?: ");
+                            System.out.print("Service provided?: ");
                             String service = sc.nextLine();
 
                             while(true) {
-                                System.out.println("Medicine prescribed? (Y/N): ");
+                                System.out.print("Medicine prescribed? (Y/N): ");
                                 char a = sc.next().charAt(0);
                                 sc.nextLine();
                                 if (a == 'Y' || a == 'y') {
-                                    System.out.println("Name of medicine prescribed?: ");
+                                    System.out.print("Name of medicine prescribed?: ");
                                     String medName = sc.nextLine();
                                     appt.setMedName(medName);
                                     appt.setMedStatus("Pending");
@@ -895,7 +896,7 @@ public class AppointmentManager {
                                 }
                             }
 
-                            System.out.println("Any notes?: ");
+                            System.out.print("Any notes?: ");
                             String notes = sc.nextLine();
 
                             appt.setService(service);
@@ -1022,12 +1023,12 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
-                        System.out.println("Medicine dispensed? (Y/N): ");
+                        System.out.print("Medicine dispensed? (Y/N): ");
                         char choice = sc.next().charAt(0);
                         
                         if (choice == 'Y' || choice == 'y') {
                             appointment.setMedStatus("Dispensed");
-                            System.out.println("Medicine status updated!");
+                            System.out.print("Medicine status updated!");
                             break;
                         } else if (choice == 'N' || choice == 'n') {
                             break;
