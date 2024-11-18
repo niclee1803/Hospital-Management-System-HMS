@@ -93,6 +93,7 @@ public class DoctorMenu implements IUserMenu {
      * Prints the available choices in the main menu.
      */
     private void printChoices() {
+        System.out.println();
         System.out.println("╔═══════════════════════════════════════════════════════════╗");
         System.out.printf("║ %28s %-28s ║%n", "Welcome, Doctor", doctor.getName() + "!");
         System.out.println("╠═══════════════════════════════════════════════════════════╣");

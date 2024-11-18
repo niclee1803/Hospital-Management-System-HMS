@@ -842,6 +842,8 @@ public class AppointmentManager {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
+        DoctorManager docManager = new DoctorManager();
+        Doctor doc = (Doctor) docManager.createUser(doctorId);
         
 
         for (Appointment appt : appts) {
@@ -870,26 +872,38 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
-                        System.out.print("Have you completed this appointment? (Y/N): ");
-                        char choice = sc.next().charAt(0);
-                        sc.nextLine();
+
+                        System.out.println("<< Enter x to go back to the menu >> ");
+                        System.out.print("Have you completed this appointment? (Y/Any to skip): ");
+                        String choice = sc.nextLine();
+                        if (choice.equalsIgnoreCase("X")) {
+                            return doc;
+                        }
                         
-                        if (choice == 'Y' || choice == 'y') {
+                        if (choice.equalsIgnoreCase("Y")) {
                             appt.setStatus("Completed");
                             System.out.print("Service provided?: ");
                             String service = sc.nextLine();
+                            if (service.equalsIgnoreCase("x")) {
+                                return doc;
+                            }
 
                             while(true) {
                                 System.out.print("Medicine prescribed? (Y/N): ");
-                                char a = sc.next().charAt(0);
-                                sc.nextLine();
-                                if (a == 'Y' || a == 'y') {
+                                String a = sc.nextLine();
+                                if (a.equalsIgnoreCase("X")) {
+                                    return doc;
+                                }
+                                if (a.equalsIgnoreCase("Y")) {
                                     System.out.print("Name of medicine prescribed?: ");
                                     String medName = sc.nextLine();
+                                    if (medName.equalsIgnoreCase("x")) {
+                                        return doc;
+                                    }
                                     appt.setMedName(medName);
                                     appt.setMedStatus("Pending");
                                     break;
-                                } else if (a == 'N' || a == 'n') {
+                                } else if (a.equalsIgnoreCase("N")) {
                                     break;
                                 } else {
                                     System.out.println("Invalid choice! Please enter Y or N: ");
@@ -898,12 +912,12 @@ public class AppointmentManager {
 
                             System.out.print("Any notes?: ");
                             String notes = sc.nextLine();
+                            if (notes.equalsIgnoreCase("x")) {
+                                return doc;
+                            }
 
                             appt.setService(service);
                             appt.setNotes(notes);
-
-                            DoctorManager docManager = new DoctorManager();
-                            Doctor doc = (Doctor) docManager.createUser(doctorId);
 
                             boolean found = false;
                             for (Patient p : doc.getPatients()) {
@@ -917,13 +931,11 @@ public class AppointmentManager {
                             }
                             
                             System.out.println("Appointment outcome recorded!");
-
-                            break;
-                        } else if (choice == 'N' || choice == 'n') {
+                            System.out.println();
                             break;
                         } else {
-                            System.out.println("Invalid choice! Please enter Y or N: ");
-                        }
+                            break;
+                        } 
 
                     }
 
@@ -935,14 +947,10 @@ public class AppointmentManager {
             System.out.println();
             System.out.println("<< You have no confirmed appointments to complete >>");
             System.out.println();
-            DoctorManager docManager = new DoctorManager();
-            Doctor doc = (Doctor) docManager.createUser(doctorId);
             return doc;
         }
 
         writeAppointments(appts);
-        DoctorManager docManager = new DoctorManager();
-        Doctor doc = (Doctor) docManager.createUser(doctorId);
         return doc;
     }
 

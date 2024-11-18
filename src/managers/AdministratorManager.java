@@ -92,8 +92,13 @@ public class AdministratorManager {
             return;
         }
 
-        String[] record = new String[]{id, name, gender, String.valueOf(age)};
-    
+        String[] record;
+
+        if (role.equals("Doctor")) {
+            record = new String[]{id, name, gender, String.valueOf(age), ""};
+        } else {
+            record = new String[]{id, name, gender, String.valueOf(age)};
+        }
         // Write to respective records file
         switch(role) {
             case "Doctor"->doctorFileHandler.writeLine(record);
