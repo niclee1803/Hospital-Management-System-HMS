@@ -106,7 +106,8 @@ public class AppointmentManager {
         String[] appt = new String[3];
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the Doctor ID (x to go back): ");
+        System.out.println("<< Enter x to go back to the menu >> ");
+        System.out.println("Enter the Doctor ID: ");
         String dId = sc.nextLine();
 
         if (dId.equalsIgnoreCase("x")) {
@@ -117,7 +118,7 @@ public class AppointmentManager {
         String time = null;
         
         while (date == null) {
-            System.out.println("Enter the date (yyyy-MM-dd) (x to go back): ");
+            System.out.println("Enter the date (yyyy-MM-dd): ");
             String dateInput = sc.nextLine();
             if (dateInput.equalsIgnoreCase("x")) {
                 return appt;
@@ -131,7 +132,7 @@ public class AppointmentManager {
         }
         
         while (time == null) {
-            System.out.println("Enter the time (hh:mm) (x to go back): ");
+            System.out.println("Enter the time (hh:mm): ");
             String timeInput = sc.nextLine();
             if (timeInput.equalsIgnoreCase("x")) {
                 return appt;
@@ -241,11 +242,9 @@ public class AppointmentManager {
         }
 
         if (isEmpty) {
-            System.out.println();
             System.out.println("<< There are no available appointments >>");
             System.out.println();
         } else {
-            System.out.println();
             System.out.println("<< Available appointment slots >>");
             Table.printTable(rows);
         }
@@ -297,11 +296,61 @@ public class AppointmentManager {
         }
 
         if (isEmpty) {
-            System.out.println();
             System.out.println("<< You have no scheduled appointments >>");
             System.out.println();
         } else {
+            System.out.println("<< Your scheduled appointments >>");
+            Table.printTable(rows);
+        }
+
+    }
+
+    public void patientOnlyConfirmedAppointments(String patientID) throws Exception {
+
+        List<Appointment> appts = readAppointments();
+        boolean isEmpty = true;
+
+        String[] headers = {
+            "Doctor ID", "Doctor Name", "Date", "Time", "Status"
+        };
+    
+        List<String[]> rows = new ArrayList<>();
+        rows.add(headers);
+
+        for (Appointment appointment : appts) {
+
+            if (appointment.getPatientID() == null) {
+                continue;
+            }
+
+            if (appointment.getStatus().equals("Completed")) {
+                continue;
+            }
+
+            if (appointment.getStatus().equals("Cancelled")) {
+                continue;
+            }
+
+            if (appointment.getPatientID().equals(patientID)) {
+                isEmpty = false;
+                DoctorManager manager = new DoctorManager();
+                Doctor doc = (Doctor) manager.createUser(appointment.getDoctorID());
+
+                rows.add(new String[]{
+                    appointment.getDoctorID(),
+                    doc.getName(),
+                    appointment.getDate().toString(),
+                    appointment.getTime().toString(),
+                    appointment.getStatus()
+                });
+            }
+            
+        }
+
+        if (isEmpty) {
+            System.out.println("<< You have no scheduled appointments >>");
             System.out.println();
+        } else {
             System.out.println("<< Your scheduled appointments >>");
             Table.printTable(rows);
         }
@@ -343,8 +392,10 @@ public class AppointmentManager {
 
             if (c == -1) {
                 System.out.println("No such slot exists! Please enter again");
+                System.out.println();
             } else if (c > 0) {
                 System.out.println("Slot already taken! Please enter again");
+                System.out.println();
             } else {
                 break;
             }
@@ -358,7 +409,9 @@ public class AppointmentManager {
         }
 
         writeAppointments(appts);
+        System.out.println();
         System.out.println("<< Appointment request sent! >>"); 
+        System.out.println();
 
     }
 
@@ -374,13 +427,28 @@ public class AppointmentManager {
         List<Appointment> appts = readAppointments();
         System.out.println("<< Rescheduling appointment >>"); 
 
+        boolean hasAppointments = false;
+        for (Appointment appointment : appts) {
+            if (appointment.getPatientID() != null && appointment.getPatientID().equals(patientID)
+                    && (appointment.getStatus().equals("Pending Confirmation") || appointment.getStatus().equals("Confirmed"))) {
+                hasAppointments = true;
+                break;
+            }
+        }
+
+        if (!hasAppointments) {
+            System.out.println("<< You have no appointments to reschedule >>");
+            System.out.println();
+            return; 
+        }
+
         String doctorID;
         LocalDate date;
         LocalTime time;
 
         while(true) {
 
-            patientPrintScheduledAppointments(patientID);
+            patientOnlyConfirmedAppointments(patientID);
 
             String[] slotDetails = getSlotInput();
 
@@ -396,8 +464,10 @@ public class AppointmentManager {
 
             if (c == -1) {
                 System.out.println("You have no such appointment! Please enter again");
+                System.out.println();
             } else if (c > 0) {
                 System.out.println("Appointment has been cancelled or completed! Please enter again");
+                System.out.println();
             } else {
                 break;
             }
@@ -433,13 +503,28 @@ public class AppointmentManager {
         List<Appointment> appts = readAppointments();
         System.out.println("<< Cancelling appointment >>"); 
 
+        boolean hasAppointments = false;
+        for (Appointment appointment : appts) {
+            if (appointment.getPatientID() != null && appointment.getPatientID().equals(patientID)
+                    && (appointment.getStatus().equals("Pending Confirmation") || appointment.getStatus().equals("Confirmed"))) {
+                hasAppointments = true;
+                break;
+            }
+        }
+
+        if (!hasAppointments) {
+            System.out.println("<< You have no appointments to cancel >>");
+            System.out.println();
+            return; 
+        }
+
         String doctorID;
         LocalDate date;
         LocalTime time;
 
         while(true) {
 
-            patientPrintScheduledAppointments(patientID);
+            patientOnlyConfirmedAppointments(patientID);
 
             String[] slotDetails = getSlotInput();
 
@@ -455,8 +540,10 @@ public class AppointmentManager {
 
             if (c == -1) {
                 System.out.println("You have no such appointment! Please enter again");
+                System.out.println();
             } else if (c > 0) {
                 System.out.println("Appointment has been cancelled or completed! Please enter again");
+                System.out.println();
             } else {
                 break;
             }
@@ -474,7 +561,9 @@ public class AppointmentManager {
         }
 
         writeAppointments(appts);
+        System.out.println();
         System.out.println("<< Appointment cancelled! >>");
+        System.out.println();
 
     }
 
@@ -524,11 +613,9 @@ public class AppointmentManager {
         }
 
         if (isEmpty) {
-            System.out.println();
             System.out.println("<< You have no completed appointments >>");
             System.out.println();
         } else {
-            System.out.println();
             System.out.println("<< Your completed appointment outcome records >>");
             Table.printTable(rows);
         }
@@ -586,7 +673,6 @@ public class AppointmentManager {
             System.out.println("<< You have no appointments on your schedule >>");
             System.out.println();
         } else {
-            System.out.println();
             System.out.println("<< Your personal schedule >>");
             Table.printTable(rows);
         }
@@ -745,7 +831,6 @@ public class AppointmentManager {
             System.out.println("<< You have no upcoming confirmed appointments >>");
             System.out.println();
         } else {
-            System.out.println();
             System.out.println("<< Your upcoming appointments >>");
             Table.printTable(rows);
         }
