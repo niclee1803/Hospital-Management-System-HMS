@@ -740,7 +740,7 @@ public class AppointmentManager {
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
 
-        System.out.println("<< Enter x to go back to the menu >> ");
+        
 
         for (Appointment appt : appts) {
 
@@ -769,6 +769,7 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
+                        System.out.println("<< Enter x to go back to the menu >> ");
                         System.out.print("Do you wish to accept this appointment request? (Y/N/Any to skip): ");
                         String choice = sc.nextLine();
 
@@ -1003,7 +1004,7 @@ public class AppointmentManager {
         Scanner sc = new Scanner(System.in);
         boolean isEmpty = true;
         System.out.println();
-        System.out.println("<< Enter x to go back to the menu >> ");
+        
 
         for (Appointment appointment : appts) {
 
@@ -1035,13 +1036,14 @@ public class AppointmentManager {
                     Table.printTable(rows);
 
                     while(true) {
+                        System.out.println("<< Enter x to go back to the menu >> ");
                         System.out.print("Medicine dispensed? (Y/Any to skip): ");
-                        char choice = sc.next().charAt(0);
-                        if (choice == 'X' || choice == 'x') {
+                        String choice = sc.nextLine();
+                        if (choice.equalsIgnoreCase("x")) {
                             return;
                         }
                         
-                        if (choice == 'Y' || choice == 'y') {
+                        if (choice.equalsIgnoreCase("y")) {
                             appointment.setMedStatus("Dispensed");
                             System.out.print("Medicine status updated!");
                             break;
