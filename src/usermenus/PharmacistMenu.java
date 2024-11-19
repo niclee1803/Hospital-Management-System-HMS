@@ -19,11 +19,11 @@ import managers.PharmacistManager;
  * This class implements the {@link IUserMenu} interface to manage the pharmacist's main menu and functionalities.
  */
 public class PharmacistMenu implements IUserMenu {
-    private MedInventoryManager inventoryManager;
-    private MedRequestManager requestManager;
-    private PharmacistManager pharmacistmanager;
-    private Pharmacist pharmacist;
-    private Scanner sc;
+    private final MedInventoryManager inventoryManager;
+    private final MedRequestManager requestManager;
+    private final PharmacistManager pharmacistmanager;
+    private final Pharmacist pharmacist;
+    private final Scanner sc;
 
     /**
      * Constructs a {@code PharmacistMenu} object for the specified pharmacist.
