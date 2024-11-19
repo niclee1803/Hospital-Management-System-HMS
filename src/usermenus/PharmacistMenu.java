@@ -22,6 +22,7 @@ public class PharmacistMenu implements IUserMenu {
     private final MedInventoryManager inventoryManager;
     private final MedRequestManager requestManager;
     private final PharmacistManager pharmacistmanager;
+    private final AppointmentManager apptManager;
     private final Pharmacist pharmacist;
     private final Scanner sc;
 
@@ -33,6 +34,7 @@ public class PharmacistMenu implements IUserMenu {
     public PharmacistMenu(String pharmacistID) {
         this.inventoryManager = new MedInventoryManager();
         this.requestManager = new MedRequestManager();
+        this.apptManager = new AppointmentManager();
         this.pharmacistmanager = new PharmacistManager(); // Assuming this is a valid instance
         this.pharmacist = (Pharmacist) pharmacistmanager.createUser(pharmacistID);
         this.sc = new Scanner(System.in);
@@ -45,8 +47,6 @@ public class PharmacistMenu implements IUserMenu {
      */
     @Override
     public void mainMenu() throws Exception{
-
-        AppointmentManager apptManager = new AppointmentManager();
 
         while (true) {
             // Displaying the pharmacist menu in the specified format
