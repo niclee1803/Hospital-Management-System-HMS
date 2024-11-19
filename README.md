@@ -69,3 +69,10 @@ HMS is a command-line-interface application designed in Java to help healthcare 
 
 The list of usernames are in the [User_List.csv](/Database/User_List.csv) file in the Database folder.
  Default password for all users is "password".
+
+## Documentation
+### UML Diagram
+* [UML Diagram](/UML Diagram/UML HMS.jpg)
+
+### Javadocs
+* The application includes a comprehensive set of [Javadocs](/docs/index.html) to help developers understand the structure and functionality of the code.
