@@ -5,22 +5,45 @@ HMS is a command-line-interface application designed in Java to help healthcare 
 
 ## Features
 ### User Authentication
-* Login System for Doctors and Patients with the ability to reset passwords upon first login.
+* Login System for Doctors and Patients.
+* Users can change their default password after the first login for added security.
 * Password Hashing (SHA256) for secure authentication. Default password is "password."
 
-### Medical Record Access
+### Medical Record Management
 * Patients can:
-  * View their own medical record.
-  * Update their contact information (Phone number, Email).
+  * View their medical records, including personal information such as ID, name, birth date, contact information, and blood 
+    type
+  * Update non-medical personal information such as email address and phone number.
 * Doctors can:
   * View medical records of patients under their care.
-  * Update patient medical records (e.g., diagnoses, treatments, prescriptions).
+  * Update patient medical records of patients under their care (e.g., diagnoses, treatments, prescriptions).
 
 ### Appointment Management
+* Patients can:
+  * View available appointment slots with doctors.
+  * Schedule new appointments by selecting a doctor, date, and time.
+  * Reschedule existing appointments to a new time slot, ensuring no conflicts.
+  * Cancel an existing appointment and view its status.
+  * View the outcome records of past appointments.
+* Doctors can:
+  * View and manage their schedule and availability.
+  * Accept or decline patient appointment requests.
+  * Record the outcome of completed appointments, including service type, prescribed medications, and consultation notes.
 
 ### Medication Inventory Management
+* Pharmacists can:
+  * View and manage the inventory of medications.
+  * Update the status of medication prescriptions (e.g., pending to dispensed).
+  * Monitor stock levels and submit replenishment requests to administrators when stock levels are low.
+* Administrators can:
+  * View and update the inventory, including adding or removing medications.
+  * Approve replenishment requests made by pharmacists.
 
 ### Staff Management
+* Administrators can:
+  * Manage hospital staff (Doctors and Pharmacists) by adding, updating, or removing staff members.
+  * View staff information, filter by role, gender, age, etc.
+
 
 ## Set-up Instructions
 ### Prerequisites
