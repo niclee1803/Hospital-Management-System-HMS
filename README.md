@@ -67,5 +67,5 @@ HMS is a command-line-interface application designed in Java to help healthcare 
    java Main
    ```
 
-The list of usernames are in the [User_List.csv](https://pages.github.com/](https://github.com/niclee1803/Hospital-Management-System-HMS/blob/master/Database/User_List.csv) file in the Database folder.
-Default password for all users is "password".
+The list of usernames are in the [User_List.csv](/Database/User_List.csv) file in the Database folder.
+ Default password for all users is "password".
