@@ -180,7 +180,13 @@ public class UserFileHandler {
         return records;
     }
 
+    /**
+     * Checks if a record with the given ID exists in the CSV file.
+     *
+     * @param id The ID to search for in the first column of the CSV file.
+     * @return True if a record with the specified ID exists, otherwise false.
 
+     */
     public boolean recordExists(String id) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
