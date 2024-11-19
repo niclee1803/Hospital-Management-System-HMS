@@ -2,7 +2,6 @@ package usermenus;
 
 import entities.Administrator;
 import managers.AdministratorManager;
-import managers.MedInventoryManager;
 import managers.AppointmentManager;
 
 import java.util.Scanner;
