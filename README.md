@@ -72,7 +72,7 @@ The list of usernames are in the [User_List.csv](/Database/User_List.csv) file i
 
 ## Documentation
 ### UML Diagram
-* [UML Diagram](/UML Diagram/UML HMS.jpg)
+* [UML Diagram](/UML-Diagram/UML-HMS.jpg)
 
 ### Javadocs
 * The application includes a comprehensive set of [Javadocs](/docs) to help developers understand the structure and functionality of the code.
