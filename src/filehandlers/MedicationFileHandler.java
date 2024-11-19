@@ -122,6 +122,18 @@ public class MedicationFileHandler {
         return updated;
     }
 
+    /**
+     * Updates the stock of an existing medicine or adds a new medicine to the inventory.
+     * If the medicine already exists in the stock, its quantity will be updated by adding the replenished amount.
+     * If the medicine doesn't exist, it will be added to the inventory with the provided replenishment amount.
+     * The stock is saved back to the file after the operation.
+     *
+     * @param medicineName The name of the medicine to update or add.
+     * @param replenishAmount The amount of stock to add to the existing inventory.
+     * @param unit The unit of measurement for the stock (e.g., "bottle", "tablet").
+     * @return {@code true} if the stock was updated or a new medicine was added, {@code false} otherwise.
+     * @throws IOException If an I/O error occurs while reading from or writing to the file.
+     */
     public boolean updateOrAddStock(String medicineName, int replenishAmount, String unit) throws IOException {
         List<String[]> rows = readMedicationStock();
         boolean updated = false;

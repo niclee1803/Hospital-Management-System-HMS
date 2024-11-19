@@ -17,7 +17,8 @@ import entities.Administrator;
 
 /**
  * The {@code AdministratorManager} class manages administrator-related actions,
- * including managing other staff members like doctors and pharmacists.
+ * including managing other staff members like doctors and pharmacists. It provides
+ * functionality for handling files and inventory related to medical staff and medication.
  */
 public class AdministratorManager {
     private final MedInventoryManager medInventoryManager;
@@ -27,6 +28,10 @@ public class AdministratorManager {
     private final MedicationFileHandler medicationFileHandler;
     private final MedRequestFileHandler medRequestFileHandler;
 
+    /**
+     * Constructs an {@code AdministratorManager} object, initializing the necessary
+     * file handlers and managers required for administrator-related actions.
+     */
     public AdministratorManager() {
         this.medInventoryManager = new MedInventoryManager();
         this.doctorFileHandler = new DoctorFileHandler();
@@ -36,6 +41,27 @@ public class AdministratorManager {
         this.medRequestFileHandler = new MedRequestFileHandler();
     }
 
+    /**
+     * Creates an {@code Administrator} object based on the information retrieved from
+     * the administrator file associated with the provided {@code id}.
+     * <p>
+     * The method reads the record for the given {@code id} from the administrator file
+     * using the {@link AdministratorFileHandler}. If the record is not found, the method
+     * returns {@code null}.
+     * </p>
+     * <p>
+     * The retrieved record contains the following information:
+     * <ul>
+     *   <li>Name (String)</li>
+     *   <li>Gender (String, converted to {@link Gender} enum)</li>
+     *   <li>Age (int, parsed from the string)</li>
+     * </ul>
+     * </p>
+     *
+     * @param id The unique identifier for the administrator to be created.
+     * @return An {@code Administrator} object if the record is found, {@code null} if
+     *         no record is found for the provided {@code id}.
+     */
     public Administrator createUser(String id) {
         String[] record = administratorFileHandler.readLine(id);
         if (record == null) {
@@ -50,6 +76,20 @@ public class AdministratorManager {
 
     // Staff functions
 
+    /**
+     * Adds a new staff member (Doctor, Pharmacist, or Administrator) by collecting their
+     * details such as role, ID, name, gender, and age through user input. The method ensures
+     * that the staff ID is unique and valid before adding the new staff member to the
+     * appropriate file and updating the user list.
+     * <p>
+     * The user is prompted to enter a staff role, and the corresponding staff information is
+     * gathered in a loop to handle invalid inputs. If the user chooses to exit at any point by
+     * entering "x", the method returns without making any changes. The new staff's details are
+     * then written to the relevant file based on their role.
+     * </p>
+     *
+     * @param sc The {@link Scanner} object used to capture user input from the console.
+     */
     public void addStaff(Scanner sc) {
 
         String role;
@@ -59,7 +99,7 @@ public class AdministratorManager {
         while(true) {
             System.out.print("Enter Staff Role - (D)octor/(P)harmacist/(A)dministrator: ");
             char roleChar = sc.nextLine().toUpperCase().trim().charAt(0);
-        
+
             if (roleChar == 'D') {
                 role = "Doctor";
                 break;
@@ -83,7 +123,7 @@ public class AdministratorManager {
             if (id.equalsIgnoreCase("x")){
                 return;
             }
-    
+
             // Check for duplicate ID in User_List.csv
             if (administratorFileHandler.checkDuplicateID(id)) {
                 System.out.println("ID already exists. Please enter a different ID.");
@@ -91,7 +131,7 @@ public class AdministratorManager {
                 break; // Exit the loop if ID is unique
             }
         }
-    
+
         System.out.print("Enter Staff Name: ");
         String name = sc.nextLine().trim();
         if (name.equalsIgnoreCase("x")){
@@ -140,13 +180,27 @@ public class AdministratorManager {
             case "Pharmacist"->pharmacistFileHandler.writeLine(record);
             case "Administrator"->administratorFileHandler.writeLine(record);
         }
-    
+
         // Write to User_List.csv
         administratorFileHandler.writeToUserList(id, role);
-    
+
         System.out.println(role + " added successfully.");
     }
-    
+
+    /**
+     * Updates the details of an existing staff member (Doctor, Pharmacist, or Administrator)
+     * by prompting the user to provide a new name, gender, and age. The method validates
+     * that the staff ID exists before allowing the user to update the record. If the user enters
+     * "x" at any point, the operation is cancelled and no changes are made.
+     * <p>
+     * The user is first prompted to enter the role of the staff member to update. After selecting
+     * a role, the user is asked to provide the staff ID. If the ID is valid and exists in the corresponding
+     * records file, the user can update the staff details. The updated information is then saved to the
+     * appropriate file.
+     * </p>
+     *
+     * @param sc The {@link Scanner} object used to capture user input from the console.
+     */
     public void updateStaff(Scanner sc) {
         String role;
         System.out.println();
@@ -255,7 +309,22 @@ public class AdministratorManager {
     
         System.out.println(role + " with ID " + id + " updated successfully.");
     }
-    
+
+    /**
+     * Removes a staff member (Doctor, Pharmacist, or Administrator) from the system
+     * by deleting their record from the corresponding file and from the user list.
+     * The user is prompted to enter the role and ID of the staff member to be removed.
+     * If the ID is valid and the record exists, it is removed from the respective records file.
+     * The operation is cancelled if the user enters "x" at any point.
+     * <p>
+     * The method first prompts the user to select a staff role (Doctor, Pharmacist, or Administrator).
+     * After selecting the role, the user is asked to input the staff ID. If the ID exists, the record
+     * is deleted from the corresponding file, and the user list is updated. If no matching record is found,
+     * an error message is displayed, and the user is prompted to re-enter the ID.
+     * </p>
+     *
+     * @param sc The {@link Scanner} object used to capture user input from the console.
+     */
     public void removeStaff(Scanner sc) {
         String role;
         System.out.println();
@@ -317,6 +386,19 @@ public class AdministratorManager {
 
     }
 
+    /**
+     * Displays the details of all staff members (Doctors, Pharmacists, and Administrators) in a tabular format.
+     * The method retrieves staff records from the corresponding files and presents them in a structured table.
+     * If no staff records are found, a message indicating that no staff details are available is displayed.
+     * <p>
+     * The method first adds the headers for the staff table (ID, Name, Role, Gender, Age). Then, it retrieves
+     * records for Doctors, Pharmacists, and Administrators by reading their respective files. Each staff record
+     * is formatted and added to the rows of the table. After all records are gathered, the table is printed.
+     * If no staff records exist, a message is shown indicating the absence of staff data.
+     * </p>
+     *
+     * @see Table#printTable(List) For the method used to print the table.
+     */
     public void viewStaff() {
         System.out.println();
         System.out.println("<< View Staff Details >>");
@@ -376,6 +458,15 @@ public class AdministratorManager {
 
     //Medication functions
 
+    /**
+     * Displays the full medication inventory by invoking the {@link MedInventoryManager#printFullInventory()}
+     * method to print the inventory details. After displaying the inventory, the method prompts the user
+     * to press enter to continue.
+     * <p>
+     * This method provides a simple interface for viewing the current medication stock managed by the system.
+     * It ensures that the user can review the entire inventory and proceed by pressing enter once done.
+     * </p>
+     */
     public void viewMedicationInventory() {
         System.out.println("Viewing medication inventory...");
         medInventoryManager.printFullInventory();
@@ -383,6 +474,23 @@ public class AdministratorManager {
         new Scanner(System.in).nextLine();
     }
 
+    /**
+     * Prompts the user to add a new medication to the inventory. The method collects the medicine name,
+     * low stock level, initial stock, and unit type, ensuring that the data entered is valid. If the medication
+     * already exists in the inventory, the user is notified. The new medication details are then added to the
+     * medication file.
+     * <p>
+     * The method follows a step-by-step process:
+     * 1. The user is prompted to enter the medication name, with a check for duplicates.
+     * 2. The low stock level and initial stock are requested, ensuring valid numeric input.
+     * 3. The user specifies the unit (e.g., packs, bottles) for the medication.
+     * 4. A new medication record is created and written to the file.
+     * If any input is invalid or an error occurs while adding the medication, appropriate messages are displayed.
+     * </p>
+     *
+     * @param sc the {@link Scanner} object used to read user input.
+     * @throws IOException if an error occurs while interacting with the medication data files.
+     */
     public void addMedication(Scanner sc) {
         try {
 
@@ -463,7 +571,24 @@ public class AdministratorManager {
             System.out.println("An error occurred while adding medication: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Prompts the user to update the stock of an existing medication in the inventory. The method displays
+     * the current inventory and allows the user to search for a specific medication by name. If the medication
+     * exists, the user is prompted to enter a new stock value. The updated stock value is then saved to the
+     * medication file.
+     * <p>
+     * The method follows a step-by-step process:
+     * 1. Displays the current inventory of medications.
+     * 2. Prompts the user to enter the name of the medication to update, with a check to ensure it exists.
+     * 3. Requests the new stock value from the user and ensures it is a valid integer.
+     * 4. Updates the stock of the medication in the inventory file.
+     * If any input is invalid or an error occurs while updating the stock, appropriate messages are displayed.
+     * </p>
+     *
+     * @param sc the {@link Scanner} object used to read user input.
+     * @throws IOException if an error occurs while interacting with the medication data files.
+     */
     public void updateMedicationStock(Scanner sc) {
 
         medInventoryManager.printFullInventory();
@@ -525,6 +650,24 @@ public class AdministratorManager {
         }
     }
 
+    /**
+     * Prompts the user to update the low stock alert level for a specified medication in the inventory.
+     * The method displays the current inventory of medications and allows the user to search for a specific
+     * medication by name. If the medication exists, the user is prompted to enter a new low stock alert level.
+     * The updated low stock alert level is then saved to the medication file.
+     * <p>
+     * The method performs the following steps:
+     * 1. Displays the current inventory of medications.
+     * 2. Prompts the user to enter the name of the medication for which the low stock alert is to be updated.
+     * 3. Validates that the specified medication exists in the inventory.
+     * 4. Requests the user to input a new low stock alert level and ensures it is a valid integer.
+     * 5. Updates the low stock alert level for the specified medication in the file.
+     * If any input is invalid or an error occurs while updating the low stock alert, appropriate messages are displayed.
+     * </p>
+     *
+     * @param sc the {@link Scanner} object used to read user input.
+     * @throws IOException if an error occurs while interacting with the medication data files.
+     */
     public void updateLowStockAlert(Scanner sc) {
 
         medInventoryManager.printFullInventory();
@@ -589,6 +732,12 @@ public class AdministratorManager {
         }
     }
 
+    /**
+     * Processes replenishment requests by reviewing each pending request, allowing the user to approve or reject the request.
+     * If a request is approved, the corresponding medication stock is updated based on the requested amount.
+     * The method reads all replenishment requests, and for each pending request, the user is prompted to either approve, reject, or skip the request.
+     * After processing all requests, the updated request list is written back to the request file.
+     */
     public void approveReplenishmentRequests() {
         try {
             // Read all requests from the file

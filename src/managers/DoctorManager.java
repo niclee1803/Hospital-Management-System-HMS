@@ -112,7 +112,15 @@ public class DoctorManager extends UserManager {
     }
 
 
-    // javadoc
+    /**
+     * Adds a patient to a doctor's list of patients using the patient's ID.
+     * The method creates a new `Patient` object using the provided patient ID, then adds the patient to the specified doctor's patient list.
+     * After adding the patient, it updates the doctor's record in the user file.
+     * @param doctor The `Doctor` object to which the patient will be added.
+     * @param patientId The ID of the patient to be added.
+     *
+     * @throws IllegalArgumentException if the patientId is invalid or if there is an error during file updates.
+     */
     public void addPatientByID(Doctor doctor, String patientId) {
         Patient patient = (Patient) patientManager.createUser(patientId);
         doctor.addPatient(patient);

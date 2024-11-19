@@ -2,22 +2,45 @@ package usermenus;
 
 import entities.Administrator;
 import managers.AdministratorManager;
-import managers.MedInventoryManager;
 import managers.AppointmentManager;
 
 import java.util.Scanner;
 
+/**
+ * The AdministratorMenu class provides a menu interface for administrators to manage hospital staff,
+ * view appointment details, manage medication inventory, and approve replenishment requests.
+ * It implements the IUserMenu interface and handles the interaction between the administrator and various system functionalities.
+ *
+ * <p>This class is responsible for presenting choices to the administrator, processing inputs, and invoking the relevant methods
+ * in the AdministratorManager, AppointmentManager, and other classes for the different tasks.</p>
+ *
+ * <p>Each menu method contains its own sub-menu for more specific actions such as managing staff, viewing appointments, and
+ * managing medication inventory. It also handles the user input validation and decision-making logic to guide the administrator
+ * through the options.</p>
+ */
 public class AdministratorMenu implements IUserMenu {
     private final AdministratorManager administratorManager;
     private final Administrator administrator;
     private final Scanner sc;
 
+    /**
+     * Constructor for the AdministratorMenu. Initializes the menu with the administrator's ID,
+     * creates the administrator object, and sets up the scanner for user input.
+     *
+     * @param adminID The ID of the administrator.
+     * @throws Exception If there is an error while creating the administrator object or initializing necessary components.
+     */
     public AdministratorMenu(String adminID) throws Exception {
         administratorManager = new AdministratorManager();
         administrator = (Administrator) administratorManager.createUser(adminID);
         sc = new Scanner(System.in);
     }
 
+    /**
+     * Displays the main menu to the administrator, allowing them to select various tasks such as
+     * managing staff, viewing appointments, and managing medication inventory.
+     * It processes the user's choice and navigates to the corresponding sub-menu or performs the selected task.
+     */
     @Override
     public void mainMenu() {
         while (true) {
@@ -34,13 +57,13 @@ public class AdministratorMenu implements IUserMenu {
 
             switch (choice) {
                 case 1: // View and Manage Hospital Staff
-                    manageStaffMenu(sc);
+                    manageStaffMenu();
                     break;
                 case 2: // View Appointments Details
                     viewAppointmentsMenu();
                     break;
                 case 3: // View and Manage Medication Inventory
-                    manageMedicationInventory(sc);
+                    manageMedicationInventory();
                     break;
                 case 4: // Approve Replenishment Requests
                     approveReplenishmentRequests();
@@ -55,6 +78,10 @@ public class AdministratorMenu implements IUserMenu {
         }
     }
 
+    /**
+     * Prints the available options for the main menu.
+     * This method displays the menu with options like managing staff, viewing appointments, etc.
+     */
     private void printChoices() {
         System.out.println();
         System.out.println("╔═══════════════════════════════════════════════════════════╗");
@@ -69,7 +96,11 @@ public class AdministratorMenu implements IUserMenu {
         System.out.println();
     }
 
-    private void manageStaffMenu(Scanner sc) {
+    /**
+     * Displays a sub-menu for managing hospital staff, including options to add, update, remove, or view staff.
+     * It processes the user's choice and performs the corresponding action.
+     */
+    private void manageStaffMenu() {
         while (true) {
             System.out.println();
             System.out.println("╔═══════════════════════════════════════════════════════════╗");
@@ -124,6 +155,10 @@ public class AdministratorMenu implements IUserMenu {
         }
     }
 
+    /**
+     * Displays the appointment details for the administrator by invoking the AppointmentManager's method.
+     * It handles any exceptions that may occur while retrieving the appointments.
+     */
     private void viewAppointmentsMenu() {
         AppointmentManager apptManager = new AppointmentManager();
         System.out.println("<< View Appointments >>");
@@ -136,7 +171,12 @@ public class AdministratorMenu implements IUserMenu {
         sc.nextLine(); // Pause and wait for the user to press Enter
     }
 
-    private void manageMedicationInventory(Scanner sc) {
+    /**
+     * Displays a sub-menu for managing medication inventory, allowing the administrator to view,
+     * add, update stock, or manage low stock alerts.
+     * It processes the user's choice and performs the corresponding action.
+     */
+    private void manageMedicationInventory() {
         while (true) {
             System.out.println();
             System.out.println("╔═══════════════════════════════════════════════════════════╗");
@@ -172,7 +212,11 @@ public class AdministratorMenu implements IUserMenu {
             }
         }
     }
-    
+
+    /**
+     * Calls the method to approve replenishment requests for medications.
+     * This allows the administrator to approve or reject requests for medication replenishment.
+     */
     private void approveReplenishmentRequests() {
         administratorManager.approveReplenishmentRequests();
     }

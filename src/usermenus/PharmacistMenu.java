@@ -19,11 +19,12 @@ import managers.PharmacistManager;
  * This class implements the {@link IUserMenu} interface to manage the pharmacist's main menu and functionalities.
  */
 public class PharmacistMenu implements IUserMenu {
-    private MedInventoryManager inventoryManager;
-    private MedRequestManager requestManager;
-    private PharmacistManager pharmacistmanager;
-    private Pharmacist pharmacist;
-    private Scanner sc;
+    private final MedInventoryManager inventoryManager;
+    private final MedRequestManager requestManager;
+    private final PharmacistManager pharmacistmanager;
+    private final AppointmentManager apptManager;
+    private final Pharmacist pharmacist;
+    private final Scanner sc;
 
     /**
      * Constructs a {@code PharmacistMenu} object for the specified pharmacist.
@@ -33,6 +34,7 @@ public class PharmacistMenu implements IUserMenu {
     public PharmacistMenu(String pharmacistID) {
         this.inventoryManager = new MedInventoryManager();
         this.requestManager = new MedRequestManager();
+        this.apptManager = new AppointmentManager();
         this.pharmacistmanager = new PharmacistManager(); // Assuming this is a valid instance
         this.pharmacist = (Pharmacist) pharmacistmanager.createUser(pharmacistID);
         this.sc = new Scanner(System.in);
@@ -46,8 +48,6 @@ public class PharmacistMenu implements IUserMenu {
     @Override
     public void mainMenu() throws Exception{
 
-        AppointmentManager apptManager = new AppointmentManager();
-
         while (true) {
             // Displaying the pharmacist menu in the specified format
             printChoices();
@@ -59,20 +59,6 @@ public class PharmacistMenu implements IUserMenu {
             } catch (NumberFormatException e) {
                 choice = 0;
             }
-
-            // int choice = -1;
- 
-            // choice = sc.nextInt();
-   
-            // try {
-            //     choice = Integer.parseInt(input);
-            // } catch (NumberFormatException e) {
-            //     System.out.println("Invalid input. Please enter a number between 1 and 5.\n");
-            //     continue; // Restart the loop for invalid input
-            // }
-    
-            //System.out.println(); // Add a blank line for better readability
-
             System.out.println();
             switch (choice) {
                 case 1:
@@ -207,22 +193,5 @@ public class PharmacistMenu implements IUserMenu {
             System.err.println("Error submitting replenishment request: " + e.getMessage());
         }
     }
-
-    /**
-     * Displays the outcome records for completed appointments of a specific patient.
-     * Prompts the pharmacist for a patient ID and then calls {@link appointmentController#patientPrintAppointmentRecords(String)}
-     * to display the records.
-     */
-    // private void viewAppointmentOutcomeRecord() {
-    //     try {
-    //         System.out.print("Enter Patient ID to view completed appointments: ");
-    //         String patientID = scanner.nextLine();
-
-    //         // Calling the static method from appointmentController
-    //         appointmentController.patientPrintAppointmentRecords(patientID);
-    //     } catch (Exception e) {
-    //         System.err.println("An error occurred while retrieving appointment records: " + e.getMessage());
-    //     }
-    // }
 
 }

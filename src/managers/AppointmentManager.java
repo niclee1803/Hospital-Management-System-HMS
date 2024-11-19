@@ -14,15 +14,25 @@ import entities.Patient;
 import filehandlers.AppointmentFileHandler;
 
 /**
- * The (@code AppointmentManager} class provides methods to manage the scheduling, rescheduling
- * and cancellation of appointments for patients. It interacts with the {@code AppointmentFileHandler}
- * to read and write appointments from a CSV file and provides functionalities such as finding appointments,
- * printing available appointments, and displaying patient-specific appointment records.
+ * The AppointmentManager class handles the scheduling, management, and tracking
+ * of appointments in a healthcare system. It provides methods for patients, doctors,
+ * pharmacists, and administrators to interact with appointment-related functionalities.
  */
 public class AppointmentManager {
 
     //File methods
-    
+
+    /**
+     * Reads appointment data from a file and converts it into a list of Appointment objects.
+     *
+     * <p>The method uses an {@link AppointmentFileHandler} to read the data. Each row of the file is
+     * processed into an {@link Appointment} object if it meets the expected structure. Rows are skipped
+     * if they are incomplete or correspond to the header.</p>
+     *
+     * @return a list of {@link Appointment} objects parsed from the file. If the file is empty or unreadable,
+     *         an empty list is returned.
+     * @throws IOException if an error occurs while reading the file.
+     */
     private List<Appointment> readAppointments() throws IOException {
 
         AppointmentFileHandler file = new AppointmentFileHandler();
@@ -67,6 +77,17 @@ public class AppointmentManager {
  
     }
 
+    /**
+     * Writes a list of Appointment objects to a file.
+     *
+     * <p>This method converts each {@link Appointment} object into a string array format suitable for
+     * writing to a file using the {@link AppointmentFileHandler}. A header row is added at the top of the
+     * file to label the columns.</p>
+     *
+     * @param appointments the list of {@link Appointment} objects to write to the file.
+     *                     If the list is empty, only the header row will be written.
+     * @throws IOException if an error occurs while writing to the file.
+     */
     private void writeAppointments(List<Appointment> appointments) throws IOException {
         AppointmentFileHandler file = new AppointmentFileHandler();
         List<String[]> rows = new ArrayList<>();
@@ -305,6 +326,17 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Displays all confirmed appointments for a specific patient.
+     *
+     * <p>This method retrieves the list of appointments, filters them to include only those
+     * with a "Scheduled" or equivalent status for the given patient, and excludes appointments
+     * marked as "Completed" or "Cancelled". The filtered appointments are displayed in a
+     * tabular format with relevant details.</p>
+     *
+     * @param patientID the ID of the patient whose confirmed appointments are to be displayed.
+     * @throws Exception if an error occurs while reading appointments or retrieving doctor details.
+     */
     public void patientOnlyConfirmedAppointments(String patientID) throws Exception {
 
         List<Appointment> appts = readAppointments();
@@ -624,6 +656,17 @@ public class AppointmentManager {
 
     //Doctor
 
+    /**
+     * Displays the personal schedule for a specific doctor.
+     *
+     * <p>This method retrieves all appointments, filters them to include only those assigned
+     * to the specified doctor that are not marked as "Completed" or "Cancelled", and formats
+     * the results into a table for display. For each appointment, the patient details are
+     * included if available; otherwise, placeholders are used for missing information.</p>
+     *
+     * @param doctorId the ID of the doctor whose schedule is to be displayed.
+     * @throws Exception if an error occurs while reading appointments or retrieving patient details.
+     */
     public void doctorViewPersonalSchedule(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
@@ -678,6 +721,16 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Allows a doctor to add new appointment slots to their schedule.
+     *
+     * <p>The method prompts the doctor to enter a date and time for the appointment slot,
+     * validates the input, and ensures the slot does not conflict with an existing slot.
+     * If valid, a new appointment with "Unbooked" status is added to the system.</p>
+     *
+     * @param doctorId the ID of the doctor adding the appointment slot.
+     * @throws Exception if an error occurs while reading or writing appointments.
+     */
     public void doctorAddAppointments(String doctorId) throws Exception {
 
         List<Appointment> appts = readAppointments();
@@ -735,6 +788,19 @@ public class AppointmentManager {
         writeAppointments(appts);
     }
 
+    /**
+     * Allows a doctor to review and manage pending appointment requests.
+     *
+     * <p>The method retrieves all appointments for the specified doctor with a status of
+     * "Pending Confirmation". For each request, the doctor is presented with details of the
+     * patient and the appointment, and they can choose to accept, decline, skip, or return
+     * to the menu. Accepted requests are updated to "Confirmed", and declined requests are
+     * updated to "Cancelled".</p>
+     *
+     * @param doctorId the ID of the doctor reviewing the appointment requests.
+     * @throws Exception if an error occurs while reading or writing appointments, or while
+     *                   retrieving patient details.
+     */
     public void doctorAppointmentRequests(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
@@ -802,6 +868,17 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Displays a list of upcoming confirmed appointments for a specific doctor.
+     *
+     * <p>This method retrieves all appointments for the specified doctor with a status
+     * of "Confirmed". For each appointment, the patient's details, along with the date
+     * and time, are displayed in a tabular format. If there are no upcoming confirmed
+     * appointments, an appropriate message is shown.</p>
+     *
+     * @param doctorId the ID of the doctor whose upcoming appointments are to be displayed.
+     * @throws Exception if an error occurs while reading appointments or retrieving patient details.
+     */
     public void doctorViewUpcomingAppointments(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
@@ -843,6 +920,20 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Allows a doctor to record the outcome of their confirmed appointments.
+     *
+     * <p>The method retrieves all confirmed appointments for a specific doctor and allows
+     * the doctor to mark an appointment as "Completed." It captures details about services
+     * provided, prescribed medication (if any), and notes related to the appointment. If
+     * the patient is not already associated with the doctor, the patient is added to the
+     * doctor's list.</p>
+     *
+     * @param doctorId the ID of the doctor recording the appointment outcome.
+     * @return the updated Doctor object with any newly associated patients.
+     * @throws Exception if an error occurs while reading appointments, retrieving patient data,
+     * or writing updates.
+     */
     public Doctor doctorRecordAppointmentOutcome(String doctorId) throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
@@ -961,6 +1052,17 @@ public class AppointmentManager {
 
     //Pharmacist
 
+    /**
+     * Displays the list of completed appointments with pending medication statuses.
+     *
+     * <p>The method retrieves all completed appointments where medication status
+     * has been specified. It displays the appointment details in a tabular format,
+     * including the doctor, patient, medication name, and medication status. If
+     * no such appointments are found, an appropriate message is displayed.</p>
+     *
+     * @throws Exception if an error occurs while reading the appointments.
+     */
+
     public void pharmacistViewAppointmentOutcome() throws Exception {
         List<Appointment> appts = readAppointments();
         boolean isEmpty = true;
@@ -999,6 +1101,16 @@ public class AppointmentManager {
 
     }
 
+    /**
+     * Allows a pharmacist to update the medication status for completed appointments.
+     *
+     * <p>The method retrieves all completed appointments that have a medication status of
+     * "Pending." The pharmacist is prompted to confirm whether the medication has been dispensed.
+     * If confirmed, the medication status is updated to "Dispensed." If no appointments are found
+     * with pending medication, a message is displayed. The updated appointment records are then saved.</p>
+     *
+     * @throws Exception if an error occurs while reading or writing appointments.
+     */
     public void pharmacistUpdatePrescriptionStatus() throws Exception {
         List<Appointment> appts = readAppointments();
         Scanner sc = new Scanner(System.in);
@@ -1067,6 +1179,17 @@ public class AppointmentManager {
 
     //Admin
 
+    /**
+     * Prints the details of all appointments in the system.
+     *
+     * <p>This method retrieves all appointments from the records and prints the details in a tabular
+     * format. Each appointment's ID, doctor ID, patient ID, date, time, status, medication name,
+     * medication status, and notes are displayed. If any information is missing (e.g., patient ID,
+     * medication name, or notes), the method substitutes "None" for the missing data. If there are no
+     * appointments available, a message indicating that no appointment details are available is shown.</p>
+     *
+     * @throws Exception if an error occurs while reading appointment records or printing the table.
+     */
     public void adminPrintAppointmentDetails() throws Exception {
 
         List<Appointment> appts = readAppointments();
@@ -1075,35 +1198,36 @@ public class AppointmentManager {
             System.out.println();
             System.out.println("<< No appointment details available >>");
             System.out.println();
-            return; 
+            return;
         }
-    
+
         String[] headers = {
-            "ApptID", "DoctorID", "PatientID", "Date", "Time", "Status", "Med Name", "Med Status", "Notes"
+                "ApptID", "DoctorID", "PatientID", "Date", "Time", "Status", "Med Name", "Med Status", "Notes"
         };
-    
+
         List<String[]> rows = new ArrayList<>();
         rows.add(headers);
-    
+
         // Iterate through the appointments and add each as a row in the table
         for (Appointment appointment : appts) {
             rows.add(new String[]{
-                appointment.getAppointmentID(),
-                appointment.getDoctorID(),
-                appointment.getPatientID() == null ? "None" : appointment.getPatientID(),
-                appointment.getDate().toString(),
-                appointment.getTime().toString(),
-                appointment.getStatus(),
-                appointment.getMedName() == null ? "None" : appointment.getMedName(),
-                appointment.getMedStatus() == null ? "None" : appointment.getMedStatus(),
-                appointment.getNotes() == null ? "None" : appointment.getNotes()
+                    appointment.getAppointmentID(),
+                    appointment.getDoctorID(),
+                    appointment.getPatientID() == null ? "None" : appointment.getPatientID(),
+                    appointment.getDate().toString(),
+                    appointment.getTime().toString(),
+                    appointment.getStatus(),
+                    appointment.getMedName() == null ? "None" : appointment.getMedName(),
+                    appointment.getMedStatus() == null ? "None" : appointment.getMedStatus(),
+                    appointment.getNotes() == null ? "None" : appointment.getNotes()
             });
         }
-    
+
         // Print the table
         System.out.println();
         System.out.println("<< All appointment details >>");
         Table.printTable(rows);
     }
+
 
 }
