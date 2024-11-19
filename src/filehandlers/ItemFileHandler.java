@@ -9,17 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemFileHandler {
+    private String filePath;
 
-    private String FILE_PATH;
-
-    public ItemFileHandler(String s) {
-        FILE_PATH = s;
+    public ItemFileHandler(String filePath) {
+        this.filePath = filePath;
     }
     
     public List<String[]> readFile() throws IOException {
         List<String[]> rows = new ArrayList<>();
         
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             
             String line;
             while ((line = br.readLine()) != null) {
@@ -39,7 +38,7 @@ public class ItemFileHandler {
         return; // If no rows exist, just return
     }
 
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
         // Write the header (first row) from the data dynamically
         String[] header = rows.get(0); // The first row is assumed to be the header
         StringBuilder headerLine = new StringBuilder();
@@ -67,6 +66,4 @@ public class ItemFileHandler {
         }
     }
 }
-
-
 }
