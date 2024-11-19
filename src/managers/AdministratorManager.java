@@ -557,7 +557,7 @@ public class AdministratorManager {
                 }
             }
             
-            System.out.println("Enter Unit (e.g., packs, bottles):");
+            System.out.print("Enter Unit (e.g., packs, bottles):");
             String unit = sc.nextLine().trim();
     
             // Create a new medication record
