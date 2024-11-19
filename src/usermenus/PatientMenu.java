@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class PatientMenu implements IUserMenu {
     private Patient patient;
     private final PatientManager patientManager;
+    private final AppointmentManager appointmentManager;
     private final Scanner sc;
 
     /**
@@ -24,6 +25,7 @@ public class PatientMenu implements IUserMenu {
      */
     public PatientMenu(String patientID) {
         patientManager = new PatientManager();
+        appointmentManager = new AppointmentManager();
         this.patient = (Patient) patientManager.createUser(patientID);
         sc = new Scanner(System.in);
     }
@@ -35,9 +37,6 @@ public class PatientMenu implements IUserMenu {
      */
     @Override
     public void mainMenu() throws Exception {
-
-        AppointmentManager apptManager = new AppointmentManager();
-
         while (true) {
             printChoices();
             System.out.print("Enter your selection: ");
@@ -59,32 +58,32 @@ public class PatientMenu implements IUserMenu {
                     updateContactMenu();
                     break;
                 case 3: //View appointment slots
-                    apptManager.patientPrintAvailableAppointments();
+                    appointmentManager.patientPrintAvailableAppointments();
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 4: //Schedule appointment
-                    apptManager.patientScheduleAppointment(patient.getId());
+                    appointmentManager.patientScheduleAppointment(patient.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 5: //Reschedule appointment
-                    apptManager.patientRescheduleAppointment(patient.getId());
+                    appointmentManager.patientRescheduleAppointment(patient.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 6: //Cancel appointment
-                    apptManager.patientCancelAppointment(patient.getId());
+                    appointmentManager.patientCancelAppointment(patient.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 7: //View scheduled appointment
-                    apptManager.patientPrintScheduledAppointments(patient.getId());
+                    appointmentManager.patientPrintScheduledAppointments(patient.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
                 case 8: //View past appointment records
-                    apptManager.patientPrintAppointmentRecords(patient.getId());
+                    appointmentManager.patientPrintAppointmentRecords(patient.getId());
                     System.out.println("Press enter to continue...\n");
                     sc.nextLine();
                     break;
