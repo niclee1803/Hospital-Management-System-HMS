@@ -38,5 +38,5 @@ AP036,D003,P1001,2024-12-21,14:45,Cancelled,,,,
 AP037,D001,P1002,2024-12-22,16:00,Completed,Health Assessment,,,Patient recovering well.
 AP038,D002,P1003,2024-12-23,08:30,Completed,Follow-up,Amoxicillin,Dispensed,Complete full course.
 AP039,D003,P1004,2024-12-24,09:45,Completed,Therapy,Antibiotic,Pending,Wait for lab results.
-AP040,D001,P1001,2024-12-25,10:15,Completed,Examination,,Pending,Discharge after observation.
+AP040,D001,P1001,2024-12-25,10:15,Completed,Examination,Antibiotic,Pending,Discharge after observation.
 AP041,D001,,2025-01-01,13:00,Unbooked,,,,

@@ -126,6 +126,8 @@ public class PharmacistMenu implements IUserMenu {
      */
     private void submitReplenishmentRequest() throws Exception {
 
+        viewMedicationInventory();
+
         String medicineName;
         System.out.println();
         System.out.println("<< Enter x to go back to the menu >> ");
