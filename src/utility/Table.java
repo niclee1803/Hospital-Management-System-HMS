@@ -2,6 +2,14 @@ package utility;
 
 import java.util.List;
 
+/**
+ * The Table class provides utility methods for printing tables to the console.
+ * It is designed to format and display data in a tabular form with aligned columns.
+ * The table can be printed from a list of string arrays, where each array represents a row of data.
+ *
+ * <p>This class handles calculating the necessary column widths, creating table borders, and formatting the data
+ * within the cells for a clean and readable table output.</p>
+ */
 public class Table {
     
         public static void printTable(List<String[]> rows) {
@@ -60,8 +68,16 @@ public class Table {
         System.out.println(border.toString()); // Bottom border
         System.out.println(); // Empty line after the table
     }
-    
-    // Helper method to pad strings to the right
+
+    /**
+     *
+     * Helper method to pad a string to the right with spaces.
+     * This ensures that the string fits within the specified length.
+     *
+     * @param text The text to be padded.
+     * @param length The desired length for the padded string.
+     * @return A new string with the original text right-padded to the specified length.
+     */
     public static String padRight(String text, int length) {
         return String.format("%-" + length + "s", text);
     }
