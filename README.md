@@ -75,4 +75,6 @@ The list of usernames are in the [User_List.csv](/Database/User_List.csv) file i
 * [UML Diagram](/UML Diagram/UML HMS.jpg)
 
 ### Javadocs
-* The application includes a comprehensive set of [Javadocs](/docs/index.html) to help developers understand the structure and functionality of the code.
+* The application includes a comprehensive set of [Javadocs](/docs) to help developers understand the structure and functionality of the code.
+* To view them, simply open the index.html file in your web browser after cloning the repository.
+* You can navigate through the Javadocs to explore the documentation for each class and method in the project.
