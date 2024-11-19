@@ -1,58 +1,31 @@
 # Hospital Management System (HMS)
 
-## What has been implemented
-* login System for Doctors and Patients, plus change their password on their first login
-* View Patient Medical users for Patients and Doctors:
-  * Patient can view their own medical record
-  * Doctor can view medical records of patients under their care
-  * 
-* Doctor can update medical records (diagnoses, treatments, and prescriptions) of patients under their care
-* Patient can update their contact info (Phone number and email)
-* Appointments now has full working functionality for all users - patients, doctors*, pharmacists and admins (* doctors cannot see personal schedule and set availability for appointments just yet - need some clarification on this)
+## Overview
+HMS is a command-line-interface application designed in Java to help healthcare providers and patients manage and update medical records, appointments, and medicine inventory. 
 
-## Extra features
-* Password hashing (SHA256) - default pw is password
-* Validity checks (using regex)
-  * password strength check when resetting password
-  * valid SG phone number check
-  * valid email check
-  * 
+## Features
+### User Authentication
+* Login System for Doctors and Patients with the ability to reset passwords upon first login.
+* Password Hashing (SHA256) for secure authentication. Default password is "password."
 
-## To be implemented
-* Pharmacist and Administrator Roles
-* Medications and Inventory
-* Error Handling for inputs
-* UI improvements on the appointment side
+### Medical Record Access
+* Patients can:
+  * View their own medical record.
+  * Update their contact information (Phone number, Email).
+* Doctors can:
+  * View medical records of patients under their care.
+  * Update patient medical records (e.g., diagnoses, treatments, prescriptions).
 
-## Packages
-1. managers
-   * manager/controller classes
+### Appointment Management
 
-2. login
-   * Contains LoginManager, LoginFileHandler, and LoginMenu classes that handle login
+### Medication Inventory Management
 
-3. entities
-   * Contains entity classes such as users.
-
-4. usermenus
-   * boundary classes for menus
-     
-5. filehandlers
-   * filehandler classes that handle writing/reading to/from respective database csv files
-
-7. utility
-   * Helper methods such as those to check validity of phone numbers and email addresses, and if password is long enough.
-
-## Database (to be updated)
-* Patient_Records.csv - list of patient medical record information
-* Doctor_Records.csv - list of doctorIDs, their names, and their patients
-* User_List.csv - list of userIDs and their corresponding passwords
-* Appointments.csv - list of Appointment details, including outcome records
-
-## Bugs to fix
-*
+### Staff Management
 
 ## Set-up Instructions
+### Prerequisites
+* JDK 22 or higher
+
 1. Clone the repository
    
    ```sh
