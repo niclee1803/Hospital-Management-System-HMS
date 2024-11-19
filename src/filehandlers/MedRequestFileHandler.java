@@ -46,8 +46,13 @@ public class MedRequestFileHandler extends ItemFileHandler {
         writeFile(rows);
     
     }
-    
 
+    /**
+     * Reads all replenishment requests from the CSV file.
+     *
+     * @return a List of String arrays, each representing a row from the file.
+     * @throws IOException if an error occurs while reading the file.
+     */
     public List<String[]> readRequests() throws IOException {
     List<String[]> requests = new ArrayList<>();
     try (BufferedReader br = new BufferedReader(new FileReader("Database/Replenishment_Requests.csv"))) {
@@ -59,7 +64,13 @@ public class MedRequestFileHandler extends ItemFileHandler {
     return requests;
 }
 
-public void updateRequests(List<String[]> requests) throws IOException {
+    /**
+     * Updates the replenishment requests file with the provided list of requests.
+     *
+     * @param requests a List of String arrays representing the updated rows.
+     * @throws IOException if an error occurs while writing to the file.
+     */
+    public void updateRequests(List<String[]> requests) throws IOException {
     try (BufferedWriter bw = new BufferedWriter(new FileWriter("Database/Replenishment_Requests.csv"))) {
         for (String[] request : requests) {
             bw.write(String.join(",", request));
