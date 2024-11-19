@@ -6,8 +6,8 @@ HMS is a command-line-interface application designed in Java to help healthcare 
 ## Features
 ### User Authentication :lock:
 * Login System for Doctors and Patients.
-* Users can change their default password after the first login for added security.
-* Password Hashing (SHA256) for secure authentication. Default password is "password."
+* Users can change their default password after the first login for added security. Default password is "password."
+* Password Hashing (SHA256) for secure authentication. 
 
 ### Medical Record Management :ledger:
 * Patients can:
