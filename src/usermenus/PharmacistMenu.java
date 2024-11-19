@@ -194,21 +194,4 @@ public class PharmacistMenu implements IUserMenu {
         }
     }
 
-    /**
-     * Displays the outcome records for completed appointments of a specific patient.
-     * Prompts the pharmacist for a patient ID and then calls {@link appointmentController#patientPrintAppointmentRecords(String)}
-     * to display the records.
-     */
-    // private void viewAppointmentOutcomeRecord() {
-    //     try {
-    //         System.out.print("Enter Patient ID to view completed appointments: ");
-    //         String patientID = scanner.nextLine();
-
-    //         // Calling the static method from appointmentController
-    //         appointmentController.patientPrintAppointmentRecords(patientID);
-    //     } catch (Exception e) {
-    //         System.err.println("An error occurred while retrieving appointment records: " + e.getMessage());
-    //     }
-    // }
-
 }
