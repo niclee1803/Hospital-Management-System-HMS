@@ -6,6 +6,13 @@ import usermenus.IUserMenu;
 import usermenus.PatientMenu;
 import usermenus.PharmacistMenu;
 
+/**
+ * The Main class serves as the entry point for the application.
+ * It displays the welcome screen, handles user login, and redirects the user to the appropriate menu based on their role.
+ *
+ * <p>This class continuously runs a loop that allows users to log in and access their respective menus.
+ * It checks the user's credentials and type, then displays a menu based on the user's role (Patient, Administrator, Doctor, or Pharmacist).</p>
+ */
 public class Main {
     public static void main(String[] args) throws Exception {
         while (true) {
