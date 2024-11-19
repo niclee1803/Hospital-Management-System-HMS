@@ -59,20 +59,6 @@ public class PharmacistMenu implements IUserMenu {
             } catch (NumberFormatException e) {
                 choice = 0;
             }
-
-            // int choice = -1;
- 
-            // choice = sc.nextInt();
-   
-            // try {
-            //     choice = Integer.parseInt(input);
-            // } catch (NumberFormatException e) {
-            //     System.out.println("Invalid input. Please enter a number between 1 and 5.\n");
-            //     continue; // Restart the loop for invalid input
-            // }
-    
-            //System.out.println(); // Add a blank line for better readability
-
             System.out.println();
             switch (choice) {
                 case 1:
