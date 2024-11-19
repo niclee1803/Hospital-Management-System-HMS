@@ -1,7 +1,7 @@
 # Hospital Management System (HMS) :hospital:
 
 ## Overview
-HMS is a command-line-interface application designed in Java to help healthcare providers and patients manage and update medical records, appointments, and medicine inventory. 
+HMS is a command-line-interface application designed in Java to help healthcare providers and patients manage medical records, appointments, and medicine inventory. 
 
 ## Features
 ### User Authentication :lock:
