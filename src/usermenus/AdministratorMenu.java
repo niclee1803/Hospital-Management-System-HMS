@@ -33,13 +33,13 @@ public class AdministratorMenu implements IUserMenu {
 
             switch (choice) {
                 case 1: // View and Manage Hospital Staff
-                    manageStaffMenu(sc);
+                    manageStaffMenu();
                     break;
                 case 2: // View Appointments Details
                     viewAppointmentsMenu();
                     break;
                 case 3: // View and Manage Medication Inventory
-                    manageMedicationInventory(sc);
+                    manageMedicationInventory();
                     break;
                 case 4: // Approve Replenishment Requests
                     approveReplenishmentRequests();
@@ -68,7 +68,7 @@ public class AdministratorMenu implements IUserMenu {
         System.out.println();
     }
 
-    private void manageStaffMenu(Scanner sc) {
+    private void manageStaffMenu() {
         while (true) {
             System.out.println();
             System.out.println("╔═══════════════════════════════════════════════════════════╗");
@@ -135,7 +135,7 @@ public class AdministratorMenu implements IUserMenu {
         sc.nextLine(); // Pause and wait for the user to press Enter
     }
 
-    private void manageMedicationInventory(Scanner sc) {
+    private void manageMedicationInventory() {
         while (true) {
             System.out.println();
             System.out.println("╔═══════════════════════════════════════════════════════════╗");
